@@ -1,4 +1,4 @@
-# ->Lame<-
+<center><h1>Lame</h1></center>
 
 ### Lame was a very easy box that really only required basic skill and the ability to google
 
