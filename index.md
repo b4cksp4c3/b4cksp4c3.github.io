@@ -2,4 +2,4 @@
 layout: default
 ---
 
-<a href="/htb" class="btn btn-writeups">Writeups</a>
+<center><a href="/htb" class="btn btn-writeups">HacktheBox</a></center>
