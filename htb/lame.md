@@ -2,7 +2,8 @@
 
 ## Lame was a very easy box that really only required basic skill and the ability to google
 
-<code>Nmap 7.70 scan initiated Wed May 29 15:37:48 2019 as: nmap -sC -sV -T4 -oN LameNmap 10.10.10.3
+<code>	
+	Nmap 7.70 scan initiated Wed May 29 15:37:48 2019 as: nmap -sC -sV -T4 -oN LameNmap 10.10.10.3
 	Nmap scan report for 10.10.10.3
 	Host is up (0.39s latency).
 	Not shown: 996 filtered ports
