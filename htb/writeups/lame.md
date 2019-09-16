@@ -2,8 +2,8 @@
 
 <center> Lame was a simple box that could have been easily completed with just basic linux knowledge and the ability to use google</center>
 
-
-<center>First we start with an nmap scan. Here I did a scan of only the most common ports but it is good practice to scan all ports just to be safe</center>
+<br>
+irst we start with an nmap scan. Here I did a scan of only the most common ports but it is good practice to scan all ports just to be safe
 
 ```
 # Nmap 7.70 scan initiated Wed May 29 15:37:48 2019 as: nmap -sC -sV -T4 -oN LameNmap 10.10.10.3
@@ -46,17 +46,17 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done at Wed May 29 15:39:14 2019 -- 1 IP address (1 host up) scanned in 85.91 seconds
 ```
 <br>
-<center>So there are a few ports open. The first thing that I noticed was the anonymous login for FTP. Upon quick inspection I realized there was nothing there. Next port that caught my eye was 445 running SMB. We can see that it is running version 3.0.20 and with a quick google search we find this vulnerability</center>
+So there are a few ports open. The first thing that I noticed was the anonymous login for FTP. Upon quick inspection I realized there was nothing there. Next port that caught my eye was 445 running SMB. We can see that it is running version 3.0.20 and with a quick google search we find this vulnerability
 
 <center> <img src="/htb/lame/exploit.png"> </center>
 <br>
-<center>Now I start up Metasploit and load the script located at <b>exploit/multi/samba/usermap_script</b>. I set the <b>RHOSTS</b> to my IP and then type <b>exploit</b>. If everything goes well then you should see something like I do below.</center>
+Now I start up Metasploit and load the script located at <b>exploit/multi/samba/usermap_script</b>. I set the <b>RHOSTS</b> to my IP and then type <b>exploit</b>. If everything goes well then you should see something like I do below.
 
 <center><img src="/htb/lame/metasploit.png"></center>
 <br>
-<center>So I got a shell. Typing <b>whoami</b> will reveal that I am root.</center>
+So I got a shell. Typing <b>whoami</b> will reveal that I am root.
 
 <center><img src="/htb/lame/root.png"></center>
 
-<center>The user flag is stored in <b>/home/makis/user.txt</b> and the root flag is located at <b>/root/root.txt</b></center>
+The user flag is stored in <b>/home/makis/user.txt</b> and the root flag is located at <b>/root/root.txt</b>
 <br><br><br>
