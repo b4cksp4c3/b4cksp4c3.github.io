@@ -51,7 +51,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Sun May 26 22:32:22 2019 -- 1 IP address (1 host up) scanned in 180.36 seconds
 ```
 <br>
-So there are a few ports open> First thing I did was check FTP because I saw the Anonymous login was enabled. First thing I noticed was that there was a text file located in <b>webapp/</bold>. I copied the file onto my host machine so that I could read it.
+So there are a few ports open> First thing I did was check FTP because I saw the Anonymous login was enabled. First thing I noticed was that there was a text file located in <b>webapp/</b>. I copied the file onto my host machine so that I could read it.
 ```
 ftp> ls
 200 PORT command successful. Consider using PASV.
@@ -146,7 +146,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 ```
 <br>
 
-Using *[This article](https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4)*, and the credentials we found earlier I was able to get get an Auth token using curl
+Using *[This article](https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4)*, and the credentials we found earlier I was able to get an Auth token using curl
 
 ```
 curl -X POST http://10.10.10.137:3000/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"Zk6heYCyv6ZE9Xcg"}'
@@ -169,7 +169,41 @@ We get a message that outputs
 <br>
 Now if we send the same request only this time to the users directory we get a list of users
 ```
-curl -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY4NjU2NjM3LCJleHAiOjE1Njg3NDMwMzd9.VEVnCgx1yQrhXDFIHBULGEj8n90nFH5_piQAJYYQkdA' http://10.10.10.137:3000
+curl -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY4NjU2NjM3LCJleHAiOjE1Njg3NDMwMzd9.VEVnCgx1yQrhXDFIHBULGEj8n90nFH5_piQAJYYQkdA' http://10.10.10.137:3000/users
 [{"ID":"1","name":"Admin","Role":"Superuser"},{"ID":"2","name":"Derry","Role":"Web Admin"},{"ID":"3","name":"Yuri","Role":"Beta Tester"},{"ID":"4","name":"Dory","Role":"Supporter"}]
 ```
 <br>
+Now to get the passwords for each user you would have to simply send another <b>GET</b> request to <b>/users/<username></b>
+```
+{"name":"Admin","password":"WX5b7)>/rp$U)FW"}
+{"name":"Derry","password":"rZ86wwLvx7jUxtch"}
+{"name":"Yuri","password":"bet@tester87"}
+{"name":"Dory","password":"5y:!xa=ybfe)/QD"}
+```
+<br>
+With all these credentials I basically just checked to see if any of them would work with any of the login pages or ssh and eventually there was one that worked. I could log in as <b>Derry</b> in the <b>/management</b> page.
+
+<center><img src="/htb/luke/management.png"></center>
+<br>
+Once logged in, there will be some files
+
+<center><img src="/htb/luke/files.png"></center>
+<br>
+Looking through the <b>config.json</b> file, you should see a password  towards the middle of the page
+
+<center><img src="/htb/luke/password.png"></center>
+<br>
+Using the username <b>root</b> and password <b>KpMasng6S5EtTy9Z</b> we are able to log into the Ajenti console that is running on port 8000.
+
+<center><img src="/htb/luke/login.png"></center>
+<br>
+We are greeted with the Ajenti dashboard.
+
+<center><img src="/htb/luke/dashboard.png"></center>
+<br>
+On the left hand side there is an option to use the Terminal. Click on that and then add a new Terminal. Once in the terminal, if you do a quick <b>whoami</b> then you will see that we are root and can grab the flags.
+
+<center><img src="/htb/luke/terminal.png"></center>
+<br>
+You can find the user flag in <b>/home/derry/user.txt</b> and the root flag in <b>/root/root.txt</b>.
+<br><br><br>
