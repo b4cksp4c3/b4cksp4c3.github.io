@@ -57,5 +57,6 @@ Nmap done at Wed May 29 15:39:14 2019 -- 1 IP address (1 host up) scanned in 85.
 <center>So I got a shell. Typing <b>whoami</b> will reveal that I am root.</center>
 
 <center><img src="/htb/lame/root.png"></center>
-<br>
+
 <center>The user flag is stored in <b>/home/makis/user.txt</b> and the root flag is located at <b>/root/root.txt</b></center>
+<br><br><br>
