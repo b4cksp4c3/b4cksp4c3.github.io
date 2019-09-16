@@ -52,10 +52,10 @@ Nmap done at Wed May 29 15:39:14 2019 -- 1 IP address (1 host up) scanned in 85.
 
 <center>Now I start up Metasploit and load the script located at **exploit/multi/samba/usermap_script**. I set the **RHOSTS** to my IP and then type **exploit**. If everything goes well then you should see something like I do below.</center>
 
-<center><img src="/htb/lame/metasploit.png"</center>
+<center><img src="/htb/lame/metasploit.png"></center>
 
 <center>So I got a shell. Typing **whoami** will reveal that I am root.</center>
 
-<center><img src="/htb/lame/root.png"</center>
+<center><img src="/htb/lame/root.png"></center>
 
-<center>The user flag is stored in **/home/makis/user.txt** and the root flag is located at **/root/root.txt**
+<center>The user flag is stored in **/home/makis/user.txt** and the root flag is located at **/root/root.txt**</center>
