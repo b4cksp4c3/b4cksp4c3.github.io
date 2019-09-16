@@ -1,6 +1,6 @@
-# Lame
+# ->Lame<-
 
-## Lame was a very easy box that really only required basic skill and the ability to google
+### Lame was a very easy box that really only required basic skill and the ability to google
 
 ```	
 # Nmap 7.70 scan initiated Wed May 29 15:37:48 2019 as: nmap -sC -sV -T4 -oN LameNmap 10.10.10.3
