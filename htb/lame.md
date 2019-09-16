@@ -2,7 +2,7 @@
 
 ## Lame was a very easy box that really only required basic skill and the ability to google
 
-<code>	
+```	
 	Nmap 7.70 scan initiated Wed May 29 15:37:48 2019 as: nmap -sC -sV -T4 -oN LameNmap 10.10.10.3
 	Nmap scan report for 10.10.10.3
 	Host is up (0.39s latency).
@@ -41,4 +41,4 @@
 
 	Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 	Nmap done at Wed May 29 15:39:14 2019 -- 1 IP address (1 host up) scanned in 85.91 seconds
-</code>
+```
