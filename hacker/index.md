@@ -3,4 +3,4 @@ layout: default
 ---
 # Testing
 
-<div class="button" style="width:60px;height:100px;">This is a button</div>
+<a href="/htb/writeups/lame" class="btn btn-writeups">Writeups</a>
