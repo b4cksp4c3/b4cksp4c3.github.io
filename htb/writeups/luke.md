@@ -148,7 +148,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 
 Using *[This article](https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4)*, and the credentials we found earlier I was able to get get an Auth token using curl
 
-```curl -X POST http://10.10.10.137:3000/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"Zk6heYCyv6ZE9Xcg"}'
+```
+curl -X POST http://10.10.10.137:3000/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"Zk6heYCyv6ZE9Xcg"}'
 ```
 <br>
 If you did everything went right then it should output an Auth token
