@@ -2,7 +2,6 @@
 
 <center> Lame was a simple box that could have been easily completed with just basic linux knowledge and the ability to use google</center>
 
-
 <center>First we start with an nmap scan. Here I did a scan of only the most common ports but it is good practice to scan all ports just to be safe</center>
 
 ```
@@ -48,4 +47,4 @@ Nmap done at Wed May 29 15:39:14 2019 -- 1 IP address (1 host up) scanned in 85.
 
 <center>So there are a few ports open. The first thing that I noticed was the anonymous login for FTP. Upon quick inspection I realized there was nothing there. Next port that caught my eye was 445 running SMB. We can see that it is running version 3.0.20 and with a quick google search we find this vulnerability</center>
 
-<center>![exploit](htb/lame/exploit.png)</center>
+<center>![exploit](assets/images/htb/lame/exploit.png)</center>
