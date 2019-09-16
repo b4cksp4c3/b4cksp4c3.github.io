@@ -74,14 +74,13 @@ Both of the files are <b>.jar</b> files which means the contents need to be extr
 ```
 jar -tf BlockyCore.jar
 ```
-<b>
+<br>
 we see that it lists a file
 ```
 META-INF/MANIFEST.MF
 com/myfirstplugin/BlockyCore.class
 ```
 <br>
-
 Lets extract that specific file.
 ```
 jar xf BlockyCore.jar com/myfirstplugin/BlockyCore.class
