@@ -1,10 +1,10 @@
 <center><h1>Bastion</h1></center>
 <br>
-<center><h3>Summary</h3><center>
+<center><h3>Summary</h3></center>
 <br>
 - Access an open SMB share to find a full Windows backup file
 - Grab the SAM hases and crack the password
-- mRemoteNG is install and the password is stored inside the congiguration file
+- mRemoteNG is install and the password is stored inside the configuration file
 - Use credentials to SSH as Administrator
 <br>
 First we start with an Nmap scan
@@ -46,4 +46,5 @@ Host script results:
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Wed May 22 14:42:11 2019 -- 1 IP address (1 host up) scanned in 17.97 seconds
+
 ```
