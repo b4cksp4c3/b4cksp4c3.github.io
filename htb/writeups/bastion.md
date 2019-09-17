@@ -6,8 +6,9 @@
 - Grab the SAM hases and crack the password
 - mRemoteNG is install and the password is stored inside the configuration file
 - Use credentials to SSH as Administrator
-<br>
+<br><br>
 First we start with an Nmap scan
+
 ```
 # Nmap 7.70 scan initiated Wed May 22 14:41:53 2019: nmap -sV -sC -T4 10.10.10.134
 Nmap scan report for 10.10.10.134
@@ -46,5 +47,5 @@ Host script results:
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Wed May 22 14:42:11 2019 -- 1 IP address (1 host up) scanned in 17.97 seconds
-
 ```
+<br>
