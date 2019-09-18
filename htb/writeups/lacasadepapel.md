@@ -221,6 +221,7 @@ Now if we go back to the web page and refresh it, we no longer get the client ce
 Looking through all the <b>avi</b> files I don't find anything since they are all empty but I looking a the source code of the webpage does reveal something interesting at the bottom. We see some files stored in a <b>/file</b> directory with files that look like they are encoded in base64. Using this we can do 2 things:
 - Grab the user flag in <b>/home/berlin</b>
 - Grab an ssh private key from <b>/home/berlin/.ssh/id_rsa</b> and log in with it
+
 ```
 # echo -n "../../../../home/berlin/user.txt" | base64
 Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vdXNlci50eHQ=
