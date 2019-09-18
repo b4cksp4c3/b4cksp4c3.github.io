@@ -12,3 +12,6 @@
 
 <center><h1>Luke</h1></center>
 <a href="/htb/writeups/luke"><center><img src="/htb/luke/cover.png" width="500" height="275"></center></a>
+
+<center><h1>Mirai</h1></center>
+<a href="/htb/writeups/mirai"><center><img src="/htb/mirai/cover.jpeg" width="500" height="275"></center></a>
