@@ -10,6 +10,7 @@
 - Replace the memcached.ini file with our own to spawn a reverse shell
 <br><br>
 First we start with an Nmap scan.
+
 ```
 # Nmap 7.70 scan initiated Mon May 27 18:16:51 2019 as: nmap -sV -sC -T4 10.10.10.131
 Nmap scan report for 10.10.10.131
