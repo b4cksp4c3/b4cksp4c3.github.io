@@ -1,4 +1,4 @@
-<center><h1>Mirai</h2></center>
+<center><h1>Mirai</h1></center>
 <br>
 <center><h3>Summary</h3></center>
 <br><br>
@@ -81,4 +81,45 @@ This is a security risk - please login as the 'pi' user and type 'passwd' to set
 
 pi@raspberrypi:~ $
 ```
-And we are in. c
+And we are in. We can grab the user flag now located at <b>/home/pi/Desktop</b>
+```
+pi@raspberrypi:~ $ ls Desktop/
+Plex  user.txt
+```
+Now for root. If we run <b>sudo -l</b> we can see that we have full sudo privileges. Problem is when we try to read the root flag we get this message
+```
+pi@raspberrypi:~ $ sudo cat /root/root.txt
+I lost my original root.txt! I think I may have a backup on my USB stick...
+```
+Looks like we are not done just yet. So the message hints at a USB. If you run <b>lsblk</b> you will see that there is a usb mount at <b>/media/usbstick</b>
+```
+# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda      8:0    0   10G  0 disk
+├─sda1   8:1    0  1.3G  0 part /lib/live/mount/persistence/sda1
+└─sda2   8:2    0  8.7G  0 part /lib/live/mount/persistence/sda2
+sdb      8:16   0   10M  0 disk /media/usbstick
+sr0     11:0    1 1024M  0 rom  
+loop0    7:0    0  1.2G  1 loop /lib/live/mount/rootfs/filesystem.squashfs
+```
+If you <b>cd</b> in to directory you will see a <b>damnit.txt</b> file. If you read that you will get another message that the root flag was accidentally deleted.
+```
+# cat damnit.txt
+Damnit! Sorry man I accidentally deleted your files off the USB stick.
+Do you know if there is any way to get them back?
+
+-James
+```
+The message basically tells us that the root flag is still on the USB just hidden. To find the root flag just use the <b>strings</b> command against <b>/dev/sdb</b> since thats the actual USB
+```
+# sudo strings /dev/sdb
+<output omitted>
+root.txt
+damnit.txt
+>r &
+3d3e483143ff12e**************
+Damnit! Sorry man I accidentally deleted your files off the USB stick.
+Do you know if there is any way to get them back?
+-James
+```
+<br><br><br>
