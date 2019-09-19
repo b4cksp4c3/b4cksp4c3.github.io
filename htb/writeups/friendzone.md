@@ -228,7 +228,7 @@ You have mail.
 Last login: Thu Jan 24 01:20:15 2019 from 10.10.14.3
 friend@FriendZone:~$
 ```
-I first ran some Enum scripts but didnt get much from them so I decided to use an tool called <b>pspy</b>. I copied the file over to the box using a <b>python SimpleHTTPServer</b>. I start the server on my host machine in the same directory as <b>pspy</b>.
+I first decide to run an Enum script to see what it can find. I am going to use a <b>python SimpleHTTPServer</b> to copy the script over from my host machine.
 ```
 # python -m SimpleHTTPServer 80
 Serving HTTP on 0.0.0.0 port 80 ...
