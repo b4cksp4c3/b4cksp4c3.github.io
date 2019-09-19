@@ -10,6 +10,9 @@
 <center><h1>Devel</h1></center>
 <a href="/htb/writeups/devel"><center><img src="/htb/devel/cover.png" width="500" height="275"></center></a>
 
+<center><h1>Friendzone</h1></center>
+<a href="/htb/writeups/friendzone"><center><img src="/htb/friendzone/cover.png" width="500" height="275"></center></a>
+
 <center><h1>LaCasaDePapel</h1></center>
 <a href="/htb/writeups/lacasadepapel"><center><img src="/htb/lacasadepapel/cover.png" width="500" height="275"></center></a>
 
