@@ -8,7 +8,7 @@
 First thing is always an Nmap scan
 
 ```
-# Nmap 7.70 scan initiated Thu May 30 12:00:56 2019 as: nmap -sV -sC -T4 -oN DevelNmap 10.10.10.5
+# Nmap 7.70 scan initiated Thu May 30 12:00:56 2019 as: nmap -sV -sC -T4 10.10.10.5
 Nmap scan report for 10.10.10.5
 Host is up (0.043s latency).
 Not shown: 998 filtered ports
