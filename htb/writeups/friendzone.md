@@ -314,7 +314,7 @@ print "[+] Trying to send email to %s"%to_address
 # I need to edit the script later
 # Sam ~ python developer
 ```
-The script doesn't do too much but it does use the <b>os</b> module which if you remember from the Enum scipt we know that we have write permissions to it. So lets edit the <b>/usr/lib/python2.7/os.py</b> and add in some code that reads the root flag for us.
+The script doesn't do too much but it does use the <b>os</b> module which if you remember from the Enum scipt we know that we have write permissions to it. So lets edit the <b>/usr/lib/python2.7/os.py</b> and add in some code at the top that reads the root flag for us.
 ```
 with open('/root/root.txt', 'r') as f:
   output = f.readline()
