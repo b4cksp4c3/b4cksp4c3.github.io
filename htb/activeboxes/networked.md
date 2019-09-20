@@ -220,7 +220,7 @@ done
 
 /sbin/ifup guly0
 ```
-Reading the script there is something that stands out. It writes the input that you give to the program to <b>/etc/sysconfig/network-scripts/ifcfg-guly</b>. Doing a quick google search on how this can be exploited reveals *[this.](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)*
+Reading the script there is something that stands out. It writes the input that you give to the script to <b>/etc/sysconfig/network-scripts/ifcfg-guly</b>. Doing a quick google search on how this can be exploited reveals *[this](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)*.
 
 After reading that article you should have a pretty good idea of what to do
 ```
