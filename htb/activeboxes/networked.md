@@ -73,7 +73,7 @@ If you navigate to <b>http://10.10.10.146/photos.php</b> then you should see our
 
 <center><img src="/htb/networked/photos.png"></center>
 <br>
-To trigger the shell navigate to <b>https://10.10.10.146/uploads/<name of file></b>. If done correctly you should see a shell open
+To trigger the shell navigate to <b>https://10.10.10.146/uploads/{name of file}</b>. If done correctly you should see a shell open
 ```
 # nc -lvnp 10000
 Ncat: Version 7.80 ( https://nmap.org/ncat )
