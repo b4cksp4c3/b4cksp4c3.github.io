@@ -8,6 +8,7 @@
 - Exploit <b>GNU Screen 4.5.0</b> to get a root shell
 <br><br>
 First start with an Nmap Scan
+
 ```
 # Nmap 7.80 scan initiated Fri Sep 20 15:45:55 2019 as: nmap -sV -sC -p- 10.10.10.157
 Nmap scan report for 10.10.10.157
