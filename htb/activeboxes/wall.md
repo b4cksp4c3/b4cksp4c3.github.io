@@ -32,3 +32,61 @@ Only 2 ports open. Lets start with port 80. Navigating to <b>http://10.10.10.157
 
 <center><img src="/htb/wall/home.png"></center>
 <br>
+Next I performed a <b>gobuster</b>. It only spit out a few files/directories
+```
+# gobuster dir -u http://10.10.10.157 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php -t 30
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.10.157
+[+] Threads:        30
+[+] Wordlist:       /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     php
+[+] Timeout:        10s
+===============================================================
+2019/09/21 18:48:24 Starting gobuster
+===============================================================
+/aa.php (Status: 200)
+/monitoring (Status: 401)
+/panel.php (Status: 200)
+/server-status (Status: 403)
+```
+Checking out each result yields not much that can help me. The only thing that really I thought was promising was <b>monitoring</b> since it prompts us for a Username and Password to log in with. I tried guessing the usual credentials but had no luck so I moved on.
+
+<center><img src="/htb/wall/monitoring.png"></center>
+<br>
+Next I did a basic <b>Nikto</b> scan to see what it would pick up. Nothing amazing was found but it did tell me which <b>HTTP Methods</b> are allowed
+```
+# nikto -h http://10.10.10.157
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          10.10.10.157
++ Target Hostname:    10.10.10.157
++ Target Port:        80
++ Start Time:         2019-09-21 18:52:22 (GMT-4)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.29 (Ubuntu)
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ Server may leak inodes via ETags, header found with file /, inode: 2aa6, size: 58cb1080cb0d2, mtime: gzip
++ Apache/2.4.29 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
++ Allowed HTTP Methods: OPTIONS, HEAD, GET, POST
++ 7863 requests: 0 error(s) and 6 item(s) reported on remote host
++ End Time:           2019-09-21 19:00:56 (GMT-4) (514 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+```
+Using this info I used <b>curl</b> to send requests to each result from <b>gobuster</b>, Eventually I found what I was looking for.
+```
+# curl -X POST http://10.10.10.157/monitoring/
+<h1>This page is not ready yet !</h1>
+<h2>We should redirect you to the required page !</h2>
+
+<meta http-equiv="refresh" content="0; URL='/centreon'" />
+```
+Sending a <b>POST</b> request to <b>http://10.10.10.157/monitoring/</b> reveals another directory <b>/centreon</b>.
