@@ -81,7 +81,7 @@ Next I did a basic <b>Nikto</b> scan to see what it would pick up. Nothing amazi
 ---------------------------------------------------------------------------
 + 1 host(s) tested
 ```
-Using this info I used <b>curl</b> to send requests to each result from <b>gobuster</b>, Eventually I found what I was looking for.
+Using this info I used <b>curl</b> to send requests to each result from <b>gobuster</b>. Eventually I found something. Sending a <b>POST</b> request to <b>http://10.10.10.157/monitoring/</b> reveals another directory <b>/centreon</b>.
 ```
 # curl -X POST http://10.10.10.157/monitoring/
 <h1>This page is not ready yet !</h1>
@@ -89,4 +89,30 @@ Using this info I used <b>curl</b> to send requests to each result from <b>gobus
 
 <meta http-equiv="refresh" content="0; URL='/centreon'" />
 ```
-Sending a <b>POST</b> request to <b>http://10.10.10.157/monitoring/</b> reveals another directory <b>/centreon</b>.
+Navigating to <b>http://10.10.10.157/centreon</b> we are greeted with a login page. It is running version 19.04
+
+<center><img src="/htb/wall/login.png"></center>
+<br>
+
+Doing a quick google search will reveal a RCE exploit for this version of <b>centreon</b>.
+
+<center><img src="/htb/wall/exploit.png"></center>
+<br>
+The problem with this exploit is that it requires user credentials to work so first I decided to combine a bash script with this python script to bruteforce the login credentials.
+```
+[+] Login token is : 2616bdbc1dddb74f1cbe25dd638be366                                                        
+[+] Logged In Sucssfully                                                                                     
+[+] Retrieving Poller token                                                                                  
+47069.py:56: UserWarning: No parser was explicitly specified, so I'm using the best available HTML parser for
+ this system ("lxml"). This usually isn't a problem, but if you run this code on another system, or in a diff
+erent virtual environment, it may use a different parser and behave differently.                             
+
+The code that caused this warning is on line 56 of the file 47069.py. To get rid of this warning, pass the ad
+ditional argument 'features="lxml"' to the BeautifulSoup constructor.                                        
+
+  poller_soup = BeautifulSoup(poller_html)                                                                   
+[+] Poller token is : 1362243211de62f028c5350e4782ddc4                                                       
+[+] Injecting Done, triggering the payload                                                                   
+[+] Check your netcat listener !                                                                             
+password=password1
+```
