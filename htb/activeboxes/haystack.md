@@ -30,7 +30,7 @@ A few ports open but it looks like there are two <b>http</b> ports. Navigating t
 
 <center><img src="/htb/haystack/needle.png"></center>
 <br>
-If I download the image and look at it with <b>strings</b> I find a <b>base64</b> encoded string.
+If I download the image and look at it with <b>strings</b> I find a <b>base64</b> encoded string at the bottom.
 ```
 # wget http://10.10.10.115/needle.jpg
 --2019-09-21 22:32:17--  http://10.10.10.115/needle.jpg
@@ -111,7 +111,7 @@ Now we can use the message from the picture to help us find credentials. Just <b
 {"_index":"quotes","_type":"quote","_id":"111","_score":1,"_source":{"quote":"Esta clave no se puede perder, la guardo aca: cGFzczogc3BhbmlzaC5pcy5rZXk="}}
 {"_index":"quotes","_type":"quote","_id":"45","_score":1,"_source":{"quote":"Tengo que guardar la clave para la maquina: dXNlcjogc2VjdXJpdHkg "}}
 ```
-So there are two different credentails but they are both encoded in <b>base64</b> so we just need to decode it
+So there are two different credentials but they are both encoded in <b>base64</b> so we just need to decode it
 ```
 # echo dXNlcjogc2VjdXJpdHkg | base64 -d
 user: security
@@ -126,3 +126,17 @@ security@10.10.10.115's password:
 Last login: Wed Feb  6 20:53:59 2019 from 192.168.2.154
 [security@haystack ~]$
 ```
+From here you can read the <b>user.txt</b> file.
+```
+[security@haystack ~]$ ls
+user.txt
+[security@haystack ~]$ cat user.txt
+04d18bc79dac1d4***************
+```
+Next step is to run an enumeration script. Normally I would run <b>LinEnum.sh</b> but since I know the password to the user I am going to use *[this script](https://github.com/diego-treitos/linux-smart-enumeration)*.
+```
+# scp lse.sh security@10.10.10.115:/home/security
+security@10.10.10.115's password:
+lse.sh                                                                                             100%   30KB 226.2KB/s   00:00    
+```
+Two things we see is that there is another user <b>kibana</b> and that there is a service running on <b>127.0.0.1:5601</b>. If you google the port number you will see that kibana runs on that port. To make 
