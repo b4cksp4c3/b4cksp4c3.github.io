@@ -122,4 +122,6 @@ ditional argument 'features="lxml"' to the BeautifulSoup constructor.
 [+] Check your netcat listener !                                                                             
 password=password1
 ```
-For some reason I couldn't get the RCE to work and open up a reverse shell for me so I had to find another way. I did this by logging into the <b>centreon</b> web app using the credentials we brute forced. I then navigated to <b>Configuration > Commands > Miscellaneous</b>
+For some reason I couldn't get the RCE to work and open up a reverse shell for me so I had to find another way. I did this by logging into the <b>centreon</b> web app using the credentials we brute forced. I then navigated to <b>Configuration > Commands > Miscellaneous</b> where you will see this.
+
+<center><img src="/htb/wall/command.png"></center>
