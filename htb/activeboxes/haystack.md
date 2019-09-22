@@ -30,7 +30,31 @@ A few ports open but it looks like there are two <b>http</b> ports. Navigating t
 
 <center><img src="/htb/haystack/needle.png"></center>
 <br>
-Checking out port 9200 I am greeted with some json data
+If I download the image and look at it with <b>strings</b> I find a <b>base64</b> encoded string.
+```
+# wget http://10.10.10.115/needle.jpg
+--2019-09-21 22:32:17--  http://10.10.10.115/needle.jpg
+Connecting to 10.10.10.115:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 182982 (179K) [image/jpeg]
+Saving to: ‘needle.jpg’
+
+needle.jpg                                100%[===================================================================================>] 178.69K   709KB/s    in 0.3s    
+
+2019-09-21 22:32:19 (709 KB/s) - ‘needle.jpg’ saved [182982/182982]
+```
+<b>Strings</b>
+```
+bGEgYWd1amEgZW4gZWwgcGFqYXIgZXMgImNsYXZlIg==
+```
+And if we <b>base64</b> decode that string we get a message.
+```
+# echo "bGEgYWd1amEgZW4gZWwgcGFqYXIgZXMgImNsYXZlIg==" | base64 -d
+la aguja en el pajar es "clave"
+```
+The message translates to <b>The needles in the haystack is "key"</b>.
+
+For now I can't do anything with that information so I now check out port 9200. First thing I see is some json data refering to <b>elasticsearch v6.4.2</b>
 ```
 name	"iQEYHgS"
 cluster_name	"elasticsearch"
@@ -47,3 +71,4 @@ minimum_wire_compatibility_version	"5.6.0"
 minimum_index_compatibility_version	"5.0.0"
 tagline	"You Know, for Search"
 ```
+I have no idea what <b>elasticsearch</b> is so I do some reading on it. Turns out you can interact with it and dump all of the <b>json</b> data that is stored. To do this I am going to use *[this](https://github.com/taskrabbit/elasticsearch-dump)*
