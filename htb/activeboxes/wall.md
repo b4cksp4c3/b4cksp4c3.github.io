@@ -32,7 +32,7 @@ Only 2 ports open. Lets start with port 80. Navigating to <b>http://10.10.10.157
 
 <center><img src="/htb/wall/home.png"></center>
 <br>
-Next I performed a <b>gobuster</b>. It only spit out a few files/directories
+Next I performed a <b>gobuster</b>. It only spit out a few results.
 ```
 # gobuster dir -u http://10.10.10.157 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php -t 30
 ===============================================================
@@ -54,7 +54,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 /panel.php (Status: 200)
 /server-status (Status: 403)
 ```
-Checking out each result yields not much that can help me. The only thing that really I thought was promising was <b>monitoring</b> since it prompts us for a Username and Password to log in with. I tried guessing the usual credentials but had no luck so I moved on.
+Checking out each result yields not much that can help me. Only the <b>monitoring</b> seemed useful since it prompts us for a Username and Password to log in with. I tried guessing the credentials but had no luck so I moved on.
 
 <center><img src="/htb/wall/monitoring.png"></center>
 <br>
@@ -89,7 +89,7 @@ Using this info I used <b>curl</b> to send requests to each result from <b>gobus
 
 <meta http-equiv="refresh" content="0; URL='/centreon'" />
 ```
-Navigating to <b>http://10.10.10.157/centreon</b> we are greeted with a login page. It is running version 19.04
+Navigating to <b>http://10.10.10.157/centreon</b> we are greeted with a login page. It is running Centreon v19.04
 
 <center><img src="/htb/wall/login.png"></center>
 <br>
