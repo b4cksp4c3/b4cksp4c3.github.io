@@ -139,4 +139,14 @@ Next step is to run an enumeration script. Normally I would run <b>LinEnum.sh</b
 security@10.10.10.115's password:
 lse.sh                                                                                             100%   30KB 226.2KB/s   00:00    
 ```
-Two things we see is that there is another user <b>kibana</b> and that there is a service running on <b>127.0.0.1:5601</b>. If you google the port number you will see that kibana runs on that port. To make 
+Two things we see is that there is another user <b>kibana</b> and that there is a service running on <b>127.0.0.1:5601</b>. If you google the port number you will see that kibana runs on that port. To make my life easier I am going to port forward the Kibana service from the box to my own machine using SSH
+```
+# ssh -L 5601:127.0.0.1:5601 security@10.10.10.115
+security@10.10.10.115's password:
+Last login: Sun Sep 22 00:34:23 2019 from 10.10.14.21
+[security@haystack ~]$
+```
+Now if we navigate to <b>127.0.0.1:5601</b> on our local machine then you should have access to the kibana service.
+
+<center><img src="/htb/haystack/kibana.png"></center>
+<br>
