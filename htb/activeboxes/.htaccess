@@ -1,0 +1,5 @@
+AuthName "Active Boxes"
+AuthType Basic
+AuthUserFile /htb/activeboxes/.htpasswd
+
+Require valid-user
