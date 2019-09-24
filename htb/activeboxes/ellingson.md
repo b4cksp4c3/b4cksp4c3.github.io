@@ -174,3 +174,126 @@ Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your 
 Last login: Sun Mar 10 22:02:27 2019 from 192.168.1.211
 margo@ellingson:~$
 ```
+From here we can grab the user flag
+```
+margo@ellingson:~$ ls
+user.txt
+margo@ellingson:~$ cat user.txt
+d0ff9e3f9da8bb00aaa6c0bb73e45903
+```
+Now the next step could have been very obvious to you or may have needed some enumeration, depends if you have seen the movie or not. I personally saw the movie therefore I knew to look for a <b>garbage</b> file. I found it using the <b>locate</b> command and I see that the <b>SUID</b> bit is set.
+```
+margo@ellingson:~$ locate garbage
+/usr/bin/garbage
+
+margo@ellingson:~$ ls -la /usr/bin/garbage
+-rwsr-xr-x 1 root root 18056 Mar  9  2019 /usr/bin/garbage
+
+```
+Running the program we see it just asks for a password
+```
+margo@ellingson:~$ /usr/bin/garbage
+Enter access password: test
+
+access denied.
+```
+I end up copying the binary to my kali machine so I can take a closer look at it. I will use <b>scp</b> again to copy it over
+```
+# scp margo@10.10.10.139:/usr/bin/garbage .
+margo@10.10.10.139's password:
+garbage                                                                                    100%   18KB 327.4KB/s   00:00    
+```
+Now I am going to use <b>gdb</b> with the <b>peda</b> extension. Starting <b>gdb</b> I run <b>checksec</b> to see what security precautions are enabled on the binary.
+```
+# gdb garbage
+GNU gdb (Debian 8.3-1) 8.3
+Copyright (C) 2019 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from garbage...
+(No debugging symbols found in garbage)
+gdb-peda$ checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+```
+<b>NX</b> being enabled means that the stack is read only so it's impossible for us to simply just drop in shell code
+<b>RELRO</b> is a generic exploit mitigation technique to harden the data sections of an ELF binary or process
+
+
+Now if we run the program and give it some simple input we get the same output as before.
+```
+gdb-peda$ r
+Starting program: /root/Downloads/Ellingson/garbage
+Enter access password: test
+
+access denied.
+[Inferior 1 (process 28613) exited with code 0377]
+Warning: not running
+```
+This time lets enter a bunch of A's. If you enter enough A's then you should get a <b>Segmentation fault</b>
+```
+gdb-peda$ r                                                                                                                  
+Starting program: /root/Downloads/Ellingson/garbage                                                                          
+Enter access password: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA                                         
+
+access denied.                                                                                                               
+
+Program received signal SIGSEGV, Segmentation fault.                                                                         
+[----------------------------------registers-----------------------------------]                                             
+RAX: 0x0                                                                                                                     
+RBX: 0x0                                                                                                                     
+RCX: 0x7ffff7edd504 (<__GI___libc_write+20>:    cmp    rax,0xfffffffffffff000)                                               
+RDX: 0x7ffff7fb08c0 --> 0x0                                                                                                  
+RSI: 0x4055a0 ("access denied.\nssword: ")                                                                                   
+RDI: 0x0
+RBP: 0x4141414141414141 ('AAAAAAAA')
+RSP: 0x7fffffffe128 ('A' <repeats 50 times>)
+RIP: 0x401618 (<auth+261>:      ret)
+R8 : 0x7ffff7fb5500 (0x00007ffff7fb5500)
+R9 : 0x7ffff7faf848 --> 0x7ffff7faf760 --> 0xfbad2a84
+R10: 0xfffffffffffff638
+R11: 0x246
+R12: 0x401170 (<_start>:        xor    ebp,ebp)
+R13: 0x7fffffffe220 --> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x10246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+0x40160d <auth+250>: call   0x401050 <puts@plt>
+0x401612 <auth+255>: mov    eax,0x0
+0x401617 <auth+260>: leave  
+=> 0x401618 <auth+261>: ret    
+0x401619 <main>:     push   rbp
+0x40161a <main+1>:   mov    rbp,rsp
+0x40161d <main+4>:   sub    rsp,0x10
+0x401621 <main+8>:   mov    eax,0x0
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe128 ('A' <repeats 50 times>)
+0008| 0x7fffffffe130 ('A' <repeats 42 times>)
+0016| 0x7fffffffe138 ('A' <repeats 34 times>)
+0024| 0x7fffffffe140 ('A' <repeats 26 times>)
+0032| 0x7fffffffe148 ('A' <repeats 18 times>)
+0040| 0x7fffffffe150 ("AAAAAAAAAA")
+0048| 0x7fffffffe158 --> 0x7fffff004141
+0056| 0x7fffffffe160 --> 0x100040000
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x0000000000401618 in auth ()
+```
+Getting the <b>Segmentation fault</b> tells us the binary is vulnerable to a <b>buffer overflow</b>. Since we can't drop shell code in this will most likely be a <b>return to libc</b> exploit.
