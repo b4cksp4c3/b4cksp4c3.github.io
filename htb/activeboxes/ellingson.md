@@ -1,6 +1,11 @@
 <center><h1>Ellingson</h1></center>
 <br>
 <center><h3>Summary</h3></center>
+- Find a python interactive console by enumerating the web page
+- Use the interactive console to add your SSH public key to the <b>authorized_keys</b> file and then SSH in
+- Unshadow the <b>shadow.bak</b> and <b>passwd</b> files and crack the password using <b>john</b>
+- Use the cracked password to SSH in as the new user
+- Find a binary that is vulnerable to a buffer overflow using ret2libc
 
 First start with an Nmap scan
 
@@ -296,4 +301,75 @@ Legend: code, data, rodata, value
 Stopped reason: SIGSEGV
 0x0000000000401618 in auth ()
 ```
-Getting the <b>Segmentation fault</b> tells us the binary is vulnerable to a <b>buffer overflow</b>. Since we can't drop shell code in this will most likely be a <b>return to libc</b> exploit.
+Getting the <b>Segmentation fault</b> tells us the binary is vulnerable to a <b>buffer overflow</b>. Since we can't drop shell code in this will most likely be a <b>return to libc</b> type attack. Before we can attempt a <b>ret2libc</b> attack we need to get some information. First lets find the offset.
+
+First, use <b>pattern_create</b> to create a string of random characters.
+```
+gdb-peda$ pattern_create 500
+'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJAsfAs5AsKAsgAs6A'
+```
+Second, run the program again and use the pattern as input so we can cause another <b>Segmentation fault</b>
+```
+gdb-peda$ r                                                                                                                  
+Starting program: /root/Downloads/Ellingson/garbage                                                                          
+Enter access password: 'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALA
+AhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(
+A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%
+SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIA
+seAs4AsJAsfAs5AsKAsgAs6A'                                                                                                    
+
+access denied.                                                                                                               
+
+Program received signal SIGSEGV, Segmentation fault.                                                                         
+[----------------------------------registers-----------------------------------]                                             
+RAX: 0x0                                                                                                                     
+RBX: 0x0                                                                                                                     
+RCX: 0x7ffff7edd504 (<__GI___libc_write+20>:    cmp    rax,0xfffffffffffff000)                                               
+RDX: 0x7ffff7fb08c0 --> 0x0                                                                                                  
+RSI: 0x4055a0 ("access denied.\nssword: ")                                                                                   
+RDI: 0x0                                                                                                                     
+RBP: 0x41415041416b4141 ('AAkAAPAA')                                                                                         
+RSP: 0x7fffffffe128 ("lAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%E
+A%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA"...)                       
+RIP: 0x401618 (<auth+261>:      ret)                                                                                         
+R8 : 0x7ffff7fb5500 (0x00007ffff7fb5500)                                                                                     
+R9 : 0x7ffff7faf848 --> 0x7ffff7faf760 --> 0xfbad2a84                                                                        
+R10: 0xfffffffffffff638                                                                                                      
+R11: 0x246                                                                                                                   
+R12: 0x401170 (<_start>:        xor    ebp,ebp)                                                                              
+R13: 0x7fffffffe220 ("%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJA$fAs5AsKAsgAs6A'")
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x10246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x40160d <auth+250>: call   0x401050 <puts@plt>
+   0x401612 <auth+255>: mov    eax,0x0
+   0x401617 <auth+260>: leave  
+=> 0x401618 <auth+261>: ret    
+   0x401619 <main>:     push   rbp
+   0x40161a <main+1>:   mov    rbp,rsp
+   0x40161d <main+4>:   sub    rsp,0x10
+   0x401621 <main+8>:   mov    eax,0x0
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffe128 ("lAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%
+EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA"...)
+0008| 0x7fffffffe130 ("ARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A
+%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%m"...)
+0016| 0x7fffffffe138 ("AApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1
+A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%"...)
+0024| 0x7fffffffe140 ("qAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%
+2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA"...)
+0032| 0x7fffffffe148 ("AVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA
+%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%r"...)
+0040| 0x7fffffffe150 ("AAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%e
+A%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%"...)
+0048| 0x7fffffffe158 ("vAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%
+fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA"...)
+0056| 0x7fffffffe160 ("AZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA
+%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%w"...)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x0000000000401618 in auth ()
+```
+Third
