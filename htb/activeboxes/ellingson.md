@@ -208,7 +208,7 @@ I end up copying the binary to my kali machine so I can take a closer look at it
 margo@10.10.10.139's password:
 garbage                                                                                    100%   18KB 327.4KB/s   00:00    
 ```
-<b>The rest of this writeup will get more difficult and I will not explain why everything does what it does because this would turn into a short story and not a writeup. I will list all the steps and give you the necessary info but you will have to do the in depth research on your own.</b>
+<b>The rest of this writeup will get more difficult and I will not explain why everything does what it does because this would turn into a short story and not a writeup.</b>
 
 Now I am going to use <b>gdb</b> with the <b>peda</b> extension. Starting <b>gdb</b> I run <b>checksec</b> to see what security precautions are enabled on the binary.
 ```
