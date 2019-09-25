@@ -238,8 +238,8 @@ PIE       : disabled
 RELRO     : Partial
 ```
 <b>NX</b> being enabled means that the stack is read only so it's impossible for us to simply just drop in shell code
+<br>
 <b>RELRO</b> is a generic exploit mitigation technique to harden the data sections of an ELF binary or process
-
 
 Now if we run the program and give it some simple input we get the same output as before.
 ```
@@ -303,7 +303,7 @@ Legend: code, data, rodata, value
 Stopped reason: SIGSEGV
 0x0000000000401618 in auth ()
 ```
-Getting the <b>Segmentation fault</b> tells us the binary is vulnerable to a <b>buffer overflow</b>. Since we can't drop shell code in this will most likely be a <b>return to libc</b> type attack. Before we can attempt a <b>ret2libc</b> attack we need to get some information. First lets find the offset.
+Getting the <b>Segmentation fault</b> tells us the binary is vulnerable to a <b>buffer overflow</b>. Since we can't drop shell code in this will most likely be a <b>ret2libc</b> type attack. Before we can attempt a <b>ret2libc</b> attack we need to get some information. First lets find the offset.
 
 First, use <b>pattern_create</b> to create a string of random characters.
 ```
