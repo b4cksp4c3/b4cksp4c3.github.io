@@ -13,6 +13,9 @@
 <center><h1>Friendzone</h1></center>
 <a href="/htb/writeups/friendzone"><center><img src="/htb/friendzone/cover.png" width="500" height="275"></center></a>
 
+<center><h1>Haircut</h1></center>
+<a href="/htb/writeups/haircut"><center><img src="/htb/haircut/cover.png" width="500" height="275"></center></a>
+
 <center><h1>LaCasaDePapel</h1></center>
 <a href="/htb/writeups/lacasadepapel"><center><img src="/htb/lacasadepapel/cover.png" width="500" height="275"></center></a>
 
