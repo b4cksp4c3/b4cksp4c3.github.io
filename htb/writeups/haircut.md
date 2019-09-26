@@ -1,9 +1,8 @@
 <center><h1>Haircut</h1><center>
 <br>
-<center><h3>Summary</h3></center>
-<br>
 
 First start with an Nmap scan
+
 ```
 # nmap -sV -sC -T4 -p- 10.10.10.24
 Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-26 16:37 UTC
