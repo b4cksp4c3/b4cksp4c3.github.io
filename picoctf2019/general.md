@@ -60,6 +60,7 @@ Flag:```picoCTF{grep_is_good_to_find_things_887251c6}```
 Q: We put together a bunch of resources to help you out on our website! If you go over there, you might even find a flag! https://picoctf.com/resources *[(link)](https://picoctf.com/resources)*
 
 A: Navigating to the link towards the bottom of the page we should see the flag.
+
 <center><img src="/picoctf2019/general/images/resources.png"></center>
 <br>
 Flag:```picoCTF{r3source_pag3_f1ag}```
