@@ -9,4 +9,4 @@ A: This can be done any number of ways, I will use the <b>bc</b> command line to
 # echo 'obase=2; ibase=10; 42' | bc
 101010
 ```
-Flag:<code> picoCTF{101010}</code>
+Flag:```picoCTF{101010}```
