@@ -61,6 +61,6 @@ Q: We put together a bunch of resources to help you out on our website! If you g
 
 A: Navigating to the link towards the bottom of the page we should see the flag.
 
-<center><img src="/pico2019pics/resources.png"></center>
+<center><img src="/picoctf2019/images/resources.png"></center>
 <br>
 Flag:```picoCTF{r3source_pag3_f1ag}```
