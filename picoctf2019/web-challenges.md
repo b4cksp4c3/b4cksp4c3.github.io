@@ -4,7 +4,7 @@
 <br>
 Q: Kishor Balan tipped us off that the following code may need inspection: https://2019shell1.picoctf.com/problem/11196/ (*[link](https://2019shell1.picoctf.com/problem/11196/)*) or http://2019shell1.picoctf.com:11196
 
-A:
+A: You can find the flag in 3 parts by looking at the source code.  
 ```
 <!doctype html>
 <html>
@@ -44,3 +44,6 @@ A:
   </body>
 </html>
 ```
+The first part is at the bottom of the page, ```picoCTF{tru3_d3```, the second part is in the ```mycss.css``` function at the bottom, ```t3ct1ve_0r_ju5t```. Last part is in the ```myjs.js``` function at the bottom, ```_lucky?9df7e69a}```.
+Flag:```picoCTF{tru3_d3t3ct1ve_0r_ju5t_lucky?1ce1e9f5}```
+<br>
