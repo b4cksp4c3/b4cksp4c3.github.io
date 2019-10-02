@@ -125,3 +125,16 @@ Now refresh the page and you should get the flag
 <center><img src="/picoctf2019/images/logonflag.png"></center>
 Flag:```picoCTF{th3_c0nsp1r4cy_l1v3s_3294afa0}```
 <br>
+<center><h2>where are the robots</h2></center>
+<br>
+Q: Can you find the robots? https://2019shell1.picoctf.com/problem/12267/ (*[link](https://2019shell1.picoctf.com/problem/12267/)*) or http://2019shell1.picoctf.com:12267
+
+A: If you know anything about web development then you should know about the ```robots.txt``` file. The name of the problem and link in the problem both hint to the file as well. So visiting the page we see it mentions another web page
+
+<center><img src="/picoctf2019/images/robots.png"></center>
+<br>
+Navigating to the ```/713d3.html``` web page reveals the flag
+
+<center><img src="/picoctf2019/images/robotsflag.png"></center>
+Flag:```picoCTF{ca1cu1at1ng_Mach1n3s_713d3}```
+<br>
