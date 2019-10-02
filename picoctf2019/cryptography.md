@@ -311,6 +311,12 @@ A: When we connect we are given some ciphertext. Using *[quip quip](https://www.
 
 Flag:```frequency_is_c_over_lambda_vlnhnasstm```
 <br>
+<center><h2>AES-ABC</h2></center>
+<br>
+Q:AES-ECB is bad, so I rolled my own cipher block chaining mechanism - Addition Block Chaining! You can find the source here: *[aes-abc.py](/picoctf2019/files/aes-abc.py)*. The AES-ABC flag is *[body.enc.ppm](/picoctf2019/files/body.enc.ppm)*
+
+A: Coming Soon...
+<br><br>
 <center><h2>b00tl3gRSA2</h2></center>
 <br>
 Q: n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
@@ -395,4 +401,57 @@ Running the main python function will output the flag
 picoCTF{bad_1d3a5_9093280}
 ```
 Flag:```picoCTF{bad_1d3a5_9093280}```
+<br>
+<center><h2>b00tl3gRSA3</h2></center>
+<br>
+Q: Why use p and q when I can use more? Connect with ```nc 2019shell1.picoctf.com 49851```.
+
+Hint: There's more prime factors than p and q, finding d is going to be different.
+
+A: Using the hint we know that we need to find all the prime factors of n. To do this first connect with ```nc``` to get our values. Then we can use *[this website](https://www.alpertron.com.ar/ECM.HTM)* to factor n. It will also give you the sum of divisors and Euler's totient. We want Euler's totient. Next, take your values and put them into the following python script which is a modified version of code from stack stackoverflow and it should output the flag.
+```
+from pwn import *
+
+# https://stackoverflow.com/questions/4798654/modular-multiplicative-inverse-function-in-python
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+def modinv(a, m):
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception('modular inverse does not exist')
+    else:
+        return x % m
+
+ciphertext = input("Enter ciphertext: ")
+n = input("Enter n: ")
+e = input("Enter e: ")
+phi = input ("Enter Euler's Totient: ")
+
+d = modinv(e, phi)
+m = pow(ciphertext, d, n)
+
+flag = unhex(hex(m)[2:])
+
+print 'flag: {}'.format(flag)
+```
+Run it
+```
+# python bootlegrsa3.py
+Enter ciphertext: 33523385205296939522905210644476553079012523215409168772376329547493997910532879790301920132105672508940884152523625506706866049430868380779207366490362977437006681291400396388131779208064178027265235322234104990692939378240000150901595949929346585969083269540035491367552562797560014322352949175015835097112013097228155630378471216684150710267
+
+Enter n: 83216888414376277706457855149604158525854229627943798349049097143564335024563032620180542397813624255581320743496064197646395292516262830992626619374426274275436605394149981655740188240239868125900676798721375123624520336794619520926408634179953855504036900141476662924249857776553191203830887382980284749348285182364969115631254366172054929857
+
+Enter e: 65537
+
+Enter Euler's Totient: 83216888191396496497822821008023004221363406823767738418299884887372899118478972425782149116742162232694830146367049084289998708253328836788751441152571939983786524457989122442125379831427111831771140829749567103680237228585400308506346643531058539306137481973525353805312036210262888206878353608350865143221035776844356242129289216000000000000
+
+flag: picoCTF{too_many_fact0rs_6566973}
+
+```
+Flag:```picoCTF{too_many_fact0rs_6566973}```
 <br>
