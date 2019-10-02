@@ -138,7 +138,7 @@ Flag:```picoCTF{digital_plumb3r_1d5b7de7}```
 <br>
 <center><h3>whats-the-difference</h3></center>
 <br>
-Q: Can you spot the difference? kitters cattos. They are also available at /problems/whats-the-difference_0_00862749a2aeb45993f36cc9cf98a47a on the shell server
+Q: Can you spot the difference? *[kitters](/picoctf2019/files/kitters.jpg)* *[cattos](/picoctf2019/files/cattos.jpg)*. They are also available at /problems/whats-the-difference_0_00862749a2aeb45993f36cc9cf98a47a on the shell server
 
 A: There are a few steps to this problem. First convert both of the photos to hex using ```xxd```
 ```
