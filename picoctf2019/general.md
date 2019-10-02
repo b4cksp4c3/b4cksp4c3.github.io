@@ -76,3 +76,41 @@ picoCTF{5tRIng5_1T_d5b86184}
 ```
 Flag:```picoCTF{5tRIng5_1T_d5b86184}```
 <br>
+<center><h3>what's a net cat?</h3></center>
+<br>
+Q: Using netcat (nc) is going to be pretty important. Can you connect to ```2019shell1.picoctf.com``` at port ```4158``` to get the flag?
+
+A: Just use netcat to connect and it will spit out the flag
+```
+# nc 2019shell1.picoctf.com 4158
+You're on your way to becoming the net cat master
+picoCTF{nEtCat_Mast3ry_700da9c7}
+```
+Flag:```picoCTF{nEtCat_Mast3ry_700da9c7}```
+<br>
+<center><h3>Based</h3></center>
+<br>
+Q: To get truly 1337, you must understand different data encodings, such as hexadecimal or binary. Can you get the flag from this program to prove you are on the way to becoming 1337? Connect with ```nc 2019shell1.picoctf.com 20836```
+
+A: Answer can be found using a couple websites. Upon initial connection it gives us a string of bits and asks us what the word is. Luckily it gives us the answer for the first one, in my case its ```container```. Next it spits out some numbers in octal. Using *[this](http://www.unit-conversion.info/texttools/octal/)* webiste you can convert the octal to text. In my case it was ```table```. Lastly it spits out a string of hex. We can use *[this](http://www.unit-conversion.info/texttools/hexadecimal/)* website to decode the hex to a string, in my case it was ```container```.
+```
+# nc 2019shell1.picoctf.com 20836
+Let us see how data is stored
+container
+Please give the 01100011 01101111 01101110 01110100 01100001 01101001 01101110 01100101 01110010 as a word.
+...
+you have 45 seconds.....
+
+Input:
+container
+Please give me the  164 141 142 154 145 as a word.
+Input:
+table
+Please give me the 636f6e7461696e6572 as a word.
+Input:
+container
+You've beaten the challenge
+Flag: picoCTF{learning_about_converting_values_6cdcad0d}
+```
+Flag: ```picoCTF{learning_about_converting_values_6cdcad0d}```
+<br>
