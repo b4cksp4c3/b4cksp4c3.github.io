@@ -64,3 +64,15 @@ A: Navigating to the link towards the bottom of the page we should see the flag.
 <center><img src="/picoctf2019/images/resources.png"></center>
 <br>
 Flag:```picoCTF{r3source_pag3_f1ag}```
+<br>
+<center><h3>strings it</h3></center>
+<br>
+Q: Can you find the flag in *[file](/picoctf2019/files/strings_it)* without running it? You can also find the file in /problems/strings-it_2_865eec66d190ef75386fb14e15972126 on the shell server.
+
+A: Using the <b>strings</b> command combined with <b>grep</b> gives us the flag
+```
+# strings strings | grep pico
+picoCTF{5tRIng5_1T_d5b86184}
+```
+Flag:```picoCTF{5tRIng5_1T_d5b86184}```
+<br>
