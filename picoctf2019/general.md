@@ -114,3 +114,41 @@ Flag: picoCTF{learning_about_converting_values_6cdcad0d}
 ```
 Flag: ```picoCTF{learning_about_converting_values_6cdcad0d}```
 <br>
+<center><h3>First Grep: Part II</h3></center>
+<br>
+Q: Can you find the flag in /problems/first-grep--part-ii_0_b68f6a4e9cb3a7aad4090dea9dd80ce1/files on the shell server? Remember to use grep.
+
+A: Simply read all of the files and ```grep``` for the flag
+```
+$ cat files*/* | grep pico
+picoCTF{grep_r_to_find_this_e4fa3ba7}
+```
+Flag:```picoCTF{grep_r_to_find_this_e4fa3ba7}```
+<br>
+<center><h3>plumbing</h3></center>
+<br>
+Q: Sometimes you need to handle process data outside of a file. Can you find a way to keep the output from this program and search for the flag? Connect to ```2019shell1.picoctf.com 18944```.
+
+A: Again we can just use ```grep``` to grab the flag.
+```
+# nc 2019shell1.picoctf.com 18944 | grep pico
+picoCTF{digital_plumb3r_1d5b7de7}
+```
+Flag:```picoCTF{digital_plumb3r_1d5b7de7}```
+<br>
+<center><h3>whats-the-difference</h3></center>
+<br>
+Q: Can you spot the difference? kitters cattos. They are also available at /problems/whats-the-difference_0_00862749a2aeb45993f36cc9cf98a47a on the shell server
+
+A: There are a few steps to this problem. First convert both of the photos to hex using ```xxd```
+```
+# xxd cattos.jpg > cattoshex
+# xxd kitters.jpg > kittershex
+```
+Second, use the ```diff``` command to compare the files line by line and find the differences and output those to another file.
+```
+# diff cattoshex kittershex > diff.txt
+```
+Lastly, open the file and compare the lines two at a time and find the differences between them. Eventually you should be able to construct a flag.
+Flag:```picoCTF{th3yr3_a5_d1ff3r3nt_4s_bu773r_4nd_j311y_aslkjfdsalkfslkflkjdsfdszmz10548}```
+<br>
