@@ -280,3 +280,118 @@ flag: picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}
 ```
 Flag:```picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}```
 <br>
+<center><h2>miniRSA</h2></center>
+<br>
+Q: Lets decrypt this: *[ciphertext?](/picoctf2019/files/ciphertext)* Something seems a bit small
+
+A. Using the following python script we can get the flag.
+```
+#!/usr/bin/python
+
+from gmpy2 import *
+
+get_context().precision=500
+
+c = mpq(2205316413931134031074603746928247799030155221252519872649594750678791181631768977116979076832403970846785672184300449694813635798586699205901153799059293422365185314044451205091048294412538673475392478762390753946407342073522966852394341, 1)
+
+print str(hex(int(cbrt(c))))[2:-1].decode('hex')
+```
+Now run it.
+```
+# python newdecrypt.py
+picoCTF{n33d_a_lArg3r_e_0a41ef50}
+```
+Flag:```picoCTF{n33d_a_lArg3r_e_0a41ef50}```
+<br>
+<center><h2>waves over lambda</h2></center>
+<br>
+Q: We made alot of substitutions to encrypt this. Can you decrypt it? Connect with ```nc 2019shell1.picoctf.com 21903```.
+
+A: When we connect we are given some ciphertext. Using *[quip quip](https://www.quipqiup.com/)* we can decrypt the cipher and get the flag.
+
+Flag:```frequency_is_c_over_lambda_vlnhnasstm```
+<br>
+<center><h2>b00tl3gRSA2</h2></center>
+<br>
+Q: n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
+
+A: Using the following python scripts below we can get the flag, just make sure to replace my n,e,c values with yours
+<strong>rsa_2.py</strong>
+```
+#!/usr/bin/env python
+
+from continued_fractions import *
+
+n = 11374883649693698567484602251593739112580423066336624250521250743022361240344248522485536$922459153863654005572016339932595567472169098171553097104272706223624161016193120747434323351$874181289492759790152547943548539479777131389298719254598769956233468003596825702663960245959$2406969448795703778177897020689
+e = 95840471833076939926748592662275459672792221386398836457197147379183021091989114418287203$251227858644294144327810286515707865823230454847641861696573624636263880611702839039660500484$389795714952404946969818017580479150313628328074244657376268810392298258992537654167191080221$024445575790426152412198300461
+c = 97715717797644642262918833584370108356783860120582527427423086110559659601554951719025087$158031741632815442703965723147564587600460451302723954228278435659098765253244573147901581553$125120257028362883587968968901440324135776310794120227287607240296046014050177314249944433732$716302384712408300193549360953
+def egcd(a, b):
+    if a == 0: return (b, 0, 1)
+    g, x, y = egcd(b % a, a)
+    return (g, y - (b // a) * x, x)
+
+def mod_inv(a, m):
+    g, x, _ = egcd(a, m)
+    return (x + m) % m
+
+def isqrt(n):
+    x = n
+    y = (x + 1) // 2
+    while y < x:
+        x = y
+        y = (x + n // x) // 2
+    return x
+
+def crack_rsa(e, n):
+    frac = rational_to_contfrac(e, n)
+    convergents = convergents_from_contfrac(frac)
+
+    for (k, d) in convergents:
+        if k != 0 and (e * d - 1) % k == 0:
+            phi = (e * d - 1) // k
+            s = n - phi + 1
+            # check if x*x - s*x + n = 0 has integer roots
+            D = s * s - 4 * n
+            if D >= 0:
+                sq = isqrt(D)
+                if sq * sq == D and (s + sq) % 2 == 0: return d
+
+d = crack_rsa(e, n)
+m = hex(pow(c, d, n)).rstrip("L")[2:]
+print(m.decode("hex"))
+```
+<strong>continued_fractions.py</strong>
+```
+#!/usr/bin/env python
+
+def rational_to_contfrac(x,y):
+    # Converts a rational x/y fraction into a list of partial quotients [a0, ..., an]
+    a = x // y
+    pquotients = [a]
+    while a * y != x:
+        x, y = y, x - a * y
+        a = x // y
+        pquotients.append(a)
+    return pquotients
+
+def convergents_from_contfrac(frac):
+    # computes the list of convergents using the list of partial quotients
+    convs = [];
+    for i in range(len(frac)): convs.append(contfrac_to_rational(frac[0 : i]))
+    return convs
+
+def contfrac_to_rational (frac):
+    # Converts a finite continued fraction [a0, ..., an] to an x/y rational.
+    if len(frac) == 0: return (0,1)
+    num = frac[-1]
+    denom = 1
+    for _ in range(-2, -len(frac) - 1, -1): num, denom = frac[_] * num + denom, num
+    return (num, denom)
+```
+Running the main python function will output the flag
+```
+# python rsa_2.py
+picoCTF{bad_1d3a5_9093280}
+```
+Flag:```picoCTF{bad_1d3a5_9093280}```
+<br>
