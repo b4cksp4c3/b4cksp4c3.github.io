@@ -1,4 +1,4 @@
-<center><h1>Haircut</h1><center>
+<center><h1>Haircut</h1></center>
 <br>
 
 First start with an Nmap scan
