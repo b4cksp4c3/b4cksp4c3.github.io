@@ -226,7 +226,7 @@ Upgrade-Insecure-Requests: 1
 ```
 Now lastly, edit the ```User-Agent:``` to say ```picobrowser``` and then forward the request. This should give you the flag.
 
-<center><img src="/picoctf2019/images/picobrowserflag.png"
+<center><img src="/picoctf2019/images/picobrowserflag.png"></center>
 <br>
 Flag:```picoCTF{p1c0_s3cr3t_ag3nt_b3785d03}```
 <br>
