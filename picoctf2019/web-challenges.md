@@ -195,5 +195,38 @@ Q: This website can be rendered only by picobrowser, go and catch the flag! http
 
 A: This can be done by intercepting the request using burpsuite. First let's navigate to the web page and see what happens if we try to grab the flag. It gives us an error message.
 
-<center><img src="/picoctf2019/images/nopicobrowser"></center>
+<center><img src="/picoctf2019/images/nopicobrowser.png"></center>
+<br>
+Now if we open burp, start our proxy, and turn intercept on, and then click the "Flag" button again. You should see a request similar to this.
+
+```
+GET /flag HTTP/1.1
+Host: 2019shell1.picoctf.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https://2019shell1.picoctf.com/problem/45071/flag
+Cookie: ga=GA1.2.2039358133.1567560624
+Connection: close
+Upgrade-Insecure-Requests: 1
+```
+Forward this request until you see one like this. The difference is the ```GET``` part of the second request is to a different file.
+```
+GET /problem/45071/flag HTTP/1.1
+Host: 2019shell1.picoctf.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https://2019shell1.picoctf.com/problem/45071/flag
+Cookie: ga=GA1.2.2039358133.1567560624
+Connection: close
+Upgrade-Insecure-Requests: 1
+```
+Now lastly, edit the ```User-Agent:``` to say ```picobrowser``` and then forward the request. This should give you the flag.
+
+<center><img src="/picoctf2019/images/picobrowserflag.png"
+<br>
+Flag:```picoCTF{p1c0_s3cr3t_ag3nt_b3785d03}```
 <br>
