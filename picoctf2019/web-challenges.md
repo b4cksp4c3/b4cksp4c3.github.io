@@ -106,3 +106,20 @@ A: Once again inspect the web page source code.
 There are a bunch of if statements with checkpass functions each containing part of the password that I labeled 1 through 8 that can reconstruct the flag.
 Flag:```picoCTF{no_clients_plz_eb956b}```
 <br>
+<center><h2>logon</h2></center>
+<br>
+Q: The factory is hiding things from all of its users. Can you login as logon and find what they've been looking at? https://2019shell1.picoctf.com/problem/21895/ (*[link](https://2019shell1.picoctf.com/problem/21895/)*) or http://2019shell1.picoctf.com:21895
+
+A: To get this flag we have to log in as admin. The problem is according to the hint the login doesnt check the password. If we try to login as admin with any password it logs in successfully but doesn't output the flag.
+
+<center><img src="/picoctf2019/images/admin.png"></center>
+<br>
+From here we can use the Cookie Editor firefox extension to edit the admin cookie. By changing the value from False to True its like telling the server we successfully logged in with the correct password
+
+<center><img src="/picoctf2019/images/cookie.png"></center>
+<br>
+Now refresh the page and you should get the flag
+
+<center><img src="picoctf2019/images/logonflag.png"></center>
+Flag:```picoCTF{th3_c0nsp1r4cy_l1v3s_3294afa0}```
+<br>
