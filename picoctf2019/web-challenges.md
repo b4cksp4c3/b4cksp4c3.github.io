@@ -45,6 +45,7 @@ A: You can find the flag in 3 parts by looking at the source code.
 </html>
 ```
 The first part is at the bottom of the page, ```picoCTF{tru3_d3```, the second part is in the ```mycss.css``` function at the bottom, ```t3ct1ve_0r_ju5t```. Last part is in the ```myjs.js``` function at the bottom, ```_lucky?9df7e69a}```.
+
 Flag:```picoCTF{tru3_d3t3ct1ve_0r_ju5t_lucky?1ce1e9f5}```
 <br>
 <center><h2>dont-use-client-side</h2></center>
@@ -104,6 +105,7 @@ A: Once again inspect the web page source code.
 </html>
 ```
 There are a bunch of if statements with checkpass functions each containing part of the password that I labeled 1 through 8 that can reconstruct the flag.
+
 Flag:```picoCTF{no_clients_plz_eb956b}```
 <br>
 <center><h2>logon</h2></center>
@@ -120,6 +122,6 @@ From here we can use the Cookie Editor firefox extension to edit the admin cooki
 <br>
 Now refresh the page and you should get the flag
 
-<center><img src="picoctf2019/images/logonflag.png"></center>
+<center><img src="/picoctf2019/images/logonflag.png"></center>
 Flag:```picoCTF{th3_c0nsp1r4cy_l1v3s_3294afa0}```
 <br>
