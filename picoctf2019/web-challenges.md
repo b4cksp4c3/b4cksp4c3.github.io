@@ -185,6 +185,15 @@ A: Just need to create two Cookies. One to make it look like we are Admin and th
 <center><img src="/picoctf2019/images/opentoadmintime.png"></center>
 <br>
 Refreshing the page will gives us the flag
+
 <center><img src="/picoctf2019/images/opentoadminflag.png"></center>
 Flag:```picoCTF{0p3n_t0_adm1n5_effb525e}```
+<br>
+<center><h2>picobrowser</h2></center>
+<br>
+Q: This website can be rendered only by picobrowser, go and catch the flag! https://2019shell1.picoctf.com/problem/45071/ (*[link](https://2019shell1.picoctf.com/problem/45071/)*) or http://2019shell1.picoctf.com:45071
+
+A: This can be done by intercepting the request using burpsuite. First let's navigate to the web page and see what happens if we try to grab the flag. It gives us an error message.
+
+<center><img src="/picoctf2019/images/nopicobrowser"></center>
 <br>
