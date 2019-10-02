@@ -152,3 +152,20 @@ Second, use the ```diff``` command to compare the files line by line and find th
 Lastly, open the file and compare the lines two at a time and find the differences between them. Eventually you should be able to construct a flag.
 Flag:```picoCTF{th3yr3_a5_d1ff3r3nt_4s_bu773r_4nd_j311y_aslkjfdsalkfslkflkjdsfdszmz10548}```
 <br>
+<center><h3>where-is-the-file</h3></center>
+<br>
+Q: I've used a super secret mind trick to hide this file. Maybe something lies in /problems/where-is-the-file_6_8eae99761e71a8a21d3b82ac6cf2a7d0.
+
+A: This question is very simple, the name of the question gives it away that the file is hidden. Run ```ls -la``` and you will see the file. then you can just ```cat``` it.
+```
+$ ls -la
+total 80
+drwxr-xr-x   2 root       root        4096 Sep 28 22:05 .
+drwxr-x--x 684 root       root       69632 Oct  1 23:20 ..
+-rw-rw-r--   1 hacksports hacksports    39 Sep 28 22:05 .cant_see_me
+
+$ cat .cant_see_me
+picoCTF{w3ll_that_d1dnt_w0RK_a88d16e4}
+```
+Flag:```picoCTF{w3ll_that_d1dnt_w0RK_a88d16e4}```
+<br>
