@@ -316,6 +316,7 @@ Flag:```frequency_is_c_over_lambda_vlnhnasstm```
 Q: n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
 
 A: Using the following python scripts below we can get the flag, just make sure to replace my n,e,c values with yours
+
 <strong>rsa_2.py</strong>
 ```
 #!/usr/bin/env python
