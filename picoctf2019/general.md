@@ -175,7 +175,7 @@ Q: There's a flag shop selling stuff, can you buy a flag? *[Source](/picoctf2019
 
 Hint: Two's compliment can do some weird things when numbers get really big!
 
-A: Reading the hint pretty much gives the answer. It tells us that there is an integer overflow in the second option of the program. Taking this information we can easily get the flag by entering ten 1's into the second option.
+A: Reading the hint pretty much gives the answer. It tells us that there is an integer overflow in the second option of the program. Taking this information we can easily get the flag by entering ten 1's into the second option causing an integer overflow giving us the amount of money we need to buy the flag.
 ```
 # nc 2019shell1.picoctf.com 3967
 Welcome to the flag exchange
