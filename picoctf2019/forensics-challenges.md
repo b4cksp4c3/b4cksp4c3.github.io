@@ -42,7 +42,7 @@ Q: Theres something in the *[building](/picoctf2019/images/buildings.png)*. Can 
 
 A: We can get the flag by decoding the images using *[this](https://stylesuxx.github.io/steganography/)* website.
 
-<center><img src="/picoctf2019/image/whatlieswithinflag"></center>
+<center><img src="/picoctf2019/image/whatlieswithinflag.png"></center>
 <br>
 Flag:```picoCTF{h1d1ng_1n_th3_b1t5}```
 <br>
