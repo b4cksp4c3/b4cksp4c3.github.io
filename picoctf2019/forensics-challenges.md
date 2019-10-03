@@ -25,3 +25,24 @@ Archive:  flag.zip
 <br>
 Flag:```picoCTF{unz1pp1ng-1s-3a5y}```
 <br>
+<center><h2>So Meta [150]</h2></center>
+<br>
+Q: Find the flag in this *[picture](/picoctf2019/images/pico_img.png)*. You can also find the file in /problems/so-meta_2_da856426d694a4f0637bf1b169d8524e.
+
+A: Using ```Exiftool``` we can get the flag easily.
+```
+# exiftool pico_img.png | grep picoCTF
+Artist                          : picoCTF{s0_m3ta_3d6ced35}
+```
+Flag:```picoCTF{s0_m3ta_3d6ced35}```
+<br>
+<center><h2>What Lies Within [150]</h2></center>
+<br>
+Q: Theres something in the *[building](/picoctf2019/images/buildings.png)*. Can you retrieve the flag?
+
+A: We can get the flag by decoding the images using *[this](https://stylesuxx.github.io/steganography/)* website.
+
+<center><img src="/picoctf2019/image/whatlieswithinflag"></center>
+<br>
+Flag:```picoCTF{h1d1ng_1n_th3_b1t5}```
+<br>
