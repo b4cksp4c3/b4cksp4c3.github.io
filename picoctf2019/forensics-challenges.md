@@ -46,3 +46,19 @@ A: We can get the flag by decoding the images using *[this](https://stylesuxx.gi
 <br>
 Flag:```picoCTF{h1d1ng_1n_th3_b1t5}```
 <br>
+<center><h2> extensions [150]</h2></center>
+<br>
+Q: This is a really weird text file *[TXT](/picoctf2019/files/flag.txt)*? Can you find the flag?
+
+A: Using the ```file``` command we can see that the file is not a ```txt``` file but instead a ```png``` file. By changing the extension to ```.png``` we can look at the picture a read the flag.
+```
+# file flag.txt
+flag.txt: PNG image data, 1697 x 608, 8-bit/color RGB, non-interlaced
+
+# mv flag.txt flag.png
+```
+
+<center><img src="/picoctf2019/images/extensionsflag.png"></center>
+<br>
+Flag:```picoCTF{now_you_know_about_extensions}```
+<br>
