@@ -230,3 +230,17 @@ Now lastly, edit the ```User-Agent:``` to say ```picobrowser``` and then forward
 <br>
 Flag:```picoCTF{p1c0_s3cr3t_ag3nt_b3785d03}```
 <br>
+<center><h2>Irish-Name-Repo 1</h2></center>
+<br>
+Q: There is a website running at https://2019shell1.picoctf.com/problem/27383/ (*[link](https://2019shell1.picoctf.com/problem/27383/)*) or http://2019shell1.picoctf.com:27383. Do you think you can log us in? Try to see if you can login!
+
+A: Navigating around the web page we will find a login page. Doing a simple SQL injection by entering ```admin' or '1'='1``` as the username and anything as the password will reveal the flag
+
+<center><img src="/picoctf2019/images/irish1login.png"></center>
+<br>
+<center><img src="/picoctf2019/images/irish1flag.png"></center>
+<br>
+Flag:```picoCTF{s0m3_SQL_1fe77718}```
+<br><br>
+<center><h1>More Coming Soon...</h1></center>
+<br><br>
