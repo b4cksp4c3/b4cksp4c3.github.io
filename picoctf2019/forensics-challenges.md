@@ -62,3 +62,13 @@ flag.txt: PNG image data, 1697 x 608, 8-bit/color RGB, non-interlaced
 <br>
 Flag:```picoCTF{now_you_know_about_extensions}```
 <br>
+<center><h2>shark on wire 1 [150]</h2></center>
+<br>
+Q: We found this *[packet capture](/picoctf2019/files/capture.pcap)*. Recover the flag. You can also find the file in /problems/shark-on-wire-1_0_13d709ec13952807e477ba1b5404e620.
+
+A: By setting an ip filter for ```10.0.0.12``` there will be 27 packets left, each containing 1 letter of the flag.
+
+<center><img src="/picoctf2019/images/sharkonthewire1.png"></center>
+
+Flag:```picoCTF{StaT31355_636f6e6e}```
+<br>
