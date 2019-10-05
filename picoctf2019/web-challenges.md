@@ -1,10 +1,10 @@
 <center><h1>Web</h1></center>
 <br>
-<center><h2>Insp3ct0r [50]</h2></center>
+<center><h1>Insp3ct0r [50]</h1></center>
 <br>
-Q: Kishor Balan tipped us off that the following code may need inspection: https://2019shell1.picoctf.com/problem/11196/ (*[link](https://2019shell1.picoctf.com/problem/11196/)*) or http://2019shell1.picoctf.com:11196
+<h2>Question</h2><br />Kishor Balan tipped us off that the following code may need inspection: https://2019shell1.picoctf.com/problem/11196/ (*[link](https://2019shell1.picoctf.com/problem/11196/)*) or http://2019shell1.picoctf.com:11196
 
-A: You can find the flag in 3 parts by looking at the source code.  
+<h2>Answer</h2><br />You can find the flag in 3 parts by looking at the source code.  
 ```
 <!doctype html>
 <html>
@@ -48,11 +48,11 @@ The first part is at the bottom of the page, ```picoCTF{tru3_d3```, the second p
 
 Flag:```picoCTF{tru3_d3t3ct1ve_0r_ju5t_lucky?1ce1e9f5}```
 <br>
-<center><h2>dont-use-client-side [100]</h2></center>
+<center><h1>dont-use-client-side [100]</h1></center>
 <br>
-Q: Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/32259/ (*[link](https://2019shell1.picoctf.com/problem/32259/)*) or http://2019shell1.picoctf.com:32259
+<h2>Question</h2><br />Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/32259/ (*[link](https://2019shell1.picoctf.com/problem/32259/)*) or http://2019shell1.picoctf.com:32259
 
-A: Once again inspect the web page source code.
+<h2>Answer</h2><br />Once again inspect the web page source code.
 ```
 <html>
 <head>
@@ -108,11 +108,11 @@ There are a bunch of if statements with checkpass functions each containing part
 
 Flag:```picoCTF{no_clients_plz_eb956b}```
 <br>
-<center><h2>logon [100]</h2></center>
+<center><h1>logon [100]</h1></center>
 <br>
-Q: The factory is hiding things from all of its users. Can you login as logon and find what they've been looking at? https://2019shell1.picoctf.com/problem/21895/ (*[link](https://2019shell1.picoctf.com/problem/21895/)*) or http://2019shell1.picoctf.com:21895
+<h2>Question</h2><br />The factory is hiding things from all of its users. Can you login as logon and find what they've been looking at? https://2019shell1.picoctf.com/problem/21895/ (*[link](https://2019shell1.picoctf.com/problem/21895/)*) or http://2019shell1.picoctf.com:21895
 
-A: To get this flag we have to log in as admin. The problem is according to the hint the login doesnt check the password. If we try to login as admin with any password it logs in successfully but doesn't output the flag.
+<h2>Answer</h2><br />To get this flag we have to log in as admin. The problem is according to the hint the login doesnt check the password. If we try to login as admin with any password it logs in successfully but doesn't output the flag.
 
 <center><img src="/picoctf2019/images/admin.png"></center>
 <br>
@@ -125,11 +125,11 @@ Now refresh the page and you should get the flag
 <center><img src="/picoctf2019/images/logonflag.png"></center>
 Flag:```picoCTF{th3_c0nsp1r4cy_l1v3s_3294afa0}```
 <br>
-<center><h2>where are the robots [100]</h2></center>
+<center><h1>where are the robots [100]</h1></center>
 <br>
-Q: Can you find the robots? https://2019shell1.picoctf.com/problem/12267/ (*[link](https://2019shell1.picoctf.com/problem/12267/)*) or http://2019shell1.picoctf.com:12267
+<h2>Question</h2><br />Can you find the robots? https://2019shell1.picoctf.com/problem/12267/ (*[link](https://2019shell1.picoctf.com/problem/12267/)*) or http://2019shell1.picoctf.com:12267
 
-A: If you know anything about web development then you should know about the ```robots.txt``` file. The name of the problem and link in the problem both hint to the file as well. So visiting the page we see it mentions another web page
+<h2>Answer</h2><br />If you know anything about web development then you should know about the ```robots.txt``` file. The name of the problem and link in the problem both hint to the file as well. So visiting the page we see it mentions another web page
 
 <center><img src="/picoctf2019/images/robots.png"></center>
 <br>
@@ -138,11 +138,11 @@ Navigating to the ```/713d3.html``` web page reveals the flag
 <center><img src="/picoctf2019/images/robotsflag.png"></center>
 Flag:```picoCTF{ca1cu1at1ng_Mach1n3s_713d3}```
 <br>
-<center><h2>Client-side-again [200]</h2></center>
+<center><h1>Client-side-again [200]</h1></center>
 <br>
-Q: Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/21886/ (*[link](https://2019shell1.picoctf.com/problem/21886/)*) or http://2019shell1.picoctf.com:21886
+<h2>Question</h2><br />Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/21886/ (*[link](https://2019shell1.picoctf.com/problem/21886/)*) or http://2019shell1.picoctf.com:21886
 
-A: We can construct the flag by looking at the source code of the web page again
+<h2>Answer</h2><br />We can construct the flag by looking at the source code of the web page again
 ```
 <html>
    <head>
@@ -172,11 +172,11 @@ If you look specifically at the this javascript ```var _0x5a46=['9f266}','_again
 
 Flag:```picoCTF{not_this_again_19f266}```
 <br>
-<center><h2>Open-to-admins [200]</h2></center>
+<center><h1>Open-to-admins [200]</h1></center>
 <br>
-Q: This secure website allows users to access the flag only if they are admin and if the time is exactly 1400. https://2019shell1.picoctf.com/problem/49858/ (*[link](https://2019shell1.picoctf.com/problem/49858/)*) or http://2019shell1.picoctf.com:49858
+<h2>Question</h2><br />This secure website allows users to access the flag only if they are admin and if the time is exactly 1400. https://2019shell1.picoctf.com/problem/49858/ (*[link](https://2019shell1.picoctf.com/problem/49858/)*) or http://2019shell1.picoctf.com:49858
 
-A: Just need to create two Cookies. One to make it look like we are Admin and the other to make it look like the time is exactly 1400.
+<h2>Answer</h2><br />Just need to create two Cookies. One to make it look like we are Admin and the other to make it look like the time is exactly 1400.
 
 ```Admin Cookie```
 <center><img src="/picoctf2019/images/opentoadmincookie.png"></center>
@@ -189,11 +189,11 @@ Refreshing the page will gives us the flag
 <center><img src="/picoctf2019/images/opentoadminflag.png"></center>
 Flag:```picoCTF{0p3n_t0_adm1n5_effb525e}```
 <br>
-<center><h2>picobrowser [200]</h2></center>
+<center><h1>picobrowser [200]</h1></center>
 <br>
-Q: This website can be rendered only by picobrowser, go and catch the flag! https://2019shell1.picoctf.com/problem/45071/ (*[link](https://2019shell1.picoctf.com/problem/45071/)*) or http://2019shell1.picoctf.com:45071
+<h2>Question</h2><br />This website can be rendered only by picobrowser, go and catch the flag! https://2019shell1.picoctf.com/problem/45071/ (*[link](https://2019shell1.picoctf.com/problem/45071/)*) or http://2019shell1.picoctf.com:45071
 
-A: This can be done by intercepting the request using burpsuite. First let's navigate to the web page and see what happens if we try to grab the flag. It gives us an error message.
+<h2>Answer</h2><br />This can be done by intercepting the request using burpsuite. First let's navigate to the web page and see what happens if we try to grab the flag. It gives us an error message.
 
 <center><img src="/picoctf2019/images/nopicobrowser.png"></center>
 <br>
@@ -230,11 +230,11 @@ Now lastly, edit the ```User-Agent:``` to say ```picobrowser``` and then forward
 <br>
 Flag:```picoCTF{p1c0_s3cr3t_ag3nt_b3785d03}```
 <br>
-<center><h2>Irish-Name-Repo 1 [300]</h2></center>
+<center><h1>Irish-Name-Repo 1 [300]</h1></center>
 <br>
-Q: There is a website running at https://2019shell1.picoctf.com/problem/27383/ (*[link](https://2019shell1.picoctf.com/problem/27383/)*) or http://2019shell1.picoctf.com:27383. Do you think you can log us in? Try to see if you can login!
+<h2>Question</h2><br />There is a website running at https://2019shell1.picoctf.com/problem/27383/ (*[link](https://2019shell1.picoctf.com/problem/27383/)*) or http://2019shell1.picoctf.com:27383. Do you think you can log us in? Try to see if you can login!
 
-A: Navigating around the web page we will find a login page. Doing a simple SQL injection by entering ```admin' or '1'='1``` as the username and anything as the password will reveal the flag
+<h2>Answer</h2><br />Navigating around the web page we will find a login page. Doing a simple SQL injection by entering ```admin' or '1'='1``` as the username and anything as the password will reveal the flag
 
 <center><img src="/picoctf2019/images/irish1login.png"></center>
 <br>
