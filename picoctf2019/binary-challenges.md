@@ -2,9 +2,9 @@
 <br><br>
 <center><h1>handy-shellcode [50]</h1></center>>
 <br>
-<h2>Question</h2><br /> This *[program](/picoctf2019/files/handyShellcodeVuln)* executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5 on the shell server. *[Source](/picoctf2019/files/handyShellcodeVuln.c)*.
+<h2>Question</h2> This *[program](/picoctf2019/files/handyShellcodeVuln)* executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5 on the shell server. *[Source](/picoctf2019/files/handyShellcodeVuln.c)*.
 
-<h2>Answer</h2><br />It tells us exactly what to do. Easiest way to spawn a shell would be to use pwn tools with python. Log into the shell server and navigate to ```/problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5``` which is where the ```vuln``` binary and ```flag.txt``` are stored. Here we are going to spawn our shell. Using the 4 lines of python code below we are able to grab the flag.
+<h2>Answer</h2>It tells us exactly what to do. Easiest way to spawn a shell would be to use pwn tools with python. Log into the shell server and navigate to ```/problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5``` which is where the ```vuln``` binary and ```flag.txt``` are stored. Here we are going to spawn our shell. Using the 4 lines of python code below we are able to grab the flag.
 ```
 # cd /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5
 /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5$ python
@@ -27,9 +27,9 @@ Flag:```picoCTF{h4ndY_d4ndY_sh311c0d3_2cb0ff39}```
 <br>
 <center><h1>practice-run-1 [50]</h1></center>>
 <br>
-<h2>Question</h2><br /> You're going to need to know how to run programs if you're going to get out of here. Navigate to /problems/practice-run-1_0_62b61488e896645ebff9b6c97d0e775e on the shell server and run this *[program](/picoctf2019/files/run_this)* to receive a flag.
+<h2>Question</h2> You're going to need to know how to run programs if you're going to get out of here. Navigate to /problems/practice-run-1_0_62b61488e896645ebff9b6c97d0e775e on the shell server and run this *[program](/picoctf2019/files/run_this)* to receive a flag.
 
-<h2>Answer</h2><br />Two ways to do this.
+<h2>Answer</h2>Two ways to do this.
 1. Navigate to ```/problems/practice-run-1_0_62b61488e896645ebff9b6c97d0e775e``` and execute the program
 ```
 # ./run_this
@@ -45,9 +45,9 @@ Flag:```picoCTF{g3t_r3adY_2_r3v3r53}```
 <br>
 <center><h1>Overflow 0 [100]</h1></center>>
 <br>
-<h2>Question</h2><br /> This should be easy. Overflow the correct buffer in this *[program](/picoctf2019/files/overflow0Vuln)* and get a flag. Its also found in /problems/overflow-0_3_dc6e55b8358f1c82f03ddd018a5549e0 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
+<h2>Question</h2> This should be easy. Overflow the correct buffer in this *[program](/picoctf2019/files/overflow0Vuln)* and get a flag. Its also found in /problems/overflow-0_3_dc6e55b8358f1c82f03ddd018a5549e0 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
 
-<h2>Answer</h2><br />So this problem is actually very basic buffer overflow. Looking at the code we see that in the ```vuln``` function the ```buf``` variable was given 128 bytes of memory.
+<h2>Answer</h2>So this problem is actually very basic buffer overflow. Looking at the code we see that in the ```vuln``` function the ```buf``` variable was given 128 bytes of memory.
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -101,9 +101,9 @@ Flag:```picoCTF{3asY_P3a5y1fcf81f9}```
 <br>
 <center><h1>Overflow 1 [150]</h1></center>>
 <br>
-<h2>Question</h2><br /> You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this *[program](/picoctf2019/files/overflow1Vuln)*? You can find it in /problems/overflow-1_0_48b13c56d349b367a4d45d7d1aa31780 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
+<h2>Question</h2> You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this *[program](/picoctf2019/files/overflow1Vuln)*? You can find it in /problems/overflow-1_0_48b13c56d349b367a4d45d7d1aa31780 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
 
-<h2>Answer</h2><br />So this problem required a little bit more work. So the question tells us that we have to change the return address to the flag function. Taking a look at the source code we do indeed see a flag function that reeds the ```flag.txt``` file.
+<h2>Answer</h2>So this problem required a little bit more work. So the question tells us that we have to change the return address to the flag function. Taking a look at the source code we do indeed see a flag function that reeds the ```flag.txt``` file.
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -197,9 +197,9 @@ Flag:```picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}```
 <br>
 <center><h1>OverFlow 2 [250]</h1></center>>
 <br>
-<h2>Question</h2><br /> This *[program](/picoctf2019/files/overflow2Vuln)* is a little bit more tricky. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/slippery-shellcode_3_68613021756bf004b625d7b414243cd8 on the shell server. *[Source}(overflow2Vuln.c)*.
+<h2>Question</h2> This *[program](/picoctf2019/files/overflow2Vuln)* is a little bit more tricky. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/slippery-shellcode_3_68613021756bf004b625d7b414243cd8 on the shell server. *[Source}(overflow2Vuln.c)*.
 
-<h2>Answer</h2><br />This problem is similar to Overflow 1 where we need to take the address of the ```flag``` function and overwrite the original return address with the ```flag``` function. Lets take a look at the source code.
+<h2>Answer</h2>This problem is similar to Overflow 1 where we need to take the address of the ```flag``` function and overwrite the original return address with the ```flag``` function. Lets take a look at the source code.
 ```
 #include <stdio.h>
 #include <stdlib.h>
