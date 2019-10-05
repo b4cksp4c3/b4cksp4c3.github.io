@@ -1,29 +1,29 @@
 <center><h1>Cryptography</h1></center>
 <br><br>
-<center><h2>The Numbers [50]</h2></center>
+<center><h1>The Numbers [50]</h1></center>
 <br>
-Q: The *[numbers](/picoctf2019/files/the_numbers.png)*... what do they mean?
+<h2>Question</h2><br />The *[numbers](/picoctf2019/files/the_numbers.png)*... what do they mean?
 
-A: Pretty obvious to see that each number corresponds to the letter of the alphabet. Slowly but surely you should get a flag.
+<h2>Answer</h2><br />Pretty obvious to see that each number corresponds to the letter of the alphabet. Slowly but surely you should get a flag.
 
 Flag:```PICOCTF{THENUMBERSMASON}```
 <br>
-<center><h2>13 [100]</h2></center>picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
+<center><h1>13 [100]</h1></center>picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
 <br>
-Q: Cryptography can be easy, do you know what ROT13 is? ```cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}```
+<h2>Question</h2><br />Cryptography can be easy, do you know what ROT13 is? ```cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}```
 
-A: So a ROT 13. This can be done by hand, a website, or from the terminal. I will use the terminal
+<h2>Answer</h2><br />So a ROT 13. This can be done by hand, a website, or from the terminal. I will use the terminal
 ```
 # echo "cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}" | tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
 picoCTF{not_too_bad_of_a_problem}
 ```
 Flag:```picoCTF{not_too_bad_of_a_problem}```
 <br>
-<center><h2>Easy1 [100]</h2></center>
+<center><h1>Easy1 [100]</h1></center>
 <br>
-Q: The one time pad can be cryptographically secure, but not when you know the key. Can you solve this? We've given you the encrypted flag, key, and a table to help ```UFJKXQZQUNB``` with the key of ```SOLVECRYPTO```. Can you use this table to solve it?
+<h2>Question</h2><br />The one time pad can be cryptographically secure, but not when you know the key. Can you solve this? We've given you the encrypted flag, key, and a table to help ```UFJKXQZQUNB``` with the key of ```SOLVECRYPTO```. Can you use this table to solve it?
 
-A. Using the table below we can decode the message and get the flag
+<h2>Answer</h2><br />Using the table below we can decode the message and get the flag
 ```
     A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
   +----------------------------------------------------
@@ -56,31 +56,31 @@ Z | Z A B C D E F G H I J K L M N O P Q R S T U V W X Y
 ```
 Flag:```picoCTF{CRYPTOISFUN}```
 <br>
-<center><h2>caesar [100]</h2></center>
+<center><h1>caesar [100]</h1></center>
 <br>
-Q: Decrypt this message. You can find the ciphertext in /problems/caesar_3_33108a6b0f87eb4b3606437d06290815 on the shell server.
+<h2>Question</h2><br />Decrypt this message. You can find the ciphertext in /problems/caesar_3_33108a6b0f87eb4b3606437d06290815 on the shell server.
 
 Message: ```picoCTF{ynkooejcpdanqxeykjrubvtagp}```
 
-A: You can use *[this](https://cryptii.com/pipes/caesar-cipher)* website to decrypt the flag.
+<h2>Answer</h2><br />You can use *[this](https://cryptii.com/pipes/caesar-cipher)* website to decrypt the flag.
 
 Flag:```picoCTF{crossingtherubiconykwljqec}```
 <br>
-<center><h2>Flags</h2></center>
+<center><h1>Flags</h1></center>
 <br>
-Q: What do the *[flags](/picoctf2019/files/flags.png)* mean?
+<h2>Question</h2><br />What do the *[flags](/picoctf2019/files/flags.png)* mean?
 
-A: The flags are from the International Code of Signals. Match each to flag and banner to each other and get the flag.
+<h2>Answer</h2><br />The flags are from the International Code of Signals. Match each to flag and banner to each other and get the flag.
 
 Flag:```PICOCTF{F1AG5AND5TUFF}```
 <br>
-<center><h2>Mr-Worldwide [200]</h2></center>
+<center><h1>Mr-Worldwide [200]</h1></center>
 <br>
-Q: A musician left us a message. What's it mean?
+<h2>Question</h2><br />A musician left us a message. What's it mean?
 
 Message: ```picoCTF{(35.028309, 135.753082)(46.469391, 30.740883)(39.758949, -84.191605)(41.015137, 28.979530)(24.466667, 54.366669)(3.140853, 101.693207)_(9.005401, 38.763611)(-3.989038, -79.203560)(52.377956, 4.897070)(41.085651, -73.858467)(57.790001, -152.407227)(31.205753, 29.924526)}```
 
-A: Each combination of numbers correspond to coordinates around the world. You have to take the first letter of each city to create the flag.
+<h2>Answer</h2><br />Each combination of numbers correspond to coordinates around the world. You have to take the first letter of each city to create the flag.
 ```
 (35.028309, 135.753082)-->Kamigyo Ward, Kyoto
 (46.469391, 30.740883)-->Odesa, Odessa Province, Ukraine
@@ -98,17 +98,17 @@ _
 ```
 Flag:```PICOCTF{KODIAK_ALASKA}```
 <br>
-<center><h2>Tapping [200]</h2></center>
+<center><h1>Tapping [200]</h1></center>
 <br>
-Q: Theres tapping coming in from the wires. What's it saying ```nc 2019shell1.picoctf.com 37920```.
+<h2>Question</h2><br />Theres tapping coming in from the wires. What's it saying ```nc 2019shell1.picoctf.com 37920```.
 
-A: Connecting to the server with give us some morse code which we can decode using *[this](http://www.unit-conversion.info/texttools/morse-code/)*. According to the hint the flag is in all caps.
+<h2>Answer</h2><br />Connecting to the server with give us some morse code which we can decode using *[this](http://www.unit-conversion.info/texttools/morse-code/)*. According to the hint the flag is in all caps.
 
 Flag:```PICOCTF{M0RS3C0D31SFUN583900981}```
 <br>
-<center><h2>la cifra de [200]</h2></center>
+<center><h1>la cifra de [200]</h1></center>
 <br>
-Q: I found this cipher in an old book. Can you figure out what it says? Connect with ```nc 2019shell1.picoctf.com 1172```.
+<h2>Question</h2><br />I found this cipher in an old book. Can you figure out what it says? Connect with ```nc 2019shell1.picoctf.com 1172```.
 
 Connecting to the server we are given an encrypted message.
 ```
@@ -146,11 +146,11 @@ dent.
 ```
 Flag:```picoCTF{b311a50_0r_v1gn3r3_c1ph3raac148e7}```
 <br>
-<center><h2>rsa-pop-quiz [200]</h2></center>
+<center><h1>rsa-pop-quiz [200]</h1></center>
 <br>
-Q: Class, take your seats! It's PRIME-time for a quiz... ```nc 2019shell1.picoctf.com 48028```
+<h2>Question</h2><br />Class, take your seats! It's PRIME-time for a quiz... ```nc 2019shell1.picoctf.com 48028```
 
-A: Using the following python script we can get the flag.
+<h2>Answer</h2><br />Using the following python script we can get the flag.
 ```
 #!/usr/bin/env python
 
@@ -189,7 +189,7 @@ p = int(q2[-5].split(' : ')[1])
 n = int(q2[-4].split(' : ')[1])
 
 sh.sendline('y')
-sh.sendlineafter('q: ', str(n/p))
+sh.sendlineafter('<h2>Question</h2><br />', str(n/p))
 
 print 'question 2 done'
 
@@ -280,11 +280,11 @@ flag: picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}
 ```
 Flag:```picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}```
 <br>
-<center><h2>miniRSA [300]</h2></center>
+<center><h1>miniRSA [300]</h1></center>
 <br>
-Q: Lets decrypt this: *[ciphertext?](/picoctf2019/files/ciphertext)* Something seems a bit small
+<h2>Question</h2><br />Lets decrypt this: *[ciphertext?](/picoctf2019/files/ciphertext)* Something seems a bit small
 
-A. Using the following python script we can get the flag.
+<h2>Answer</h2><br />Using the following python script we can get the flag.
 ```
 #!/usr/bin/python
 
@@ -303,25 +303,25 @@ picoCTF{n33d_a_lArg3r_e_0a41ef50}
 ```
 Flag:```picoCTF{n33d_a_lArg3r_e_0a41ef50}```
 <br>
-<center><h2>waves over lambda [300]</h2></center>
+<center><h1>waves over lambda [300]</h1></center>
 <br>
-Q: We made alot of substitutions to encrypt this. Can you decrypt it? Connect with ```nc 2019shell1.picoctf.com 21903```.
+<h2>Question</h2><br />We made alot of substitutions to encrypt this. Can you decrypt it? Connect with ```nc 2019shell1.picoctf.com 21903```.
 
-A: When we connect we are given some ciphertext. Using *[quip quip](https://www.quipqiup.com/)* we can decrypt the cipher and get the flag.
+<h2>Answer</h2><br />When we connect we are given some ciphertext. Using *[quip quip](https://www.quipqiup.com/)* we can decrypt the cipher and get the flag.
 
 Flag:```frequency_is_c_over_lambda_vlnhnasstm```
 <br>
-<center><h2>AES-ABC[400]</h2></center>
+<center><h1>AES-ABC[400]</h1></center>
 <br>
 Q:AES-ECB is bad, so I rolled my own cipher block chaining mechanism - Addition Block Chaining! You can find the source here: *[aes-abc.py](/picoctf2019/files/aes-abc.py)*. The AES-ABC flag is *[body.enc.ppm](/picoctf2019/files/body.enc.ppm)*
 
-A: Coming Soon...
+<h2>Answer</h2><br />Coming Soon...
 <br><br>
-<center><h2>b00tl3gRSA2 [400]</h2></center>
+<center><h1>b00tl3gRSA2 [400]</h1></center>
 <br>
-Q: n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
+<h2>Question</h2><br />n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
 
-A: Using the following python scripts below we can get the flag, just make sure to replace my n,e,c values with yours
+<h2>Answer</h2><br />Using the following python scripts below we can get the flag, just make sure to replace my n,e,c values with yours
 
 <strong>rsa_2.py</strong>
 ```
@@ -402,13 +402,13 @@ picoCTF{bad_1d3a5_9093280}
 ```
 Flag:```picoCTF{bad_1d3a5_9093280}```
 <br>
-<center><h2>b00tl3gRSA3 [450]</h2></center>
+<center><h1>b00tl3gRSA3 [450]</h1></center>
 <br>
-Q: Why use p and q when I can use more? Connect with ```nc 2019shell1.picoctf.com 49851```.
+<h2>Question</h2><br />Why use p and q when I can use more? Connect with ```nc 2019shell1.picoctf.com 49851```.
 
 Hint: There's more prime factors than p and q, finding d is going to be different.
 
-A: Using the hint we know that we need to find all the prime factors of n. To do this first connect with ```nc``` to get our values. Then we can use *[this website](https://www.alpertron.com.ar/ECM.HTM)* to factor n. It will also give you the sum of divisors and Euler's totient. We want Euler's totient. Next, take your values and put them into the following python script which is a modified version of code from stack stackoverflow and it should output the flag.
+<h2>Answer</h2><br />Using the hint we know that we need to find all the prime factors of n. To do this first connect with ```nc``` to get our values. Then we can use *[this website](https://www.alpertron.com.ar/ECM.HTM)* to factor n. It will also give you the sum of divisors and Euler's totient. We want Euler's totient. Next, take your values and put them into the following python script which is a modified version of code from stack stackoverflow and it should output the flag.
 ```
 from pwn import *
 
@@ -455,14 +455,14 @@ flag: picoCTF{too_many_fact0rs_6566973}
 ```
 Flag:```picoCTF{too_many_fact0rs_6566973}```
 <br>
-<center><h2>john_pollard [500]</h2></center>
+<center><h1>john_pollard [500]</h1></center>
 <br>
-Q: Sometimes *[RSA](/picoctf2019/files/cert)* certificates are breakable.
+<h2>Question</h2><br />Sometimes *[RSA](/picoctf2019/files/cert)* certificates are breakable.
 
 Hints: The flag is in the format picoCTF{p,q}
        Try swapping p and q if it does not work
 
-A: The hints tell us that the flag is in the form ```picoCTF{p,q}``` which means we need to get the modulus from the certificate and then calculate p and q from the modulus. First lets convert the certificate to cleartext so we can read all the information.
+<h2>Answer</h2><br />The hints tell us that the flag is in the form ```picoCTF{p,q}``` which means we need to get the modulus from the certificate and then calculate p and q from the modulus. First lets convert the certificate to cleartext so we can read all the information.
 ```
 # openssl x509 -in cert -text -noout
 Certificate:
