@@ -1,6 +1,6 @@
 <center><h1>Web</h1></center>
 <br>
-<center><h2>Insp3ct0r</h2></center>
+<center><h2>Insp3ct0r [50]</h2></center>
 <br>
 Q: Kishor Balan tipped us off that the following code may need inspection: https://2019shell1.picoctf.com/problem/11196/ (*[link](https://2019shell1.picoctf.com/problem/11196/)*) or http://2019shell1.picoctf.com:11196
 
@@ -48,7 +48,7 @@ The first part is at the bottom of the page, ```picoCTF{tru3_d3```, the second p
 
 Flag:```picoCTF{tru3_d3t3ct1ve_0r_ju5t_lucky?1ce1e9f5}```
 <br>
-<center><h2>dont-use-client-side</h2></center>
+<center><h2>dont-use-client-side [100]</h2></center>
 <br>
 Q: Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/32259/ (*[link](https://2019shell1.picoctf.com/problem/32259/)*) or http://2019shell1.picoctf.com:32259
 
@@ -108,7 +108,7 @@ There are a bunch of if statements with checkpass functions each containing part
 
 Flag:```picoCTF{no_clients_plz_eb956b}```
 <br>
-<center><h2>logon</h2></center>
+<center><h2>logon [100]</h2></center>
 <br>
 Q: The factory is hiding things from all of its users. Can you login as logon and find what they've been looking at? https://2019shell1.picoctf.com/problem/21895/ (*[link](https://2019shell1.picoctf.com/problem/21895/)*) or http://2019shell1.picoctf.com:21895
 
@@ -125,7 +125,7 @@ Now refresh the page and you should get the flag
 <center><img src="/picoctf2019/images/logonflag.png"></center>
 Flag:```picoCTF{th3_c0nsp1r4cy_l1v3s_3294afa0}```
 <br>
-<center><h2>where are the robots</h2></center>
+<center><h2>where are the robots [100]</h2></center>
 <br>
 Q: Can you find the robots? https://2019shell1.picoctf.com/problem/12267/ (*[link](https://2019shell1.picoctf.com/problem/12267/)*) or http://2019shell1.picoctf.com:12267
 
@@ -138,7 +138,7 @@ Navigating to the ```/713d3.html``` web page reveals the flag
 <center><img src="/picoctf2019/images/robotsflag.png"></center>
 Flag:```picoCTF{ca1cu1at1ng_Mach1n3s_713d3}```
 <br>
-<center><h2>Client-side-again</h2></center>
+<center><h2>Client-side-again [200]</h2></center>
 <br>
 Q: Can you break into this super secure portal? https://2019shell1.picoctf.com/problem/21886/ (*[link](https://2019shell1.picoctf.com/problem/21886/)*) or http://2019shell1.picoctf.com:21886
 
@@ -172,7 +172,7 @@ If you look specifically at the this javascript ```var _0x5a46=['9f266}','_again
 
 Flag:```picoCTF{not_this_again_19f266}```
 <br>
-<center><h2>Open-to-admins</h2></center>
+<center><h2>Open-to-admins [200]</h2></center>
 <br>
 Q: This secure website allows users to access the flag only if they are admin and if the time is exactly 1400. https://2019shell1.picoctf.com/problem/49858/ (*[link](https://2019shell1.picoctf.com/problem/49858/)*) or http://2019shell1.picoctf.com:49858
 
@@ -189,7 +189,7 @@ Refreshing the page will gives us the flag
 <center><img src="/picoctf2019/images/opentoadminflag.png"></center>
 Flag:```picoCTF{0p3n_t0_adm1n5_effb525e}```
 <br>
-<center><h2>picobrowser</h2></center>
+<center><h2>picobrowser [200]</h2></center>
 <br>
 Q: This website can be rendered only by picobrowser, go and catch the flag! https://2019shell1.picoctf.com/problem/45071/ (*[link](https://2019shell1.picoctf.com/problem/45071/)*) or http://2019shell1.picoctf.com:45071
 
@@ -230,7 +230,7 @@ Now lastly, edit the ```User-Agent:``` to say ```picobrowser``` and then forward
 <br>
 Flag:```picoCTF{p1c0_s3cr3t_ag3nt_b3785d03}```
 <br>
-<center><h2>Irish-Name-Repo 1</h2></center>
+<center><h2>Irish-Name-Repo 1 [300]</h2></center>
 <br>
 Q: There is a website running at https://2019shell1.picoctf.com/problem/27383/ (*[link](https://2019shell1.picoctf.com/problem/27383/)*) or http://2019shell1.picoctf.com:27383. Do you think you can log us in? Try to see if you can login!
 

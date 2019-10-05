@@ -1,6 +1,6 @@
 <center><h1>Cryptography</h1></center>
 <br><br>
-<center><h2>The Numbers</h2></center>
+<center><h2>The Numbers [50]</h2></center>
 <br>
 Q: The *[numbers](/picoctf2019/files/the_numbers.png)*... what do they mean?
 
@@ -8,7 +8,7 @@ A: Pretty obvious to see that each number corresponds to the letter of the alpha
 
 Flag:```PICOCTF{THENUMBERSMASON}```
 <br>
-<center><h2>13</h2></center>
+<center><h2>13 [100]</h2></center>picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
 <br>
 Q: Cryptography can be easy, do you know what ROT13 is? ```cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}```
 
@@ -19,7 +19,7 @@ picoCTF{not_too_bad_of_a_problem}
 ```
 Flag:```picoCTF{not_too_bad_of_a_problem}```
 <br>
-<center><h2>Easy1</h2></center>
+<center><h2>Easy1 [100]</h2></center>
 <br>
 Q: The one time pad can be cryptographically secure, but not when you know the key. Can you solve this? We've given you the encrypted flag, key, and a table to help ```UFJKXQZQUNB``` with the key of ```SOLVECRYPTO```. Can you use this table to solve it?
 
@@ -56,7 +56,7 @@ Z | Z A B C D E F G H I J K L M N O P Q R S T U V W X Y
 ```
 Flag:```picoCTF{CRYPTOISFUN}```
 <br>
-<center><h2>caesar</h2></center>
+<center><h2>caesar [100]</h2></center>
 <br>
 Q: Decrypt this message. You can find the ciphertext in /problems/caesar_3_33108a6b0f87eb4b3606437d06290815 on the shell server.
 
@@ -74,7 +74,7 @@ A: The flags are from the International Code of Signals. Match each to flag and 
 
 Flag:```PICOCTF{F1AG5AND5TUFF}```
 <br>
-<center><h2>Mr-Worldwide</h2></center>
+<center><h2>Mr-Worldwide [200]</h2></center>
 <br>
 Q: A musician left us a message. What's it mean?
 
@@ -96,9 +96,9 @@ _
 (57.790001, -152.407227)-->Kodiak, Alaska
 (31.205753, 29.924526)-->Alexandria, Egypt
 ```
-Flag:```picoCTF{KODIAK_ALASKA}```
+Flag:```PICOCTF{KODIAK_ALASKA}```
 <br>
-<center><h2>Tapping</h2></center>
+<center><h2>Tapping [200]</h2></center>
 <br>
 Q: Theres tapping coming in from the wires. What's it saying ```nc 2019shell1.picoctf.com 37920```.
 
@@ -106,7 +106,7 @@ A: Connecting to the server with give us some morse code which we can decode usi
 
 Flag:```PICOCTF{M0RS3C0D31SFUN583900981}```
 <br>
-<center><h2>la cifra de</h2></center>
+<center><h2>la cifra de [200]</h2></center>
 <br>
 Q: I found this cipher in an old book. Can you figure out what it says? Connect with ```nc 2019shell1.picoctf.com 1172```.
 
@@ -146,7 +146,7 @@ dent.
 ```
 Flag:```picoCTF{b311a50_0r_v1gn3r3_c1ph3raac148e7}```
 <br>
-<center><h2>rsa-pop-quiz</h2></center>
+<center><h2>rsa-pop-quiz [200]</h2></center>
 <br>
 Q: Class, take your seats! It's PRIME-time for a quiz... ```nc 2019shell1.picoctf.com 48028```
 
@@ -280,7 +280,7 @@ flag: picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}
 ```
 Flag:```picoCTF{wA8_th4t$_ill3aGal..o4d21b3ca}```
 <br>
-<center><h2>miniRSA</h2></center>
+<center><h2>miniRSA [300]</h2></center>
 <br>
 Q: Lets decrypt this: *[ciphertext?](/picoctf2019/files/ciphertext)* Something seems a bit small
 
@@ -303,7 +303,7 @@ picoCTF{n33d_a_lArg3r_e_0a41ef50}
 ```
 Flag:```picoCTF{n33d_a_lArg3r_e_0a41ef50}```
 <br>
-<center><h2>waves over lambda</h2></center>
+<center><h2>waves over lambda [300]</h2></center>
 <br>
 Q: We made alot of substitutions to encrypt this. Can you decrypt it? Connect with ```nc 2019shell1.picoctf.com 21903```.
 
@@ -311,13 +311,13 @@ A: When we connect we are given some ciphertext. Using *[quip quip](https://www.
 
 Flag:```frequency_is_c_over_lambda_vlnhnasstm```
 <br>
-<center><h2>AES-ABC</h2></center>
+<center><h2>AES-ABC[400]</h2></center>
 <br>
 Q:AES-ECB is bad, so I rolled my own cipher block chaining mechanism - Addition Block Chaining! You can find the source here: *[aes-abc.py](/picoctf2019/files/aes-abc.py)*. The AES-ABC flag is *[body.enc.ppm](/picoctf2019/files/body.enc.ppm)*
 
 A: Coming Soon...
 <br><br>
-<center><h2>b00tl3gRSA2</h2></center>
+<center><h2>b00tl3gRSA2 [400]</h2></center>
 <br>
 Q: n RSA d is alot bigger than e, why dont we use d to encrypt instead of e? Connect with ```nc 2019shell1.picoctf.com 40480```.
 
@@ -402,7 +402,7 @@ picoCTF{bad_1d3a5_9093280}
 ```
 Flag:```picoCTF{bad_1d3a5_9093280}```
 <br>
-<center><h2>b00tl3gRSA3</h2></center>
+<center><h2>b00tl3gRSA3 [450]</h2></center>
 <br>
 Q: Why use p and q when I can use more? Connect with ```nc 2019shell1.picoctf.com 49851```.
 
@@ -455,7 +455,7 @@ flag: picoCTF{too_many_fact0rs_6566973}
 ```
 Flag:```picoCTF{too_many_fact0rs_6566973}```
 <br>
-<center><h2>john_pollard</h2></center>
+<center><h2>john_pollard [500]</h2></center>
 <br>
 Q: Sometimes *[RSA](/picoctf2019/files/cert)* certificates are breakable.
 
