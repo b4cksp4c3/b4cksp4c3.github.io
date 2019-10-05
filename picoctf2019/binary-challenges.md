@@ -1,10 +1,14 @@
 <center><h1>Binary</h1></center>
 <br><br>
-<center><h1>handy-shellcode [50]</h1></center>>
-<br>
-<h2>Question</h2> This *[program](/picoctf2019/files/handyShellcodeVuln)* executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5 on the shell server. *[Source](/picoctf2019/files/handyShellcodeVuln.c)*.
+<a href="#handy-shellcode">handy-shellcode</a>
+- <a href="question-1">Question</a>
+- <a href="answer-1">Answer</a>
 
-<h2>Answer</h2>It tells us exactly what to do. Easiest way to spawn a shell would be to use pwn tools with python. Log into the shell server and navigate to ```/problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5``` which is where the ```vuln``` binary and ```flag.txt``` are stored. Here we are going to spawn our shell. Using the 4 lines of python code below we are able to grab the flag.
+<center><h1 id="handy-shellcode">handy-shellcode [50]</h1></center>>
+<br>
+<h2 id="question-1">Question</h2> This *[program](/picoctf2019/files/handyShellcodeVuln)* executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5 on the shell server. *[Source](/picoctf2019/files/handyShellcodeVuln.c)*.
+
+<h2 id="answer-1">Answer</h2>It tells us exactly what to do. Easiest way to spawn a shell would be to use pwn tools with python. Log into the shell server and navigate to ```/problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5``` which is where the ```vuln``` binary and ```flag.txt``` are stored. Here we are going to spawn our shell. Using the 4 lines of python code below we are able to grab the flag.
 ```
 # cd /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5
 /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5$ python
@@ -244,7 +248,7 @@ int main(int argc, char **argv){
   return 0;
 }
 ```
-So the difference between this challenge and Overflow 1 is that not only do we have to overwrite the return address on the stack, we also need to pass two arguments while calling the ```flag``` function. First lets start by getting the offset. This time I will use ```gdb```.
+So the difference between this challenge and Overflow 1 is that not only do we have to overwrite the return address on the stack, we also need to pass two arguments while calling the ```flag``` function. First lets start by getting the offset. This time I will use ```gdb``` with the ```PEDA - Python Exploit Development Assistance for GDB```.
 
 First I will create a pattern of 200 random characters.
 ```
