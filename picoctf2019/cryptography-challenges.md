@@ -8,11 +8,11 @@
 
 Flag:```PICOCTF{THENUMBERSMASON}```
 <br>
-<center><h1>13 [100]</h1></center>picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
+<center><h1>13 [100]</h1></center>
 <br>
-<h2>Question</h2><br />Cryptography can be easy, do you know what ROT13 is? ```cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}```
+<h2>Question</h2>Cryptography can be easy, do you know what ROT13 is? ```cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}```
 
-<h2>Answer</h2><br />So a ROT 13. This can be done by hand, a website, or from the terminal. I will use the terminal
+<h2>Answer</h2>So a ROT 13. This can be done by hand, a website, or from the terminal. I will use the terminal
 ```
 # echo "cvpbPGS{abg_gbb_onq_bs_n_ceboyrz}" | tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
 picoCTF{not_too_bad_of_a_problem}
@@ -58,7 +58,7 @@ Flag:```picoCTF{CRYPTOISFUN}```
 <br>
 <center><h1>caesar [100]</h1></center>
 <br>
-<h2>Question</h2><br />Decrypt this message. You can find the ciphertext in /problems/caesar_3_33108a6b0f87eb4b3606437d06290815 on the shell server.
+<h2>Question</h2><br />Decrypt this message. You can find the ciphertext in ```/problems/caesar_3_33108a6b0f87eb4b3606437d06290815``` on the shell server.
 
 Message: ```picoCTF{ynkooejcpdanqxeykjrubvtagp}```
 
