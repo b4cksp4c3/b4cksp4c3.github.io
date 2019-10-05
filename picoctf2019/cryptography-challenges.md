@@ -2,9 +2,9 @@
 <br><br>
 <center><h1>The Numbers [50]</h1></center>
 <br>
-<h2>Question</h2><br />The *[numbers](/picoctf2019/files/the_numbers.png)*... what do they mean?
+<h2>Question</h2>The *[numbers](/picoctf2019/files/the_numbers.png)*... what do they mean?
 
-<h2>Answer</h2><br />Pretty obvious to see that each number corresponds to the letter of the alphabet. Slowly but surely you should get a flag.
+<h2>Answer</h2>Pretty obvious to see that each number corresponds to the letter of the alphabet. Slowly but surely you should get a flag.
 
 Flag:```PICOCTF{THENUMBERSMASON}```
 <br>
