@@ -1,9 +1,5 @@
 <center><h1>Binary</h1></center>
 <br><br>
-<h4><a href="#handy-shellcode">handy-shellcode</a></h4>
-- <a href="question-1">Question</a>
-- <a href="answer-1">Answer</a>
-
 <center><h1 id="handy-shellcode">handy-shellcode [50]</h1></center>>
 <br>
 <h2 id="question-1">Question</h2> This *[program](/picoctf2019/files/handyShellcodeVuln)* executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_1_ebc60746fee43ae25c405fc75a234ef5 on the shell server. *[Source](/picoctf2019/files/handyShellcodeVuln.c)*.
