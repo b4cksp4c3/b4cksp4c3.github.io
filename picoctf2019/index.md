@@ -7,7 +7,7 @@ layout: default
 <center><h1>Cryptography</h1></center>
 <a href="/picoctf2019/cryptography-challenges"><center><img src="/picoctf2019/images/cryptographyhome.png" width="500" height="275"></center></a>
 
-<center><h1></h1>Forensics</h1></center>
+<center><h1>Forensics</h1></center>
 <a href="/picoctf2019/forensics-challenges"><center><img src="/picoctf2019/images/forensicshome.png" width="500" height="275"></center></a>
 
 <center><h1>General Skills</h1></center>
