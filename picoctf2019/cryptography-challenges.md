@@ -503,7 +503,7 @@ Looking through the output we do see a modulus with a value of ```49663064210599
 ```
 4966 306421 059967 = 67 867967 × 73 176001
 ```
-Now, we don't know which ones p or q so just flip flop them if you don't get the flag right the first time.
+Now, we get our two values for p and q so we can construct the flag.
 
 Flag:```picoCTF{73176001,67867967}```
 <br><br><br><br>
