@@ -145,11 +145,11 @@ asm1:
 ```
 Flag:```0x87```
 <br>
-<center><h1>vault-door-3 [200]</h1></center>
+<!--<center><h1>vault-door-3 [200]</h1></center>
 <br>
 <h2>Question</h2>This vault uses for-loops and byte arrays. The source code for this vault is here: VaultDoor3.java
 <br>
-<h2>Answer</h2>
+<h2>Answer</h2>-->
 <center><h1>asm2 [250]</h1></center>
 <br>
 <h2>Question</h2>What does asm2(0x6,0x24) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm2_6_88bbaaae0b7723b33c39fce07d342e36.
