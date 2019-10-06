@@ -1,6 +1,6 @@
 <center><h1>Reverse Engineering</h1></center>
 <br>
-<center>vault-door-training [50]<h1></h1></center>
+<center><h1>vault-door-training [50]</h1></center>
 <br>
 <h2>Question</h2> Your mission is to enter Dr. Evil's laboratory and retrieve the blueprints for his Doomsday Project. The laboratory is protected by a series of locked vault doors. Each door is controlled by a computer and requires a password to open. Unfortunately, our undercover agents have not been able to obtain the secret passwords for the vault doors, but one of our junior agents obtained the source code for each vault's computer! You will need to read the source code for each level to figure out what the password is for that vault door. As a warmup, we have created a replica vault in our training facility. The source code for the training vault is here: *[VaultDoorTraining.java](/picoctf2019/files/VaultDoorTraining.java)*
 
@@ -112,11 +112,11 @@ Flag:```picoCTF{d35cr4mbl3_tH3_cH4r4cT3r5_03b7a0}```
 <br>
 <h1>Answer</h1>
 Terms:
-cmp -> compare
-jg -> jump if greater than
-jne -> jump not equal to
-jmp -> jump
-add -> add
+- cmp -> compare
+- jg -> jump if greater than
+- jne -> jump not equal to
+- jmp -> jump
+- add -> add
 
 Now first we compare ```0x76``` to ```0x575```, if ```0x76``` is greater than ```0x575``` than we jump to ```0x50f <asm1+34>``` otherwise we continue. Next we compare ```0x76``` to ```0x76```, since they are equal, we will not follow the ```jne``` and continue down the stack. Now we will add ```0x11``` to our ```0x76``` giving us ```0x87```. Lastly, it tells us to jump to ```0x526 <asm1+57>``` which brings us to a final value of ```0x87```
 ```
@@ -145,6 +145,11 @@ asm1:
 ```
 Flag:```0x87```
 <br>
+<center><h1>vault-door-3 [200]</h1></center>
+<br>
+<h1>Question</h1>This vault uses for-loops and byte arrays. The source code for this vault is here: VaultDoor3.java
+<br>
+<h1>Answer</h1>
 <center><h1>asm2 [250]</h1></center>
 <br>
 <h2>Question</h2>What does asm2(0x6,0x24) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm2_6_88bbaaae0b7723b33c39fce07d342e36.
@@ -196,7 +201,7 @@ asm2(0x6, 0x24)
 ```
 Flag:```0x63```
 <br>
-<center><h1>vault-door-4</h1></center>
+<center><h1>vault-door-4 [250]</h1></center>
 <br>
 <h1>Question</h1>This vault uses ASCII encoding for the password. The source code for this vault is here: *[VaultDoor4.java](/picoctf2019/files/VaultDoor4.java)*
 <br>
@@ -268,5 +273,51 @@ Flag:```picoCTF{jU5t_4_bUnCh_0f_bYt3s_b9e92f76ac}```
 <br>
 <center><h1>asm3 [300]</center>
 <br>
+<h1>Question</h1>What does asm3(0xdff83990,0xeeff29ae,0xfa706498) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm3.S)* located in the directory at /problems/asm3_3_8aa3e17880273360f781adadc67a15f0.
+<br>
+<h1>Answer</h1> Assembly is by far not my strong area so the only way I could think of doing thing was to compile and run the code.
+```
+asm3:
+	<+0>:	push   ebp
+	<+1>:	mov    ebp,esp
+	<+3>:	xor    eax,eax
+	<+5>:	mov    ah,BYTE PTR [ebp+0xb]
+	<+8>:	shl    ax,0x10
+	<+12>:	sub    al,BYTE PTR [ebp+0xd]
+	<+15>:	add    ah,BYTE PTR [ebp+0xe]
+	<+18>:	xor    ax,WORD PTR [ebp+0x12]
+	<+22>:	nop
+	<+23>:	pop    ebp
+	<+24>:	ret    
+```
+After doing some research I was able to find what I was looking for. Using *[this website](https://defuse.ca/online-x86-assembler.htm#disassembly)* I was able to get the bytecode.
 
+Now, I am going to modify some C code I found online. I added my bytecode into the buffer and then I passed my parameters ```0xdff83990,0xeeff29ae,0xfa706498```. The final code should look something like this.
+```
+include <stdio.h>
+
+char shellcode[] = "\x55\x89\xE5\x31\xC0\x8A\x65\x0B\x66\xC1\xE0\x10\x2A\x45\x0D\x02\x65\x0E\x66\x33\x45\x12\x90\x5D\xC3";
+
+int main(int argc, char **argv){
+	int (*fp)(int, int, int);
+	fp = (void *)shellcode;
+	int ret = fp(0xdff83990,0xeeff29ae,0xfa706498);
+	printf("ret = 0x%x\n", ret);
+}
+```
+Now to compile this type
+```
+gcc asm3.c -o asm3 -fno-stack-protector -z execstack -no-pie -m32
+```
+If you get an error while compiling you try installing the gcc standard library
+```
+sudo apt-get install gcc-multilib
+```
+Now if we run the binary we should get the flag.
+```
+# ./asm3
+ret = 0x5a7
+```
+Flag:```0x5a7```
+<br>
 <br><br><br>
