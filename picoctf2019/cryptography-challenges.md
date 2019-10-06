@@ -406,7 +406,7 @@ Flag:```picoCTF{bad_1d3a5_9093280}```
 <br>
 <h2>Question</h2>Why use p and q when I can use more? Connect with ```nc 2019shell1.picoctf.com 49851```.
 
-<h1>Hint</h1>
+<h2>Hint</h2>
 - There's more prime factors than p and q, finding d is going to be different.
 
 <h2>Answer</h2>Using the hint we know that we need to find all the prime factors of n. To do this first connect with ```nc``` to get our values. Then we can use *[this website](https://www.alpertron.com.ar/ECM.HTM)* to factor n. It will also give you the sum of divisors and Euler's totient. We want Euler's totient. Next, take your values and put them into the following python script which is a modified version of code from stack stackoverflow and it should output the flag.
@@ -460,7 +460,7 @@ Flag:```picoCTF{too_many_fact0rs_6566973}```
 <br>
 <h2>Question</h2>Sometimes *[RSA](/picoctf2019/files/cert)* certificates are breakable.
 
-<h1>Hints</h1>
+<h2>Hints</h2>
 - The flag is in the format picoCTF{p,q}
 - Try swapping p and q if it does not work
 
