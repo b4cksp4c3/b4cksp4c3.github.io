@@ -145,7 +145,7 @@ asm1:
 ```
 Flag:```0x87```
 <br>
-<center><h1>asm2 [250]</h1>
+<center><h1>asm2 [250]</h1></center>
 <br>
 <h2>Question</h2>What does asm2(0x6,0x24) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm2_6_88bbaaae0b7723b33c39fce07d342e36.
 <br>
