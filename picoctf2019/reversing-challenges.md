@@ -275,7 +275,7 @@ Flag:```picoCTF{jU5t_4_bUnCh_0f_bYt3s_b9e92f76ac}```
 <br>
 <h2>Question</h2>What does asm3(0xdff83990,0xeeff29ae,0xfa706498) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm3.S)* located in the directory at /problems/asm3_3_8aa3e17880273360f781adadc67a15f0.
 <br>
-<h2>Answer</h2> Assembly is by far not my strong area so the only way I could think of doing thing was to compile and run the code.
+<h2>Answer</h2> Assembly is by far not my strong area so the only way I could think of doing this was to compile and run the code.
 ```
 asm3:
 	<+0>:	push   ebp
@@ -309,7 +309,7 @@ Now to compile this type
 ```
 gcc asm3.c -o asm3 -fno-stack-protector -z execstack -no-pie -m32
 ```
-If you get an error while compiling you try installing the gcc standard library
+If you get an error while compiling you can try installing the gcc standard library
 ```
 sudo apt-get install gcc-multilib
 ```
