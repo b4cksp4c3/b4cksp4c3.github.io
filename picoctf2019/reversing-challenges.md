@@ -106,7 +106,7 @@ d35cr4mbl3_tH3_cH4r4cT3r5_03b7a0
 ```
 Flag:```picoCTF{d35cr4mbl3_tH3_cH4r4cT3r5_03b7a0}```
 <br>
-<center><h1>asm1</h1></center>
+<center><h1>asm1 [200]</h1></center>
 <br>
 <h1>Question</h1>What does asm1(0x76) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm1_0_b87970313ffbb5bcf4240e7c7b6c90cf.
 <br>
@@ -145,4 +145,52 @@ asm1:
 ```
 Flag:```0x87```
 <br>
+<center><h1>asm2 [250]</1>
+<br>
+<h2>Question</h2>What does asm2(0x6,0x24) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm2_6_88bbaaae0b7723b33c39fce07d342e36.
+<br>
+<h2>Answers</h2>This is a little trickier since we have two arguments. Lets take a look at the assembly code.
+```
+asm2:
+	<+0>:	push   ebp
+	<+1>:	mov    ebp,esp
+	<+3>:	sub    esp,0x10
+	<+6>:	mov    eax,DWORD PTR [ebp+0xc]
+	<+9>:	mov    DWORD PTR [ebp-0x4],eax
+	<+12>:	mov    eax,DWORD PTR [ebp+0x8]
+	<+15>:	mov    DWORD PTR [ebp-0x8],eax
+	<+18>:	jmp    0x50c <asm2+31>
+	<+20>:	add    DWORD PTR [ebp-0x4],0x1
+	<+24>:	add    DWORD PTR [ebp-0x8],0xf9
+	<+31>:	cmp    DWORD PTR [ebp-0x8],0x3c75
+	<+38>:	jle    0x501 <asm2+20>
+	<+40>:	mov    eax,DWORD PTR [ebp-0x4]
+	<+43>:	leave  
+	<+44>:	ret    
+```
+Lets brake this into pieces. Here we have our arguments,
+```
+<+6>:	mov    eax,DWORD PTR [ebp+0xc] <-- eax = 0x24
+<+9>:	mov    DWORD PTR [ebp-0x4],eax <-- arg1 = 0x24
+<+12>:	mov    eax,DWORD PTR [ebp+0x8] <-- eax = 0x6
+<+15>:	mov    DWORD PTR [ebp-0x8],eax <-- = 0x6
+```
+Next we are going to jump to ```0x50c <asm2+31>``` which will compare ```[ebp-0x8]``` to ```0x3c75```. If ```[ebp-0x4]``` is less than ```0x501``` than we will jump to ```<asm2+20>```. As soon as arg2 is larger than ```0x3c75``` the program will terminate. Now lets take a look how this will happen after we jump to ```<asm2+20>```.
+```
+<+20>:	add    DWORD PTR [ebp-0x4],0x1 <--arg1 += 1 each time
+<+24>:	add    DWORD PTR [ebp-0x8],0xf9 <-- arg2 += f9 each time
+<+31>:	cmp    DWORD PTR [ebp-0x8],0x3c75 <-- arg2 compared to each time
+```
+This can be calculated by hand but it is much easier to do with python.
+```
+def asm2(arg1, arg2):
+	while arg1 <= 0x3c75:
+		arg2 += 1
+		arg1 += 0xf9
+
+	print hex(arg2)
+
+asm2(0x6, 0x24)
+```
+Flag:```0x63```
 <br><br><br>
