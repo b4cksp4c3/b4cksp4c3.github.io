@@ -195,4 +195,78 @@ def asm2(arg1, arg2):
 asm2(0x6, 0x24)
 ```
 Flag:```0x63```
+<br>
+<center><h1>vault-door-4</h1></center>
+<br>
+<h1>Question</h1>This vault uses ASCII encoding for the password. The source code for this vault is here: *[VaultDoor4.java](/picoctf2019/files/VaultDoor4.java)*
+<br>
+<h1>Answer</h1>In the source code there are comments stating that the password was converted into a bunch of different bases so that tells us what we have to do so lets take a look at that.
+```
+import java.util.*;
+
+class VaultDoor4 {
+    public static void main(String args[]) {
+        VaultDoor4 vaultDoor = new VaultDoor4();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter vault password: ");
+        String userInput = scanner.next();
+	String input = userInput.substring("picoCTF{".length(),userInput.length()-1);
+	if (vaultDoor.checkPassword(input)) {
+	    System.out.println("Access granted.");
+	} else {
+	    System.out.println("Access denied!");
+        }
+    }
+
+    // I made myself dizzy converting all of these numbers into different bases,
+    // so I just *know* that this vault will be impenetrable. This will make Dr.
+    // Evil like me better than all of the other minions--especially Minion
+    // #5620--I just know it!
+    //
+    //  .:::.   .:::.
+    // :::::::.:::::::
+    // :::::::::::::::
+    // ':::::::::::::'
+    //   ':::::::::'
+    //     ':::::'
+    //       ':'
+    // -Minion #7781
+    public boolean checkPassword(String password) {
+        byte[] passBytes = password.getBytes();
+        byte[] myBytes = {
+            106 , 85  , 53  , 116 , 95  , 52  , 95  , 98  ,
+            0x55, 0x6e, 0x43, 0x68, 0x5f, 0x30, 0x66, 0x5f,
+            0142, 0131, 0164, 063 , 0163, 0137, 0142, 071 ,
+            'e' , '9' , '2' , 'f' , '7' , '6' , 'a' , 'c' ,
+        };
+        for (int i=0; i<32; i++) {
+            if (passBytes[i] != myBytes[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+Looking at the section of converted bytes we can label what kind of conversions we have.
+```
+yte[] myBytes = {
+    106 , 85  , 53  , 116 , 95  , 52  , 95  , 98  , <-- Decimal
+    0x55, 0x6e, 0x43, 0x68, 0x5f, 0x30, 0x66, 0x5f, <-- Hex
+    0142, 0131, 0164, 063 , 0163, 0137, 0142, 071 , <-- Octal(Remove the leading 0)
+    'e' , '9' , '2' , 'f' , '7' , '6' , 'a' , 'c' , <-- Leave be
+};
+```
+Now after converting everything we should get a value of ```jU5t_4_bUnCh_0f_bYt3s_b9e92f76ac```. We can test if this is the correct flag by compiling the code and using this flag as input.
+```
+# javac VaultDoor4.java
+# java VaultDoor4
+Enter vault password: picoCTF{jU5t_4_bUnCh_0f_bYt3s_b9e92f76ac}
+Access granted.
+```
+Flag:```picoCTF{jU5t_4_bUnCh_0f_bYt3s_b9e92f76ac}```
+<br>
+<center><h1>asm3 [300]</center>
+<br>
+
 <br><br><br>
