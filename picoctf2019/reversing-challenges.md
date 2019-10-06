@@ -183,6 +183,8 @@ Next we are going to jump to ```0x50c <asm2+31>``` which will compare ```[ebp-0x
 ```
 This can be calculated by hand but it is much easier to do with python.
 ```
+#!/usr/bin/env python
+
 def asm2(arg1, arg2):
 	while arg1 <= 0x3c75:
 		arg2 += 1
