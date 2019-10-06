@@ -294,7 +294,7 @@ After doing some research I was able to find what I was looking for. Using *[thi
 
 Now, I am going to modify some C code I found online. I added my bytecode into the buffer and then I passed my parameters ```0xdff83990,0xeeff29ae,0xfa706498```. The final code should look something like this.
 ```
-include <stdio.h>
+#include <stdio.h>
 
 char shellcode[] = "\x55\x89\xE5\x31\xC0\x8A\x65\x0B\x66\xC1\xE0\x10\x2A\x45\x0D\x02\x65\x0E\x66\x33\x45\x12\x90\x5D\xC3";
 
