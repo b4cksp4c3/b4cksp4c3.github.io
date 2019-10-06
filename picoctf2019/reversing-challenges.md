@@ -105,4 +105,44 @@ This can be done by hand but since it is nicely numbered for us, we are able to 
 d35cr4mbl3_tH3_cH4r4cT3r5_03b7a0
 ```
 Flag:```picoCTF{d35cr4mbl3_tH3_cH4r4cT3r5_03b7a0}```
+<br>
+<center><h1>asm1</h1></center>
+<br>
+<h1>Question</h1>What does asm1(0x76) return? Submit the flag as a hexadecimal value (starting with '0x'). NOTE: Your submission for this question will NOT be in the normal flag format. *[Source](/picoctf2019/files/asm1.S)* located in the directory at /problems/asm1_0_b87970313ffbb5bcf4240e7c7b6c90cf.
+<br>
+<h1>Answer</h1>
+Terms:
+cmp -> compare
+jg -> jump if greater than
+jne -> jump not equal to
+jmp -> jump
+add -> add
+
+Now first we compare ```0x76``` to ```0x575```, if ```0x76``` is greater than ```0x575``` than we jump to ```0x50f <asm1+34>``` otherwise we continue. Next we compare ```0x76``` to ```0x76```, since they are equal, we will not follow the ```jne``` and continue down the stack. Now we will add ```0x11``` to our ```0x76``` giving us ```0x87```. Lastly, it tells us to jump to ```0x526 <asm1+57>``` which brings us to a final value of ```0x87```
+```
+asm1:
+	<+0>:	push   ebp
+	<+1>:	mov    ebp,esp
+	<+3>:	cmp    DWORD PTR [ebp+0x8],0x575
+	<+10>:	jg     0x50f <asm1+34>
+	<+12>:	cmp    DWORD PTR [ebp+0x8],0x76
+	<+16>:	jne    0x507 <asm1+26>
+	<+18>:	mov    eax,DWORD PTR [ebp+0x8]
+	<+21>:	add    eax,0x11
+	<+24>:	jmp    0x526 <asm1+57>
+	<+26>:	mov    eax,DWORD PTR [ebp+0x8]
+	<+29>:	sub    eax,0x11
+	<+32>:	jmp    0x526 <asm1+57>
+	<+34>:	cmp    DWORD PTR [ebp+0x8],0x9d5
+	<+41>:	jne    0x520 <asm1+51>
+	<+43>:	mov    eax,DWORD PTR [ebp+0x8]
+	<+46>:	sub    eax,0x11
+	<+49>:	jmp    0x526 <asm1+57>
+	<+51>:	mov    eax,DWORD PTR [ebp+0x8]
+	<+54>:	add    eax,0x11
+	<+57>:	pop    ebp
+	<+58>:	ret    
+```
+Flag:```0x87```
+<br>
 <br><br><br>
