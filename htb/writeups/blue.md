@@ -5,6 +5,7 @@ Blue is very simple box that is vulnerable to MS17-010. I will show how to explo
 <center><h2>Using Metasploit</h2></center>
 <br>
 Start with an nmap scan
+
 ```
 # Nmap 7.80 scan initiated Mon Oct 21 23:09:48 2019 as: nmap -sV -sC -T4 10.10.10.40
 Nmap scan report for 10.10.10.40
