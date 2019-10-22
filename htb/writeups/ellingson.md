@@ -38,6 +38,7 @@ Doing some manual enumeration reveals a post written by <b>The Plague</b> mentio
 <center><img src="/htb/ellingson/quote.png"></center>
 <br>
 Next step was to run a <b>gobuster</b>.
+
 ```
 # gobuster dir -u http://10.10.10.139 -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt -x php,txt -t 20
 ===============================================================
