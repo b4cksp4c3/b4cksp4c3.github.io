@@ -129,6 +129,7 @@ nt authority\system
 <center><h2>Manual Walkthrough</h2></center>
 <br><br>
 Using ```searchsploit``` we can see the python script that we will be using. We want the second one.
+
 ```
 # searchsploit "Eternal Blue"
 --------------------------------------------------------------- ----------------------------------------
