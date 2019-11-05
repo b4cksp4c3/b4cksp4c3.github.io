@@ -26,7 +26,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 83.24 seconds
 ```
 So a few ports open. First I enumerated port 80 and didn't find anything useful. Next I checked out port 10000 and once there I had to add ```postman``` to my ```/etc/hosts``` file. Once that was done I refreshed the page and was greeted with a ```webmin``` login. Now I was not able to do anything more since every exploit requires valid credentials which I don't have. Lastly, was port 6379 with redis. First I try to connect using ```telnet``` to see if the service has any sort of authentication set and turns out it doesn't. next step was to install ```redis-tools``` so I could use the ```redis-cli``` to interact with the redis service. Once that was done I was able to find an exploit where I upload my own ssh keys to the server and use that to ssh into the system.
-<br>
+<br><br>
 First step is to take my ssh key and copy it to a new file but at the same time generating some random data to the beginning and end of the file
 ```
 # (echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > key.txt
@@ -71,7 +71,7 @@ Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-58-generic x86_64)
 Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
 
 Last login: Tue Nov  5 19:58:37 2019 from 10.10.14.19
-redis@Postman:~$ whoami
+redis@Postman:~$ 
 ```
 Now doing some manual enumeration I found an ```id_rsa.bak``` file in ```/opt```. I copied this file to my host machine and saw that it was password protected. Using ```ssh2john``` I can convert the ssh key into a format that john and read and will crack the password for me.
 ```
