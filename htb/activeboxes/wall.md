@@ -139,7 +139,7 @@ I then used <b>wget</b> from the web console combined with a <b>python SimpleHTT
 <center><img src="/htb/wall/wget.png"></center>
 <br>
 
-If done correctly you should see the file get downloaded from the <b>python SimpleHTTPServer
+If done correctly you should see the file get downloaded from the <b>python SimpleHTTPServer</b>
 ```
 # python -m SimpleHTTPServer 80
 Serving HTTP on 0.0.0.0 port 80 ...
